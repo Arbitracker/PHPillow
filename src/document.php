@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -39,7 +39,7 @@
  * @version $Revision: 486 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-abstract class arbitBackendCouchDbDocument
+abstract class phpillowBackendCouchDbDocument
 {
     /**
      * Object storing all the document properties as public attributes. This
@@ -54,7 +54,7 @@ abstract class arbitBackendCouchDbDocument
      *
      *  array(
      *      ...,
-     *      email => new arbitBackendCouchDbMailValidator( ... ),
+     *      email => new phpillowBackendCouchDbMailValidator( ... ),
      *      ...
      *  )
      * 
@@ -159,7 +159,7 @@ abstract class arbitBackendCouchDbDocument
         }
 
         // If none of the above checks passed, the request is invalid.
-        throw new arbitBackendCouchDbNoSuchPropertyException( $property );
+        throw new phpillowBackendCouchDbNoSuchPropertyException( $property );
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class arbitBackendCouchDbDocument
         // Check if property exists at all
         if ( !isset( $this->properties[$property] ) )
         {
-            throw new arbitBackendCouchDbNoSuchPropertyException( $property );
+            throw new phpillowBackendCouchDbNoSuchPropertyException( $property );
         }
 
         // Check if the passed value meets the property validation, and perform
@@ -198,10 +198,10 @@ abstract class arbitBackendCouchDbDocument
      * Set values of the document from the response object, if they are
      * available in there.
      * 
-     * @param arbitBackendCouchDbResponse $response 
+     * @param phpillowBackendCouchDbResponse $response 
      * @return void
      */
-    protected function fromResponse( arbitBackendCouchDbResponse $response )
+    protected function fromResponse( phpillowBackendCouchDbResponse $response )
     {
         // Set all document property values from response, if available in the
         // response.
@@ -266,7 +266,7 @@ abstract class arbitBackendCouchDbDocument
      * document.
      * 
      * @param string $id 
-     * @return arbitBackendCouchDbDocument
+     * @return phpillowBackendCouchDbDocument
      */
     public static function fetchById( $id )
     {
@@ -278,13 +278,13 @@ abstract class arbitBackendCouchDbDocument
             $error = new StdClass();
             $error->error  = 'not_found';
             $error->reason = 'No document ID specified.';
-            throw new arbitBackendCouchDbResponseNotFoundErrorException( $error );
+            throw new phpillowBackendCouchDbResponseNotFoundErrorException( $error );
         }
 
         // Fetch object from database
-        $db = arbitBackendCouchDbConnection::getInstance();
+        $db = phpillowBackendCouchDbConnection::getInstance();
         $response = $db->get( 
-            arbitBackendCouchDbConnection::getDatabase() . urlencode( $id )
+            phpillowBackendCouchDbConnection::getDatabase() . urlencode( $id )
         );
 
         // Create document object fetched object
@@ -300,7 +300,7 @@ abstract class arbitBackendCouchDbDocument
      *
      * Create and initialize a new document
      * 
-     * @return arbitBackendCouchDbDocument
+     * @return phpillowBackendCouchDbDocument
      */
     public static function createNew()
     {
@@ -367,7 +367,7 @@ abstract class arbitBackendCouchDbDocument
         // runtime exception.
         if ( $this->checkRequirements() !== true )
         {
-            throw new arbitRuntimeException(
+            throw new phpillowRuntimeException(
                 'Requirements not checked before storing the document.'
             );
         }
@@ -386,9 +386,9 @@ abstract class arbitBackendCouchDbDocument
         }
 
         // Store document in database
-        $db = arbitBackendCouchDbConnection::getInstance();
+        $db = phpillowBackendCouchDbConnection::getInstance();
         $db->put(
-            arbitBackendCouchDbConnection::getDatabase() . urlencode( $this->_id ),
+            phpillowBackendCouchDbConnection::getDatabase() . urlencode( $this->_id ),
             json_encode( $this->storage )
         );
 
@@ -398,7 +398,7 @@ abstract class arbitBackendCouchDbDocument
     /**
      * Get ID string from arbritrary string
      *
-     * To calculate an ID string from an arbitrary string, first iconvs
+     * To calculate an ID string from an phpillowrary string, first iconvs
      * tarnsliteration abilities are used, and after that all, but common ID
      * characters, are replaced by the given replace string, which defaults to
      * _.

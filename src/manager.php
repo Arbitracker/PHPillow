@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 505 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-final class arbitBackendCouchDbManager
+final class phpillowBackendCouchDbManager
 {
     /**
      * Initial mapping of view types to view classes.
@@ -39,8 +39,8 @@ final class arbitBackendCouchDbManager
      * @var array
      */
     protected static $views = array(
-        'user'      => 'arbitBackendCouchDbUserView',
-        'group'     => 'arbitBackendCouchDbGroupView',
+        'user'      => 'phpillowBackendCouchDbUserView',
+        'group'     => 'phpillowBackendCouchDbGroupView',
     );
 
     /**
@@ -49,9 +49,9 @@ final class arbitBackendCouchDbManager
      * @var array
      */
     protected static $documents = array(
-        'user'              => 'arbitBackendCouchDbUserDocument',
-        'group'             => 'arbitBackendCouchDbGroupDocument',
-        'project'           => 'arbitBackendCouchDbProjectDocument',
+        'user'              => 'phpillowBackendCouchDbUserDocument',
+        'group'             => 'phpillowBackendCouchDbGroupDocument',
+        'project'           => 'phpillowBackendCouchDbProjectDocument',
     );
 
     /**
@@ -84,17 +84,17 @@ final class arbitBackendCouchDbManager
      * Return view
      *
      * Get a view object for the given view type. Throws a
-     * arbitBackendCouchDbNoSuchPropertyException if the view does not exist.
+     * phpillowBackendCouchDbNoSuchPropertyException if the view does not exist.
      * 
      * @param string $name 
-     * @return arbitBackendCouchDbView
+     * @return phpillowBackendCouchDbView
      */
     public static function getView( $name )
     {
         // Check if a view with the given name exists.
         if ( !isset( self::$views[$name] ) )
         {
-            throw new arbitBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
         }
 
         // Instantiate and return view.
@@ -120,17 +120,17 @@ final class arbitBackendCouchDbManager
      * Create new document
      *
      * Create a new document of the given type and return it. Throws a
-     * arbitBackendCouchDbNoSuchPropertyException if the document does not exist.
+     * phpillowBackendCouchDbNoSuchPropertyException if the document does not exist.
      * 
      * @param string $name 
-     * @return arbitBackendCouchDbDocument
+     * @return phpillowBackendCouchDbDocument
      */
     public static function createDocument( $name )
     {
         // Check if a document with the given name exists.
         if ( !isset( self::$documents[$name] ) )
         {
-            throw new arbitBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
         }
 
         // Instantiate and return document.
@@ -142,18 +142,18 @@ final class arbitBackendCouchDbManager
      * Fetch document by ID
      *
      * Fetch the document of the given type with the given ID. Throws a
-     * arbitBackendCouchDbNoSuchPropertyException if the document does not exist.
+     * phpillowBackendCouchDbNoSuchPropertyException if the document does not exist.
      * 
      * @param string $name 
      * @param string $id 
-     * @return arbitBackendCouchDbDocument
+     * @return phpillowBackendCouchDbDocument
      */
     public static function fetchDocument( $name, $id )
     {
         // Check if a document with the given name exists.
         if ( !isset( self::$documents[$name] ) )
         {
-            throw new arbitBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
         }
 
         // Instantiate and return document.
@@ -165,7 +165,7 @@ final class arbitBackendCouchDbManager
      * Delete document by ID
      *
      * Delete the document of the given type with the given ID. Throws a
-     * arbitBackendCouchDbNoSuchPropertyException if the document does not exist.
+     * phpillowBackendCouchDbNoSuchPropertyException if the document does not exist.
      *
      * Deletion means, that all revisions, including the current one, are
      * removed.
@@ -179,10 +179,10 @@ final class arbitBackendCouchDbManager
         // Check if a document with the given name exists.
         if ( !isset( self::$documents[$name] ) )
         {
-            throw new arbitBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
         }
 
-        $db = arbitBackendCouchDbConnection::getInstance();
+        $db = phpillowBackendCouchDbConnection::getInstance();
         $revisions = $db->get( $db->getDatabase() . $id . '?revs=true' );
         foreach ( $revisions->_revs as $revision )
         {
@@ -190,7 +190,7 @@ final class arbitBackendCouchDbManager
             {
                 $db->delete( $db->getDatabase() . $id . '?rev=' . $revision );
             }
-            catch ( arbitBackendCouchDbResponseConflictErrorException $e )
+            catch ( phpillowBackendCouchDbResponseConflictErrorException $e )
             {
                 // @TODO: Check with the CouchDB guys, if this is really the
                 // desired behaviour and what may be a better way to wipe a

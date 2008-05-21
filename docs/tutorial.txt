@@ -30,10 +30,10 @@ As noted above the central object we have to deal with are documents.
 Define a custom document
 ------------------------
 
-All documents extend the abstract base class arbitBackendCouchDbDocument. A
+All documents extend the abstract base class phpillowBackendCouchDbDocument. A
 complete model defining a blog entry could look like::
 
-    class myBlogDocument extends arbitBackendCouchDbDocument
+    class myBlogDocument extends phpillowBackendCouchDbDocument
     {
         protected static $type = 'blog_entry';
 
@@ -45,9 +45,9 @@ complete model defining a blog entry could look like::
         protected function __construct()
         {
             $this->properties = array(
-                'title'     => new arbitBackendCouchDbStringValidator(),
-                'text'      => new arbitBackendCouchDbTextValidator(),
-                'comments'  => new arbitBackendCouchDocumentArrayValidator(
+                'title'     => new phpillowBackendCouchDbStringValidator(),
+                'text'      => new phpillowBackendCouchDbTextValidator(),
+                'comments'  => new phpillowBackendCouchDocumentArrayValidator(
                     'myBlogComments'
                 ),
             );
@@ -69,7 +69,7 @@ The array $requiredProperties defined the properties, which are mandatory to be
 set. The properties itself are defined in the $properties property, which is
 initialized in the constructor of the document. We associate a validator with
 each property which validates the input set on the document. There are quite
-complex validators, like the arbitBackendCouchDocumentArrayValidator shown here,
+complex validators, like the phpillowBackendCouchDocumentArrayValidator shown here,
 which will be described later, which are all documented in the `generated API
 documentation`__.
 
@@ -118,11 +118,11 @@ Views
 
 Views in CouchDb are a way to index and access documents by their properties,
 perhaps filtered, or by complex self defined keys. Views for our documents
-extend the view base class arbitBackendCouchDbView, and implement the view logic
+extend the view base class phpillowBackendCouchDbView, and implement the view logic
 as EcmaScript, executed on the server (currently using the SpiderMonkey
 implementation). A view definition for our blog entries could look like::
 
-    class myBlogView extends arbitBackendCouchDbView
+    class myBlogView extends phpillowBackendCouchDbView
     {
         protected $viewDefinitions = array(
             // Index blog entries by their title, and list all comments
@@ -187,10 +187,10 @@ The manager provides a central registry for couchDB documents and views. You
 may set and overwrite the document class for one document type, or query this
 document class directly, whatever class has been set for it, like::
 
-    $doc = arbitBackendCouchDbManager::createDocument( 'blog_entry' );
+    $doc = phpillowBackendCouchDbManager::createDocument( 'blog_entry' );
     // ...
 
-    $doc = arbitBackendCouchDbManager::fetchDocument(
+    $doc = phpillowBackendCouchDbManager::fetchDocument(
         'blog_entry', 'blog_entry-new_blog_post'
     );
     // ...

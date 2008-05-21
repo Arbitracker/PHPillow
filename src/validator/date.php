@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 349 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbDateValidator extends arbitBackendCouchDbValidator
+class phpillowBackendCouchDbDateValidator extends phpillowBackendCouchDbValidator
 {
     /**
      * Validate input as string
@@ -49,7 +49,7 @@ class arbitBackendCouchDbDateValidator extends arbitBackendCouchDbValidator
             return $date->format( DATE_RFC2822 );
         }
 
-        // Otherwise we received most presumably some arbitrary string, which
+        // Otherwise we received most presumably some phpillowrary string, which
         // we first just try to parse with datetime (strtotime).
         if ( ( $date = new DateTime( $input ) ) !== false )
         {
@@ -61,7 +61,7 @@ class arbitBackendCouchDbDateValidator extends arbitBackendCouchDbValidator
         //
         // Since PHP 5.3 datetime seems to accept everything and just returns
         // NOW, if it fails to parse. So this seems untestable for now.
-        throw new arbitBackendCouchDbValidationException( 
+        throw new phpillowBackendCouchDbValidationException( 
             'Error parsing the date: %date', 
             array(
                 'date' => $input,

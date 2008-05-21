@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 495 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbConnection
+class phpillowBackendCouchDbConnection
 {
     /**
      * Configured host of couch server instance
@@ -62,9 +62,9 @@ class arbitBackendCouchDbConnection
     protected static $database = null;
 
     /**
-     * Instance of arbitBackendCouchDbConnection for singleton implementation.
+     * Instance of phpillowBackendCouchDbConnection for singleton implementation.
      *
-     * @var arbitBackendCouchDbConnection
+     * @var phpillowBackendCouchDbConnection
      */
     protected static $instance = null;
 
@@ -98,7 +98,7 @@ class arbitBackendCouchDbConnection
      *
      * @param string $host
      * @param int $port
-     * @return arbitBackendCouchDbConnection
+     * @return phpillowBackendCouchDbConnection
      */
     protected function __construct( $host, $port )
     {
@@ -127,7 +127,7 @@ class arbitBackendCouchDbConnection
         // explicit cleanup before.
         if ( self::$instance !== null )
         {
-            throw new arbitBackendCouchDbConnectionException(
+            throw new phpillowBackendCouchDbConnectionException(
                 'Connection already established.',
                 array()
             );
@@ -135,7 +135,7 @@ class arbitBackendCouchDbConnection
 
         // Create connection and store it in static property to be accessible
         // by static getInstance() method.
-        self::$instance = new arbitBackendCouchDbConnection( $host, $port );
+        self::$instance = new phpillowBackendCouchDbConnection( $host, $port );
     }
 
     /**
@@ -163,7 +163,7 @@ class arbitBackendCouchDbConnection
     {
         if ( self::$database === null )
         {
-            throw new arbitBackendCouchNoDatabaseException();
+            throw new phpillowBackendCouchNoDatabaseException();
         }
 
         return self::$database;
@@ -174,7 +174,7 @@ class arbitBackendCouchDbConnection
      *
      * Get configured couch DB connection instance
      *
-     * @return arbitBackendCouchDbConnection
+     * @return phpillowBackendCouchDbConnection
      */
     public static function getInstance()
     {
@@ -182,7 +182,7 @@ class arbitBackendCouchDbConnection
         // otherwise.
         if ( self::$instance === null )
         {
-            throw new arbitBackendCouchDbConnectionException(
+            throw new phpillowBackendCouchDbConnectionException(
                 'No connection to database configured.',
                 array()
             );
@@ -208,7 +208,7 @@ class arbitBackendCouchDbConnection
      *
      * @param string $method
      * @param array $params
-     * @return arbit...
+     * @return phpillow...
      */
     public function __call( $method, $params )
     {
@@ -216,7 +216,7 @@ class arbitBackendCouchDbConnection
         $method = strtoupper( $method );
         if ( !isset( self::$allowedMethods[$method] ) )
         {
-            throw new arbitBackendCouchDbInvalidRequestException(
+            throw new phpillowBackendCouchDbInvalidRequestException(
                 'Unsupported request method: %method',
                 array(
                     'method' => $method,
@@ -229,7 +229,7 @@ class arbitBackendCouchDbConnection
              !is_string( $params[0] ) ||
              ( $params[0][0] !== '/' ) )
         {
-            throw new arbitBackendCouchDbInvalidRequestException(
+            throw new phpillowBackendCouchDbInvalidRequestException(
                 'Absolute path required as first parameter for the request.',
                 array()
             );
@@ -251,7 +251,7 @@ class arbitBackendCouchDbConnection
      * @param string $method
      * @param string $path
      * @param string $data
-     * @return arbit...
+     * @return phpillow...
      */
     protected function request( $method, $path, $data )
     {
@@ -267,13 +267,13 @@ class arbitBackendCouchDbConnection
                 if ( ( $this->connection = fsockopen( $this->ip, $this->port, $errno, $errstr ) ) === false )
                 {
                     // This is a bit hackisch...
-                    throw new arbitPhpErrorException( 'Connection failed.' );
+                    throw new phpillowPhpErrorException( 'Connection failed.' );
                 }
             }
         }
-        catch ( arbitPhpErrorException $e )
+        catch ( phpillowPhpErrorException $e )
         {
-            throw new arbitBackendCouchDbConnectionException(
+            throw new phpillowBackendCouchDbConnectionException(
                 "Could not connect to server at %ip:%port: '%errno: %error'",
                 array(
                     'ip'    => $this->ip,
@@ -337,7 +337,7 @@ class arbitBackendCouchDbConnection
         }
 
         // Create repsonse object from couch db response
-        return arbitBackendCouchDbResponseFactory::parse( $status, $body );
+        return phpillowBackendCouchDbResponseFactory::parse( $status, $body );
     }
 }
 

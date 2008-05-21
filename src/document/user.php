@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 358 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbUserDocument extends arbitBackendCouchDbDocument
+class phpillowBackendCouchDbUserDocument extends phpillowBackendCouchDbDocument
 {
     /**
      * Document type, may be a string matching the regular expression:
@@ -61,12 +61,12 @@ class arbitBackendCouchDbUserDocument extends arbitBackendCouchDbDocument
     protected function __construct()
     {
         $this->properties = array(
-            'login'         => new arbitBackendCouchDbRegexpValidator( '(^[\x21-\x7e]+$)i' ),
-            'email'         => new arbitBackendCouchDbEmailValidator(),
-            'name'          => new arbitBackendCouchDbStringValidator(),
-            'valid'         => new arbitBackendCouchDbRegexpValidator( '(^0|1|[a-f0-9]{32}$)' ),
-            'auth_type'     => new arbitBackendCouchDbStringValidator(),
-            'auth_infos'    => new arbitBackendCouchDbNoValidator(),
+            'login'         => new phpillowBackendCouchDbRegexpValidator( '(^[\x21-\x7e]+$)i' ),
+            'email'         => new phpillowBackendCouchDbEmailValidator(),
+            'name'          => new phpillowBackendCouchDbStringValidator(),
+            'valid'         => new phpillowBackendCouchDbRegexpValidator( '(^0|1|[a-f0-9]{32}$)' ),
+            'auth_type'     => new phpillowBackendCouchDbStringValidator(),
+            'auth_infos'    => new phpillowBackendCouchDbNoValidator(),
         );
 
         parent::__construct();

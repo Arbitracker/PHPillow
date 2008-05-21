@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 349 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbRegexpValidator extends arbitBackendCouchDbValidator
+class phpillowBackendCouchDbRegexpValidator extends phpillowBackendCouchDbValidator
 {
     /**
      * Regular expression to validate against
@@ -66,7 +66,7 @@ class arbitBackendCouchDbRegexpValidator extends arbitBackendCouchDbValidator
         // Check if regular expression matches the input string.
         if ( !preg_match( $this->regexp, $input ) )
         {
-            throw new arbitBackendCouchDbValidationException(
+            throw new phpillowBackendCouchDbValidationException(
                 'Input %input did not match regular expression %expression.', 
                 array(
                     'input' => $input,

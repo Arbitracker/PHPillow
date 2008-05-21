@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-abstract class arbitBackendCouchDbException extends arbitException
+abstract class phpillowBackendCouchDbException extends phpillowException
 {
 }
 
@@ -44,7 +44,7 @@ abstract class arbitBackendCouchDbException extends arbitException
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbConnectionException extends arbitBackendCouchDbException
+class phpillowBackendCouchDbConnectionException extends phpillowBackendCouchDbException
 {
 }
 
@@ -56,7 +56,7 @@ class arbitBackendCouchDbConnectionException extends arbitBackendCouchDbExceptio
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchNoDatabaseException extends arbitBackendCouchDbException
+class phpillowBackendCouchNoDatabaseException extends phpillowBackendCouchDbException
 {
     /**
      * Create exception
@@ -82,7 +82,7 @@ class arbitBackendCouchNoDatabaseException extends arbitBackendCouchDbException
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbInvalidRequestException extends arbitBackendCouchDbException
+class phpillowBackendCouchDbInvalidRequestException extends phpillowBackendCouchDbException
 {
 }
 
@@ -95,7 +95,7 @@ class arbitBackendCouchDbInvalidRequestException extends arbitBackendCouchDbExce
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbNoSuchPropertyException extends arbitBackendCouchDbException
+class phpillowBackendCouchDbNoSuchPropertyException extends phpillowBackendCouchDbException
 {
     /**
      * Create exception from property name
@@ -126,7 +126,7 @@ class arbitBackendCouchDbNoSuchPropertyException extends arbitBackendCouchDbExce
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbValidationException extends arbitBackendCouchDbException
+class phpillowBackendCouchDbValidationException extends phpillowBackendCouchDbException
 {
 }
 
@@ -138,7 +138,7 @@ class arbitBackendCouchDbValidationException extends arbitBackendCouchDbExceptio
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbResponseErrorException extends arbitBackendCouchDbException
+class phpillowBackendCouchDbResponseErrorException extends phpillowBackendCouchDbException
 {
     /**
      * Actual parsed server response
@@ -152,7 +152,7 @@ class arbitBackendCouchDbResponseErrorException extends arbitBackendCouchDbExcep
      * 
      * @param int $status 
      * @param StdClass $response 
-     * @return arbitBackendCouchDbResponseErrorException
+     * @return phpillowBackendCouchDbResponseErrorException
      */
     public function __construct( $status, $response )
     {
@@ -190,7 +190,7 @@ class arbitBackendCouchDbResponseErrorException extends arbitBackendCouchDbExcep
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbResponseNotFoundErrorException extends arbitBackendCouchDbResponseErrorException
+class phpillowBackendCouchDbResponseNotFoundErrorException extends phpillowBackendCouchDbResponseErrorException
 {
     /**
      * Construct parent from response
@@ -213,7 +213,7 @@ class arbitBackendCouchDbResponseNotFoundErrorException extends arbitBackendCouc
  * @version $Revision: 478 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbResponseConflictErrorException extends arbitBackendCouchDbResponseErrorException
+class phpillowBackendCouchDbResponseConflictErrorException extends phpillowBackendCouchDbResponseErrorException
 {
     /**
      * Construct parent from response

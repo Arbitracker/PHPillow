@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 479 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbResponseFactory
+class phpillowBackendCouchDbResponseFactory
 {
     /**
      * Parse a server response
@@ -39,22 +39,22 @@ class arbitBackendCouchDbResponseFactory
      * Parses a server response depending on the response body and the HTTP
      * status code.
      *
-     * The method will eith return a plain arbitBackendCouchDbResponse object, when the
+     * The method will eith return a plain phpillowBackendCouchDbResponse object, when the
      * server returned a single document. If the server returned a set of
-     * documents you will receive a arbitBackendCouchDbResultSetResponse object, with a row
+     * documents you will receive a phpillowBackendCouchDbResultSetResponse object, with a row
      * property to iterate over all documents returned by the server.
      *
      * For put and delete requests the server will just return a status,
      * wheather the request was successfull, which is represented by a
-     * arbitBackendCouchDbStatusResponse object.
+     * phpillowBackendCouchDbStatusResponse object.
      *
      * For all other cases most probably some error occured, which is
-     * transformed into a arbitBackendCouchDbResponseErrorException, which will be thrown
+     * transformed into a phpillowBackendCouchDbResponseErrorException, which will be thrown
      * by the parse method.
      * 
      * @param int $status 
      * @param string $body 
-     * @return arbitBackendCouchDbResponse
+     * @return phpillowBackendCouchDbResponse
      */
     public static function parse( $status, $body )
     {
@@ -74,11 +74,11 @@ class arbitBackendCouchDbResponseFactory
                 // available for documents.
                 if ( isset( $response->_id ) )
                 {
-                    return new arbitBackendCouchDbResponse( $response );
+                    return new phpillowBackendCouchDbResponse( $response );
                 }
                 else
                 {
-                    return new arbitBackendCouchDbResultSetResponse( $response );
+                    return new phpillowBackendCouchDbResultSetResponse( $response );
                 }
 
             case 201:
@@ -86,7 +86,7 @@ class arbitBackendCouchDbResponseFactory
                 // The following status codes are given for status responses
                 // depending on the request type - which does not matter here any
                 // more.
-                return new arbitBackendCouchDbStatusResponse( $response );
+                return new phpillowBackendCouchDbStatusResponse( $response );
 
             case 404:
                 // The 404 and 409 (412) errors are using custom exceptions
@@ -94,16 +94,16 @@ class arbitBackendCouchDbResponseFactory
                 // requeired to be handled in a special way by the application.
                 //
                 // Feel free to extend this for other errors as well.
-                throw new arbitBackendCouchDbResponseNotFoundErrorException( $response );
+                throw new phpillowBackendCouchDbResponseNotFoundErrorException( $response );
             case 409: // Conflict
             case 412: // Precondition Failed - we just consider this as a conflict.
-                throw new arbitBackendCouchDbResponseConflictErrorException( $response );
+                throw new phpillowBackendCouchDbResponseConflictErrorException( $response );
 
             default:
                 // All other unhandled HTTP codes are for now handled as an error.
                 // This may not be true, as lots of other status code may be used
                 // for valid repsonses.
-                throw new arbitBackendCouchDbResponseErrorException( $status, $response );
+                throw new phpillowBackendCouchDbResponseErrorException( $status, $response );
         }
     }
 }
@@ -116,7 +116,7 @@ class arbitBackendCouchDbResponseFactory
  * @version $Revision: 479 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-class arbitBackendCouchDbResponse
+class phpillowBackendCouchDbResponse
 {
     /**
      * Array containing all response properties
@@ -161,7 +161,7 @@ class arbitBackendCouchDbResponse
         // Check if such an property exists at all
         if ( !isset( $this->properties[$property] ) )
         {
-            throw new arbitBackendCouchDbNoSuchPropertyException( $property );
+            throw new phpillowBackendCouchDbNoSuchPropertyException( $property );
         }
 
         return $this->properties[$property];

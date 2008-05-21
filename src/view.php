@@ -1,20 +1,20 @@
 <?php
 /**
- * arbit CouchDB backend
+ * phpillow CouchDB backend
  *
- * This file is part of arbit.
+ * This file is part of phpillow.
  *
- * arbit is free software; you can redistribute it and/or modify
+ * phpillow is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3 of the License.
  *
- * arbit is distributed in the hope that it will be useful,
+ * phpillow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with arbit; if not, write to the Free Software
+ * along with phpillow; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
@@ -31,7 +31,7 @@
  * @version $Revision: 479 $
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
-abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
+abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
 {
     /**
      * List of required properties. For each required property, which is not
@@ -69,8 +69,8 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
     public function __construct()
     {
         $this->properties = array(
-            'language'  => new arbitBackendCouchDbRegexpValidator( '(^text/(?:javascript)$)' ),
-            'views'     => new arbitBackendCouchDbArrayValidator(),
+            'language'  => new phpillowBackendCouchDbRegexpValidator( '(^text/(?:javascript)$)' ),
+            'views'     => new phpillowBackendCouchDbArrayValidator(),
         );
 
         parent::__construct();
@@ -88,7 +88,7 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
      */
     protected static function getViewName()
     {
-        throw new arbitRuntimeException(
+        throw new phpillowRuntimeException(
             'This method should be considerd abstract, but PHP does not allow this.'
         );
     }
@@ -131,7 +131,7 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
      * 
      * @param string $method 
      * @param array $parameters 
-     * @return arbitBackendCouchDbResultArray
+     * @return phpillowBackendCouchDbResultArray
      */
     public static function __callStatic( $method, $parameters )
     {
@@ -200,7 +200,7 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
                     break;
 
                 default:
-                    throw new arbitBackendCouchDbNoSuchPropertyException( $key );
+                    throw new phpillowBackendCouchDbNoSuchPropertyException( $key );
             }
 
             $queryString .= '&';
@@ -220,17 +220,17 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
      * 
      * @param string $view 
      * @param array $options 
-     * @return arbitBackendCouchDbResultArray
+     * @return phpillowBackendCouchDbResultArray
      */
     public function query( $view, array $options = array() )
     {
         // Build query string, just as a normal HTTP GET query string
-        $url = arbitBackendCouchDbConnection::getDatabase() . 
+        $url = phpillowBackendCouchDbConnection::getDatabase() . 
             '_view/' . $this->getViewName() . '/' . $view;
         $url .= $this->buildViewQuery( $options );
 
         // Get database connection, because we directly execute a query here.
-        $db = arbitBackendCouchDbConnection::getInstance();
+        $db = phpillowBackendCouchDbConnection::getInstance();
 
         try
         {
@@ -238,7 +238,7 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
             // has not been added, yet.
             $response = $db->get( $url );
         }
-        catch ( arbitBackendCouchDbResponseErrorException $e )
+        catch ( phpillowBackendCouchDbResponseErrorException $e )
         {
             // Ensure view has been created properly and then try to execute
             // the query again. If it still fails, there is most probably a
@@ -266,7 +266,7 @@ abstract class arbitBackendCouchDbView extends arbitBackendCouchDbDocument
         {
             $view = static::fetchById( '_design/' . static::getViewName() );
         }
-        catch ( arbitBackendCouchDbResponseErrorException $e )
+        catch ( phpillowBackendCouchDbResponseErrorException $e )
         {
             // If the view does not exist yet, recreate it
             $view = static::createNew();
