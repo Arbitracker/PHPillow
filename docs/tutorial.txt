@@ -1,0 +1,206 @@
+=============================
+CouchDB backend documentation
+=============================
+
+:Description:
+  This document provides a basic introduction to the used couchdb wrapping
+  mechanism.
+:Author:
+  Kore Nordmann
+
+Introduction
+============
+
+CouchDB__ is a document based database. From their website:
+
+    CouchDB is a document-oriented, Non-Relational DataBase Management Server
+    (NRDBMS). The CouchDb Quick Overview has a high level overview of the
+    CouchDB system.
+
+More detailed information can be found at:
+http://www.couchdbwiki.com/index.php?title=CouchDb_Quick_Overview
+
+__ http://couchdb.org
+
+Documents
+=========
+
+As noted above the central object we have to deal with are documents.
+
+Define a custom document
+------------------------
+
+All documents extend the abstract base class arbitBackendCouchDbDocument. A
+complete model defining a blog entry could look like::
+
+    class myBlogDocument extends arbitBackendCouchDbDocument
+    {
+        protected static $type = 'blog_entry';
+
+        protected $requiredProperties = array(
+            'title',
+            'text',
+        );
+
+        protected function __construct()
+        {
+            $this->properties = array(
+                'title'     => new arbitBackendCouchDbStringValidator(),
+                'text'      => new arbitBackendCouchDbTextValidator(),
+                'comments'  => new arbitBackendCouchDocumentArrayValidator(
+                    'myBlogComments'
+                ),
+            );
+
+            parent::__construct();
+        }
+
+        protected function generateId()
+        {
+            return $this->stringToId( $this->storage->title );
+        }
+    }
+
+The static property $type defines the type of the stored document and should be
+unique in the whole application. If you are implementing a module, prefix this
+type with the name of the module, like "blog" in this example.
+
+The array $requiredProperties defined the properties, which are mandatory to be
+set. The properties itself are defined in the $properties property, which is
+initialized in the constructor of the document. We associate a validator with
+each property which validates the input set on the document. There are quite
+complex validators, like the arbitBackendCouchDocumentArrayValidator shown here,
+which will be described later, which are all documented in the `generated API
+documentation`__.
+
+The last thing you need to define is the generation of the document ID. An ID
+in CouchDB needs to fullfill some requirements, which are ensured by using the
+protected method stringToId(). Normally you use one somehow unqiue property of
+the document. If this is not entirely unique the document handler will append
+something, so taht it will get unique.
+
+Using a document
+----------------
+
+With a document definition like above you can use the document in your code as
+simple as::
+
+    $doc = new myBlogDocument();
+    $doc->title = 'New blog post';
+    $doc->text  = 'Hello world.';
+    $doc->save();
+
+With the call to save() the document will be generated and stored in the
+database. After this a new magic property is available for the document::
+
+    echo $doc->_id;
+    > blog_entry-new_blog_post
+
+Using documents directly this ID is the way to fetch the document back from the
+database, like::
+
+    $doc = myBlogDocument::fetchById( 'blog_entry-new_blog_post' );
+
+This call retrieved the above document back from the database. The magic
+CouchDB properties _id and _rev (for revision) are set for the document. Beside
+the defined properties another property has been created by the wrapper, called
+revisions, which contains all old (and the current) revision of the document::
+
+    echo $doc->revisions[0]->title;
+    > New blog post
+
+If you now change a property on the object and store it again in the database
+the old revision will also be stored in the database, so that no information is
+lost on change.
+
+Views
+=====
+
+Views in CouchDb are a way to index and access documents by their properties,
+perhaps filtered, or by complex self defined keys. Views for our documents
+extend the view base class arbitBackendCouchDbView, and implement the view logic
+as EcmaScript, executed on the server (currently using the SpiderMonkey
+implementation). A view definition for our blog entries could look like::
+
+    class myBlogView extends arbitBackendCouchDbView
+    {
+        protected $viewDefinitions = array(
+            // Index blog entries by their title, and list all comments
+            'entries' => 'function( doc )
+    {
+        if ( doc.type == "blog_entry" )
+        {
+            map( doc.title, doc._id );
+
+            map( [doc._id, 0], doc._id );
+            for ( var i = 0; i < doc.comments.length; ++i )
+            {
+                map( [doc._id, 1], doc.comments[i] );
+            }
+        }
+    }',
+        );
+
+        protected static function getViewName()
+        {
+            return 'blog_entries';
+        }
+    }
+
+For detailed information how views work, you should read the `CouchDB
+documentation on views`__, but the here implemented shows some nice features of
+CouchDB views.
+
+__ http://www.couchdbwiki.com/index.php?title=Views
+
+All view definitions are stored in the property $viewDefinitions and are
+automatically written to the database. The view has a name, which is used to
+identify the set of views in the database and does not really matter.
+
+In one view the defined EcmaScript should only operate on one type of
+documents, but is not forced to do so. The CouchDB function map() takes a key and
+some content as paramters and indexes the given content by the given key. The
+first call to map indexes all blog entries by their title, a simple string to
+string index. As views are also completely generated you should not store the
+entire documents, but only the ID, as shown above. You may now fetch the
+document by its original title::
+
+    $doc = myBlogView::entries( array( 'key' => 'New blog post' ) );
+
+The next two map functions create a complex index, so you may retreive the IDs
+of one blog entry and all comments related to that blog entry with one query::
+
+    $docs = myBlogView::entries( array(
+        'startkey'  => array( 'blog_entry-new_blog_post', 0 ),
+        'endkey'    => array( 'blog_entry-new_blog_post', 1 ),
+    ) );
+
+For details why and how this works you may want to read the section on `view
+collation`__ in the CouchDB wiki.
+
+__ http://www.couchdbwiki.com/index.php?title=View_Collation
+
+The manager
+===========
+
+The manager provides a central registry for couchDB documents and views. You
+may set and overwrite the document class for one document type, or query this
+document class directly, whatever class has been set for it, like::
+
+    $doc = arbitBackendCouchDbManager::createDocument( 'blog_entry' );
+    // ...
+
+    $doc = arbitBackendCouchDbManager::fetchDocument(
+        'blog_entry', 'blog_entry-new_blog_post'
+    );
+    // ...
+
+The same is true for views.
+    
+
+..
+   Local Variables:
+   mode: rst
+   fill-column: 79
+   End:
+   vim: et syn=rst tw=79
