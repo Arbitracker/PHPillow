@@ -32,25 +32,19 @@
 class phpillowConnection
 {
     /**
-     * Configured host of couch server instance
-     *
-     * @var string
+     * CouchDB connection options
+     * 
+     * @var array
      */
-    protected $host;
-
-    /**
-     * Configured port for couch server instance
-     *
-     * @var int
-     */
-    protected $port;
-
-    /**
-     * IP for host, to force caching of DNS response
-     *
-     * @var string
-     */
-    protected $ip;
+    protected $options = array(
+        'host'       => 'localhost',
+        'port'       => 5984,
+        'ip'         => '127.0.0.1',
+        // Currently there is a problem with the mochiweb HTTP server, which
+        // causes Connection: Keep-Alive to cost far more time. Once this is
+        // fixed we will defualt to true here.
+        'keep-alive' => false,
+    );
 
     /**
      * Currently used database
@@ -100,11 +94,34 @@ class phpillowConnection
      */
     protected function __construct( $host, $port )
     {
-        $this->host         = (string) $host;
-        $this->port         = (int) $port;
+        $this->options['host'] = (string) $host;
+        $this->options['port'] = (int) $port;
 
         // @TODO: Implement this properly
-        $this->ip           = '127.0.0.1';
+        $this->options['ip']   = '127.0.0.1';
+    }
+
+    /**
+     * Set option value
+     *
+     * Set the value for an connection option. Throws an
+     * phpillowOptionException for unknown options.
+     * 
+     * @param string $option 
+     * @param mixed $value 
+     * @return void
+     */
+    public function setOption( $option, $value )
+    {
+        switch ( $option )
+        {
+            case 'keep-alive':
+                $this->options[$option] = (bool) $value;
+                break;
+
+            default:
+                throw new phpillowOptionException( $option );
+        }
     }
 
     /**
@@ -256,34 +273,31 @@ class phpillowConnection
         // Try establishing the connection to the server
         //
         // If the connection could not be established, fsockopen sadly does not
-        // only return false (as document), but also always issues a warning.
-        // This is converted to an exception, so we just catch this..
-        try
+        // only return false (as documented), but also always issues a warning.
+        if ( $this->connection === null )
         {
-            if ( $this->connection === null )
+            if ( ( $this->connection = fsockopen( $this->options['ip'], $this->options['port'], $errno, $errstr ) ) === false )
             {
-                if ( ( $this->connection = fsockopen( $this->ip, $this->port, $errno, $errstr ) ) === false )
-                {
-                    // This is a bit hackisch...
-                    throw new phpillowPhpErrorException( 'Connection failed.' );
-                }
+                // This is a bit hackisch...
+                throw new phpillowConnectionException(
+                    "Could not connect to server at %ip:%port: '%errno: %error'",
+                    array(
+                        'ip'    => $this->options['ip'],
+                        'port'  => $this->options['port'],
+                        'error' => $errstr,
+                        'errno' => $errno,
+                    )
+                );
             }
-        }
-        catch ( phpillowPhpErrorException $e )
-        {
-            throw new phpillowConnectionException(
-                "Could not connect to server at %ip:%port: '%errno: %error'",
-                array(
-                    'ip'    => $this->ip,
-                    'port'  => $this->port,
-                    'error' => $errstr,
-                    'errno' => $errno,
-                )
-            );
         }
 
         // Create basic request headers
-        $request = "$method $path HTTP/1.0\r\nHost: {$this->host}\r\n";
+        $request = "$method $path HTTP/1.1\r\nHost: {$this->options['host']}\r\n";
+
+        // Set keep-alive header, which helps to keep to connection
+        // initilization costs low, especially when the database server is not
+        // available in the locale net.
+        $request .= "Connection: " . ( $this->options['keep-alive'] ? 'Keep-Alive' : 'Close' ) . "\r\n";
 
         // Also add headers and request body if data should be sent to the
         // server. Otherwise just add the closing mark for the header section
@@ -301,41 +315,86 @@ class phpillowConnection
         // Send the build request to the server
         fwrite( $this->connection, $request );
 
-        // Read server response
-        //
-        // @TODO: Handle chunked and non-chunked connections here. For chunked
-        // handling see patch available in the backend root directory. This is
-        // easy to detect after reading the header and then works with "all"
-        // versions of CouchDB.
-        $response = "";
-        while( !feof( $this->connection ) )
+        // Read server response headers
+        $headers = array(
+            'connection' => ( $this->options['keep-alive'] ? 'Keep-Alive' : 'Close' ),
+        );
+
+        while ( ( ( $line = rtrim( fgets( $this->connection ) ) ) !== '' ) ||
+                ( $headers === array() ) ) 
         {
-            $response .= fgets( $this->connection );
+            // Just skip empty lines
+            if ( $line === '' )
+            {
+                continue;
+            }
+
+            // Extract header values
+            if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))', $line, $match ) )
+            {
+                $headers['version'] = $match['version'];
+                $headers['status']  = (int) $match['status'];
+            }
+            else
+            {
+                list( $key, $value ) = explode( ':', $line, 2 );
+                $headers[strtolower( $key )] = ltrim( $value );
+            }
         }
 
-        // Split response into headers and response body
-        if ( substr( $response, "\r\n\r\n" ) !== false )
+        // Read response body
+        $body = '';
+        if ( !isset( $headers['transfer-encoding'] ) ||
+             ( $headers['transfer-encoding'] !== 'chunked' ) )
         {
-            list( $headers, $body ) = explode( "\r\n\r\n", $response, 2 );
+            // HTTP 1.1 supports chunked transfer encoding, if the according
+            // header is not set, just read the specified amount of bytes.
+            //
+            // @TODO: Maybe also handle missing content-length header.
+            $bytesToRead = (int) $headers['content-length'];
+
+            // Read body only as specified by chunk sizes, everything else
+            // are just footnotes, which are not relevant for us.
+            while ( $bytesToRead > 0 )
+            {
+                $body .= $read = fgets( $this->connection, $bytesToRead + 1 );
+                $bytesToRead -= strlen( $read );
+            }
         }
         else
         {
-            $headers = $response;
-            $body = null;
+            // When transfer-encoding=chunked has been specified in the
+            // response headers, read all chunks and sum them up to the body,
+            // until the server has finished. Ignore all additional HTTP
+            // options after that.
+            do {
+                $line = rtrim( fgets( $this->connection ) );
+
+                // Get bytes to read, with option appending comment
+                if ( preg_match( '(^([0-9a-f]+)(?:;.*)?$)', $line, $match ) )
+                {
+                    $bytesToRead = hexdec( $match[1] );
+
+                    // Read body only as specified by chunk sizes, everything else
+                    // are just footnotes, which are not relevant for us.
+                    while ( $bytesToRead > 0 )
+                    {
+                        $body .= $read = fgets( $this->connection, $bytesToRead + 3 );
+                        $bytesToRead -= strlen( $read );
+                    }
+                }
+            } while ( $line !== '' );
         }
 
-        // Always reset the connection. We requested to close it.
-        $this->connection = null;
-
-        // Extract response status code from headers
-        $status = 501;
-        if ( preg_match( '(^HTTP\S+\s+(?P<status>\d+))', $headers, $match ) )
+        // Reset the connection if the server asks for it.
+        if ( $headers['connection'] !== 'Keep-Alive' )
         {
-            $status = (int) $match['status'];
+            fclose( $this->connection );
+            $this->connection = null;
         }
 
         // Create repsonse object from couch db response
-        return phpillowResponseFactory::parse( $status, $body );
+        return phpillowResponseFactory::parse( $headers['status'], $body );
     }
 }
 

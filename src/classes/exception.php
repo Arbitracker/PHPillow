@@ -147,6 +147,32 @@ class phpillowConnectionException extends phpillowException
 }
 
 /**
+ * Exception thrown, when trying to set an unknown option
+ * 
+ * @package Core
+ * @version $Revision$
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ */
+class phpillowOptionException extends phpillowException
+{
+    /**
+     * Create exception from option name
+     * 
+     * @param string $option
+     * @return void
+     */
+    public function __construct( $option )
+    {
+        parent::__construct( 
+            "Unknown option '%option'.",
+            array(
+                'option' => $option,
+            )
+        );
+    }
+}
+
+/**
  * Exception thrown, when no database has been configured.
  * 
  * @package Core

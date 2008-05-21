@@ -94,13 +94,13 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         );
 
         $this->assertAttributeSame(
-            'localhost',
-            'host', $instance
-        );
-
-        $this->assertAttributeSame(
-            5984,
-            'port', $instance
+            array(
+                'host'       => 'localhost',
+                'port'       => 5984,
+                'ip'         => '127.0.0.1',
+                'keep-alive' => false,
+            ),
+            'options', $instance
         );
     }
 
@@ -115,13 +115,13 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         );
 
         $this->assertAttributeSame(
-            'example.com',
-            'host', $instance
-        );
-
-        $this->assertAttributeSame(
-            80,
-            'port', $instance
+            array(
+                'host'       => 'example.com',
+                'port'       => 80,
+                'ip'         => '127.0.0.1',
+                'keep-alive' => false,
+            ),
+            'options', $instance
         );
     }
 
