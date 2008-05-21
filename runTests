@@ -1,0 +1,12 @@
+#!/bin/bash
+
+case $1 in
+#	"couchdb")
+#		phpunit arbitBackendCouchDbTestSuite tests/backend_couchdb_suite.php
+#		;;
+	*)
+		phpunit $@ phpillowTestSuite tests/suite.php
+		;;
+esac
+
+echo ""
