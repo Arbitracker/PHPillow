@@ -104,14 +104,15 @@ database, like::
 This call retrieved the above document back from the database. The magic
 CouchDB properties _id and _rev (for revision) are set for the document. Beside
 the defined properties another property has been created by the wrapper, called
-revisions, which contains all old (and the current) revision of the document::
+revisions, which contains all old (and the current) revisions of the document::
 
     echo $doc->revisions[0]->title;
     > New blog post
 
 If you now change a property on the object and store it again in the database
 the old revision will also be stored in the database, so that no information is
-lost on change.
+lost on change. This behaviour may be deactivated by setting the $versioned
+property to false.
 
 Views
 =====
