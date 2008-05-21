@@ -4,34 +4,32 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 495 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
  * Basic couch DB connection handling class
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 495 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbConnection
+class phpillowConnection
 {
     /**
      * Configured host of couch server instance
@@ -62,9 +60,9 @@ class phpillowBackendCouchDbConnection
     protected static $database = null;
 
     /**
-     * Instance of phpillowBackendCouchDbConnection for singleton implementation.
+     * Instance of phpillowConnection for singleton implementation.
      *
-     * @var phpillowBackendCouchDbConnection
+     * @var phpillowConnection
      */
     protected static $instance = null;
 
@@ -98,7 +96,7 @@ class phpillowBackendCouchDbConnection
      *
      * @param string $host
      * @param int $port
-     * @return phpillowBackendCouchDbConnection
+     * @return phpillowConnection
      */
     protected function __construct( $host, $port )
     {
@@ -127,7 +125,7 @@ class phpillowBackendCouchDbConnection
         // explicit cleanup before.
         if ( self::$instance !== null )
         {
-            throw new phpillowBackendCouchDbConnectionException(
+            throw new phpillowConnectionException(
                 'Connection already established.',
                 array()
             );
@@ -135,7 +133,7 @@ class phpillowBackendCouchDbConnection
 
         // Create connection and store it in static property to be accessible
         // by static getInstance() method.
-        self::$instance = new phpillowBackendCouchDbConnection( $host, $port );
+        self::$instance = new phpillowConnection( $host, $port );
     }
 
     /**
@@ -174,7 +172,7 @@ class phpillowBackendCouchDbConnection
      *
      * Get configured couch DB connection instance
      *
-     * @return phpillowBackendCouchDbConnection
+     * @return phpillowConnection
      */
     public static function getInstance()
     {
@@ -182,7 +180,7 @@ class phpillowBackendCouchDbConnection
         // otherwise.
         if ( self::$instance === null )
         {
-            throw new phpillowBackendCouchDbConnectionException(
+            throw new phpillowConnectionException(
                 'No connection to database configured.',
                 array()
             );
@@ -216,7 +214,7 @@ class phpillowBackendCouchDbConnection
         $method = strtoupper( $method );
         if ( !isset( self::$allowedMethods[$method] ) )
         {
-            throw new phpillowBackendCouchDbInvalidRequestException(
+            throw new phpillowInvalidRequestException(
                 'Unsupported request method: %method',
                 array(
                     'method' => $method,
@@ -229,7 +227,7 @@ class phpillowBackendCouchDbConnection
              !is_string( $params[0] ) ||
              ( $params[0][0] !== '/' ) )
         {
-            throw new phpillowBackendCouchDbInvalidRequestException(
+            throw new phpillowInvalidRequestException(
                 'Absolute path required as first parameter for the request.',
                 array()
             );
@@ -273,7 +271,7 @@ class phpillowBackendCouchDbConnection
         }
         catch ( phpillowPhpErrorException $e )
         {
-            throw new phpillowBackendCouchDbConnectionException(
+            throw new phpillowConnectionException(
                 "Could not connect to server at %ip:%port: '%errno: %error'",
                 array(
                     'ip'    => $this->ip,
@@ -337,7 +335,7 @@ class phpillowBackendCouchDbConnection
         }
 
         // Create repsonse object from couch db response
-        return phpillowBackendCouchDbResponseFactory::parse( $status, $body );
+        return phpillowResponseFactory::parse( $status, $body );
     }
 }
 

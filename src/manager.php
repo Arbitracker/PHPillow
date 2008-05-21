@@ -4,34 +4,32 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 505 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
  * Basic couch DB view and document manager / registry.
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 505 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-final class phpillowBackendCouchDbManager
+final class phpillowManager
 {
     /**
      * Initial mapping of view types to view classes.
@@ -39,8 +37,8 @@ final class phpillowBackendCouchDbManager
      * @var array
      */
     protected static $views = array(
-        'user'      => 'phpillowBackendCouchDbUserView',
-        'group'     => 'phpillowBackendCouchDbGroupView',
+        'user'      => 'phpillowUserView',
+        'group'     => 'phpillowGroupView',
     );
 
     /**
@@ -49,9 +47,9 @@ final class phpillowBackendCouchDbManager
      * @var array
      */
     protected static $documents = array(
-        'user'              => 'phpillowBackendCouchDbUserDocument',
-        'group'             => 'phpillowBackendCouchDbGroupDocument',
-        'project'           => 'phpillowBackendCouchDbProjectDocument',
+        'user'              => 'phpillowUserDocument',
+        'group'             => 'phpillowGroupDocument',
+        'project'           => 'phpillowProjectDocument',
     );
 
     /**
@@ -84,17 +82,17 @@ final class phpillowBackendCouchDbManager
      * Return view
      *
      * Get a view object for the given view type. Throws a
-     * phpillowBackendCouchDbNoSuchPropertyException if the view does not exist.
+     * phpillowNoSuchPropertyException if the view does not exist.
      * 
      * @param string $name 
-     * @return phpillowBackendCouchDbView
+     * @return phpillowView
      */
     public static function getView( $name )
     {
         // Check if a view with the given name exists.
         if ( !isset( self::$views[$name] ) )
         {
-            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowNoSuchPropertyException( $name );
         }
 
         // Instantiate and return view.
@@ -120,17 +118,17 @@ final class phpillowBackendCouchDbManager
      * Create new document
      *
      * Create a new document of the given type and return it. Throws a
-     * phpillowBackendCouchDbNoSuchPropertyException if the document does not exist.
+     * phpillowNoSuchPropertyException if the document does not exist.
      * 
      * @param string $name 
-     * @return phpillowBackendCouchDbDocument
+     * @return phpillowDocument
      */
     public static function createDocument( $name )
     {
         // Check if a document with the given name exists.
         if ( !isset( self::$documents[$name] ) )
         {
-            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowNoSuchPropertyException( $name );
         }
 
         // Instantiate and return document.
@@ -142,18 +140,18 @@ final class phpillowBackendCouchDbManager
      * Fetch document by ID
      *
      * Fetch the document of the given type with the given ID. Throws a
-     * phpillowBackendCouchDbNoSuchPropertyException if the document does not exist.
+     * phpillowNoSuchPropertyException if the document does not exist.
      * 
      * @param string $name 
      * @param string $id 
-     * @return phpillowBackendCouchDbDocument
+     * @return phpillowDocument
      */
     public static function fetchDocument( $name, $id )
     {
         // Check if a document with the given name exists.
         if ( !isset( self::$documents[$name] ) )
         {
-            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowNoSuchPropertyException( $name );
         }
 
         // Instantiate and return document.
@@ -165,7 +163,7 @@ final class phpillowBackendCouchDbManager
      * Delete document by ID
      *
      * Delete the document of the given type with the given ID. Throws a
-     * phpillowBackendCouchDbNoSuchPropertyException if the document does not exist.
+     * phpillowNoSuchPropertyException if the document does not exist.
      *
      * Deletion means, that all revisions, including the current one, are
      * removed.
@@ -179,10 +177,10 @@ final class phpillowBackendCouchDbManager
         // Check if a document with the given name exists.
         if ( !isset( self::$documents[$name] ) )
         {
-            throw new phpillowBackendCouchDbNoSuchPropertyException( $name );
+            throw new phpillowNoSuchPropertyException( $name );
         }
 
-        $db = phpillowBackendCouchDbConnection::getInstance();
+        $db = phpillowConnection::getInstance();
         $revisions = $db->get( $db->getDatabase() . $id . '?revs=true' );
         foreach ( $revisions->_revs as $revision )
         {
@@ -190,7 +188,7 @@ final class phpillowBackendCouchDbManager
             {
                 $db->delete( $db->getDatabase() . $id . '?rev=' . $revision );
             }
-            catch ( phpillowBackendCouchDbResponseConflictErrorException $e )
+            catch ( phpillowResponseConflictErrorException $e )
             {
                 // @TODO: Check with the CouchDB guys, if this is really the
                 // desired behaviour and what may be a better way to wipe a

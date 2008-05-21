@@ -4,34 +4,32 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 358 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
  * Document representing the users
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 358 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbUserDocument extends phpillowBackendCouchDbDocument
+class phpillowUserDocument extends phpillowBackendCouchDbDocument
 {
     /**
      * Document type, may be a string matching the regular expression:
@@ -61,12 +59,12 @@ class phpillowBackendCouchDbUserDocument extends phpillowBackendCouchDbDocument
     protected function __construct()
     {
         $this->properties = array(
-            'login'         => new phpillowBackendCouchDbRegexpValidator( '(^[\x21-\x7e]+$)i' ),
-            'email'         => new phpillowBackendCouchDbEmailValidator(),
-            'name'          => new phpillowBackendCouchDbStringValidator(),
-            'valid'         => new phpillowBackendCouchDbRegexpValidator( '(^0|1|[a-f0-9]{32}$)' ),
-            'auth_type'     => new phpillowBackendCouchDbStringValidator(),
-            'auth_infos'    => new phpillowBackendCouchDbNoValidator(),
+            'login'         => new phpillowRegexpValidator( '(^[\x21-\x7e]+$)i' ),
+            'email'         => new phpillowEmailValidator(),
+            'name'          => new phpillowStringValidator(),
+            'valid'         => new phpillowRegexpValidator( '(^0|1|[a-f0-9]{32}$)' ),
+            'auth_type'     => new phpillowStringValidator(),
+            'auth_infos'    => new phpillowNoValidator(),
         );
 
         parent::__construct();

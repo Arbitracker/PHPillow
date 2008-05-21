@@ -4,34 +4,32 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 479 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
  * Wrapper base for views in the database
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 479 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
+abstract class phpillowView extends phpillowBackendCouchDbDocument
 {
     /**
      * List of required properties. For each required property, which is not
@@ -69,8 +67,8 @@ abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
     public function __construct()
     {
         $this->properties = array(
-            'language'  => new phpillowBackendCouchDbRegexpValidator( '(^text/(?:javascript)$)' ),
-            'views'     => new phpillowBackendCouchDbArrayValidator(),
+            'language'  => new phpillowRegexpValidator( '(^text/(?:javascript)$)' ),
+            'views'     => new phpillowArrayValidator(),
         );
 
         parent::__construct();
@@ -131,7 +129,7 @@ abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
      * 
      * @param string $method 
      * @param array $parameters 
-     * @return phpillowBackendCouchDbResultArray
+     * @return phpillowResultArray
      */
     public static function __callStatic( $method, $parameters )
     {
@@ -200,7 +198,7 @@ abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
                     break;
 
                 default:
-                    throw new phpillowBackendCouchDbNoSuchPropertyException( $key );
+                    throw new phpillowNoSuchPropertyException( $key );
             }
 
             $queryString .= '&';
@@ -220,17 +218,17 @@ abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
      * 
      * @param string $view 
      * @param array $options 
-     * @return phpillowBackendCouchDbResultArray
+     * @return phpillowResultArray
      */
     public function query( $view, array $options = array() )
     {
         // Build query string, just as a normal HTTP GET query string
-        $url = phpillowBackendCouchDbConnection::getDatabase() . 
+        $url = phpillowConnection::getDatabase() . 
             '_view/' . $this->getViewName() . '/' . $view;
         $url .= $this->buildViewQuery( $options );
 
         // Get database connection, because we directly execute a query here.
-        $db = phpillowBackendCouchDbConnection::getInstance();
+        $db = phpillowConnection::getInstance();
 
         try
         {
@@ -238,7 +236,7 @@ abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
             // has not been added, yet.
             $response = $db->get( $url );
         }
-        catch ( phpillowBackendCouchDbResponseErrorException $e )
+        catch ( phpillowResponseErrorException $e )
         {
             // Ensure view has been created properly and then try to execute
             // the query again. If it still fails, there is most probably a
@@ -266,7 +264,7 @@ abstract class phpillowBackendCouchDbView extends phpillowBackendCouchDbDocument
         {
             $view = static::fetchById( '_design/' . static::getViewName() );
         }
-        catch ( phpillowBackendCouchDbResponseErrorException $e )
+        catch ( phpillowResponseErrorException $e )
         {
             // If the view does not exist yet, recreate it
             $view = static::createNew();

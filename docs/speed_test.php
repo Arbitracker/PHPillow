@@ -7,9 +7,9 @@ $gets = 5000;
 $views = 2000;
 
 // Set up backend connection
-phpillowBackendCouchDbConnection::createInstance();
-phpillowBackendCouchDbConnection::setDatabase( 'test' );
-$db = phpillowBackendCouchDbConnection::getInstance();
+phpillowConnection::createInstance();
+phpillowConnection::setDatabase( 'test' );
+$db = phpillowConnection::getInstance();
 
 try {
     $db->delete( '/test' );
@@ -20,7 +20,7 @@ $db->put( '/test' );
 $start = microtime( true );
 for ( $i = 0; $i < $puts; ++$i )
 {
-    $doc = phpillowBackendCouchDbManager::createDocument( 'user' );
+    $doc = phpillowManager::createDocument( 'user' );
     $doc->login = 'kore_' . $i;
     $doc->name = 'Kore Nordmann';
     $doc->save();
@@ -34,7 +34,7 @@ printf( "%d PUTs in %.2fs (%d req/s)\n",
 $start = microtime( true );
 for ( $i = 0; $i < $gets; ++$i )
 {
-    $doc = phpillowBackendCouchDbManager::fetchDocument( 'user', 'user-kore_0' );
+    $doc = phpillowManager::fetchDocument( 'user', 'user-kore_0' );
 }
 printf( "%d GETs in %.2fs (%d req/s)\n",
     $gets,
@@ -43,7 +43,7 @@ printf( "%d GETs in %.2fs (%d req/s)\n",
 );
 
 $start = microtime( true );
-$doc = phpillowBackendCouchDbUserView::user( array( 'key' => 'kore_0' ) );
+$doc = phpillowUserView::user( array( 'key' => 'kore_0' ) );
 printf( "First view in %.2fs (%d req/s)\n",
     $time = microtime( true ) - $start,
     1 / $time
@@ -52,7 +52,7 @@ printf( "First view in %.2fs (%d req/s)\n",
 $start = microtime( true );
 for ( $i = 0; $i < $views; ++$i )
 {
-    $doc = phpillowBackendCouchDbUserView::user( array( 'key' => 'kore_0' ) );
+    $doc = phpillowUserView::user( array( 'key' => 'kore_0' ) );
 }
 printf( "%d views in %.2fs (%d req/s)\n",
     $views,

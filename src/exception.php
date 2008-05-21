@@ -4,34 +4,32 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
  * Basic CouchDB backend exception
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-abstract class phpillowBackendCouchDbException extends phpillowException
+abstract class phpillowException extends phpillowException
 {
 }
 
@@ -40,11 +38,10 @@ abstract class phpillowBackendCouchDbException extends phpillowException
  * configured.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbConnectionException extends phpillowBackendCouchDbException
+class phpillowConnectionException extends phpillowBackendCouchDbException
 {
 }
 
@@ -52,11 +49,10 @@ class phpillowBackendCouchDbConnectionException extends phpillowBackendCouchDbEx
  * Exception thrown, when no database has been configured.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchNoDatabaseException extends phpillowBackendCouchDbException
+class phpillowBackendCouchNoDatabaseException extends phpillowException
 {
     /**
      * Create exception
@@ -78,11 +74,10 @@ class phpillowBackendCouchNoDatabaseException extends phpillowBackendCouchDbExce
  * parameters
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbInvalidRequestException extends phpillowBackendCouchDbException
+class phpillowInvalidRequestException extends phpillowBackendCouchDbException
 {
 }
 
@@ -91,11 +86,10 @@ class phpillowBackendCouchDbInvalidRequestException extends phpillowBackendCouch
  * not available.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbNoSuchPropertyException extends phpillowBackendCouchDbException
+class phpillowNoSuchPropertyException extends phpillowBackendCouchDbException
 {
     /**
      * Create exception from property name
@@ -122,11 +116,10 @@ class phpillowBackendCouchDbNoSuchPropertyException extends phpillowBackendCouch
  * be presented to the user.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbValidationException extends phpillowBackendCouchDbException
+class phpillowValidationException extends phpillowBackendCouchDbException
 {
 }
 
@@ -134,11 +127,10 @@ class phpillowBackendCouchDbValidationException extends phpillowBackendCouchDbEx
  * Exception thrown if the server could not properly response a request.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbResponseErrorException extends phpillowBackendCouchDbException
+class phpillowResponseErrorException extends phpillowBackendCouchDbException
 {
     /**
      * Actual parsed server response
@@ -152,7 +144,7 @@ class phpillowBackendCouchDbResponseErrorException extends phpillowBackendCouchD
      * 
      * @param int $status 
      * @param StdClass $response 
-     * @return phpillowBackendCouchDbResponseErrorException
+     * @return phpillowResponseErrorException
      */
     public function __construct( $status, $response )
     {
@@ -186,11 +178,10 @@ class phpillowBackendCouchDbResponseErrorException extends phpillowBackendCouchD
  * Exception thrown if the server could not find a requested document.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbResponseNotFoundErrorException extends phpillowBackendCouchDbResponseErrorException
+class phpillowResponseNotFoundErrorException extends phpillowBackendCouchDbResponseErrorException
 {
     /**
      * Construct parent from response
@@ -209,11 +200,10 @@ class phpillowBackendCouchDbResponseNotFoundErrorException extends phpillowBacke
  * request.
  * 
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 478 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbResponseConflictErrorException extends phpillowBackendCouchDbResponseErrorException
+class phpillowResponseConflictErrorException extends phpillowBackendCouchDbResponseErrorException
 {
     /**
      * Construct parent from response

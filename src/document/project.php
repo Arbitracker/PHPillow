@@ -4,34 +4,32 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 459 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
  * Document representing the projects
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 459 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowBackendCouchDbProjectDocument extends phpillowBackendCouchDbDocument
+class phpillowProjectDocument extends phpillowBackendCouchDbDocument
 {
     /**
      * Document type, may be a string matching the regular expression:
@@ -68,9 +66,9 @@ class phpillowBackendCouchDbProjectDocument extends phpillowBackendCouchDbDocume
     protected function __construct()
     {
         $this->properties = array(
-            'name'       => new phpillowBackendCouchDbStringValidator(),
-            'versions'   => new phpillowBackendCouchDbArrayValidator(),
-            'components' => new phpillowBackendCouchDbArrayValidator(),
+            'name'       => new phpillowStringValidator(),
+            'versions'   => new phpillowArrayValidator(),
+            'components' => new phpillowArrayValidator(),
         );
 
         parent::__construct();

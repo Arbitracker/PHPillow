@@ -4,23 +4,22 @@
  *
  * This file is part of phpillow.
  *
- * phpillow is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License.
+ * phpillow is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; version 3 of the License.
  *
- * phpillow is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * phpillow is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with phpillow; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with phpillow; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 486 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /*
@@ -35,11 +34,10 @@
  * Basic abstract document
  *
  * @package Core
- * @subpackage CouchDbBackend
  * @version $Revision: 486 $
- * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-abstract class phpillowBackendCouchDbDocument
+abstract class phpillowDocument
 {
     /**
      * Object storing all the document properties as public attributes. This
@@ -54,7 +52,7 @@ abstract class phpillowBackendCouchDbDocument
      *
      *  array(
      *      ...,
-     *      email => new phpillowBackendCouchDbMailValidator( ... ),
+     *      email => new phpillowMailValidator( ... ),
      *      ...
      *  )
      * 
@@ -159,7 +157,7 @@ abstract class phpillowBackendCouchDbDocument
         }
 
         // If none of the above checks passed, the request is invalid.
-        throw new phpillowBackendCouchDbNoSuchPropertyException( $property );
+        throw new phpillowNoSuchPropertyException( $property );
     }
 
     /**
@@ -178,7 +176,7 @@ abstract class phpillowBackendCouchDbDocument
         // Check if property exists at all
         if ( !isset( $this->properties[$property] ) )
         {
-            throw new phpillowBackendCouchDbNoSuchPropertyException( $property );
+            throw new phpillowNoSuchPropertyException( $property );
         }
 
         // Check if the passed value meets the property validation, and perform
@@ -198,10 +196,10 @@ abstract class phpillowBackendCouchDbDocument
      * Set values of the document from the response object, if they are
      * available in there.
      * 
-     * @param phpillowBackendCouchDbResponse $response 
+     * @param phpillowResponse $response 
      * @return void
      */
-    protected function fromResponse( phpillowBackendCouchDbResponse $response )
+    protected function fromResponse( phpillowResponse $response )
     {
         // Set all document property values from response, if available in the
         // response.
@@ -266,7 +264,7 @@ abstract class phpillowBackendCouchDbDocument
      * document.
      * 
      * @param string $id 
-     * @return phpillowBackendCouchDbDocument
+     * @return phpillowDocument
      */
     public static function fetchById( $id )
     {
@@ -278,13 +276,13 @@ abstract class phpillowBackendCouchDbDocument
             $error = new StdClass();
             $error->error  = 'not_found';
             $error->reason = 'No document ID specified.';
-            throw new phpillowBackendCouchDbResponseNotFoundErrorException( $error );
+            throw new phpillowResponseNotFoundErrorException( $error );
         }
 
         // Fetch object from database
-        $db = phpillowBackendCouchDbConnection::getInstance();
+        $db = phpillowConnection::getInstance();
         $response = $db->get( 
-            phpillowBackendCouchDbConnection::getDatabase() . urlencode( $id )
+            phpillowConnection::getDatabase() . urlencode( $id )
         );
 
         // Create document object fetched object
@@ -300,7 +298,7 @@ abstract class phpillowBackendCouchDbDocument
      *
      * Create and initialize a new document
      * 
-     * @return phpillowBackendCouchDbDocument
+     * @return phpillowDocument
      */
     public static function createNew()
     {
@@ -386,9 +384,9 @@ abstract class phpillowBackendCouchDbDocument
         }
 
         // Store document in database
-        $db = phpillowBackendCouchDbConnection::getInstance();
+        $db = phpillowConnection::getInstance();
         $db->put(
-            phpillowBackendCouchDbConnection::getDatabase() . urlencode( $this->_id ),
+            phpillowConnection::getDatabase() . urlencode( $this->_id ),
             json_encode( $this->storage )
         );
 
