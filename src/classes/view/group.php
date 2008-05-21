@@ -42,7 +42,7 @@ class phpillowGroupView extends phpillowView
 {
     if ( doc.type == "group" )
     {
-        map( doc.name, doc._id );
+        emit( doc.name, doc._id );
     }
 }',
         // Fetch all rights of one user, which is defined by the groups a user
@@ -57,7 +57,7 @@ class phpillowGroupView extends phpillowView
         {
             for ( var j = 0; j < doc.permissions.length; ++j )
             {
-                map( doc.users[i], doc.permissions[j] );
+                emit( doc.users[i], doc.permissions[j] );
             }
         }
     }

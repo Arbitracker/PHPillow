@@ -67,13 +67,13 @@ abstract class phpillowView extends phpillowDocument
     public function __construct()
     {
         $this->properties = array(
-            'language'  => new phpillowRegexpValidator( '(^text/(?:javascript)$)' ),
+            'language'  => new phpillowRegexpValidator( '(^(?:javascript)$)' ),
             'views'     => new phpillowArrayValidator(),
         );
 
         parent::__construct();
 
-        $this->language = 'text/javascript';
+        $this->language = 'javascript';
         $this->views = $this->viewDefinitions;
     }
 
@@ -271,7 +271,13 @@ abstract class phpillowView extends phpillowDocument
         }
         
         // Force setting of view definitions
-        $view->views = $this->viewDefinitions;
+        $views = array();
+        foreach ( $this->viewDefinitions as $name => $function )
+        {
+            $views[$name]['map'] = $function;
+        }
+
+        $view->views = $views;
         $view->save();
     }
 }

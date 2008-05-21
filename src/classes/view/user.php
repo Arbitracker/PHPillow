@@ -42,7 +42,7 @@ class phpillowUserView extends phpillowView
 {
     if ( doc.type == "user" )
     {
-        map( null, doc._id );
+        emit( null, doc._id );
     }
 }',
         // Add view for all users indexed by their login name
@@ -50,7 +50,7 @@ class phpillowUserView extends phpillowView
 {
     if ( doc.type == "user" )
     {
-        map( doc.login, doc._id );
+        emit( doc.login, doc._id );
     }
 }',
         // Add view for unregistered users waiting for activation
@@ -60,7 +60,7 @@ class phpillowUserView extends phpillowView
          doc.valid !== "0" &&
          doc.valid !== "1" )
     {
-        map( doc.valid, doc._id );
+        emit( doc.valid, doc._id );
     }
 }',
     );
