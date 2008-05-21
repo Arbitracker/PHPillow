@@ -80,7 +80,7 @@ class phpillowDocumentValidatorTests extends PHPUnit_Framework_TestCase
 
     public function testDocumentValidatorSpecifiedInvalid()
     {
-        $validator = new phpillowDocumentValidator( 'phpillowBackendCouchDbUserDocument' );
+        $validator = new phpillowDocumentValidator( 'phpillowUserDocument' );
 
         // Create new publisher to validate
         $doc = phpillowGroupDocument::createNew();
@@ -103,7 +103,7 @@ class phpillowDocumentValidatorTests extends PHPUnit_Framework_TestCase
 
     public function testDocumentValidatorSpecifiedValid()
     {
-        $validator = new phpillowDocumentValidator( 'phpillowBackendCouchDbGroupDocument' );
+        $validator = new phpillowDocumentValidator( 'phpillowGroupDocument' );
 
         // Create new publisher to validate
         $doc = phpillowGroupDocument::createNew();
@@ -160,7 +160,7 @@ class phpillowDocumentValidatorTests extends PHPUnit_Framework_TestCase
 
     public function testDocumentArrayValidatorSpecifiedInvalid()
     {
-        $validator = new phpillowDocumentArrayValidator( 'phpillowBackendCouchDbUserDocument' );
+        $validator = new phpillowDocumentArrayValidator( 'phpillowUserDocument' );
 
         $doc1 = phpillowGroupDocument::createNew();
         $doc1->name = 'Maintainer';
@@ -189,7 +189,7 @@ class phpillowDocumentValidatorTests extends PHPUnit_Framework_TestCase
 
     public function testDocumentArrayValidatorSpecifiedValid()
     {
-        $validator = new phpillowDocumentArrayValidator( 'phpillowBackendCouchDbGroupDocument' );
+        $validator = new phpillowDocumentArrayValidator( 'phpillowGroupDocument' );
 
         $doc1 = phpillowGroupDocument::createNew();
         $doc1->name = 'Maintainer';

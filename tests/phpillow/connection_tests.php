@@ -79,7 +79,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
             phpillowConnection::getDatabase();
             $this->fail( 'Expected phpillowBackendCouchNoDatabaseException.' );
         }
-        catch ( phpillowBackendCouchNoDatabaseException $e )
+        catch ( phpillowNoDatabaseException $e )
         { /* Expected exception */ }
     }
 
@@ -173,8 +173,13 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
             $response = $db->get( '/test' );
             $this->fail( 'Expected phpillowConnectionException.' );
         }
-        catch ( phpillowConnectionException $e )
-        { /* Expected exception */ }
+        catch ( PHPUnit_Framework_Error $e )
+        {
+            $this->assertSame(
+                'fsockopen(): unable to connect to 127.0.0.1:12345 (Connection refused)',
+                $e->getMessage()
+            );
+        }
     }
 
     public function testCreateDatabase()
