@@ -401,5 +401,51 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
             $response->ok
         );
     }
+
+    public function testCloseConnection()
+    {
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
+        $db = phpillowConnection::getInstance();
+        $db->setOption( 'keep-alive', false );
+
+        $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
+        $db->put( '/test/456', '{"_id":"456","data":"Foo"}' );
+        $db->put( '/test/789', '{"_id":"789","data":"Foo"}' );
+        $db->put( '/test/012', '{"_id":"012","data":"Foo"}' );
+
+        $response = $db->get( '/test/_all_docs' );
+
+        $this->assertTrue(
+            $response instanceof phpillowResultSetResponse
+        );
+
+        $this->assertSame(
+            4,
+            $response->total_rows
+        );
+    }
+
+    public function testKeepAliveConnection()
+    {
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
+        $db = phpillowConnection::getInstance();
+        $db->setOption( 'keep-alive', true );
+
+        $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
+        $db->put( '/test/456', '{"_id":"456","data":"Foo"}' );
+        $db->put( '/test/789', '{"_id":"789","data":"Foo"}' );
+        $db->put( '/test/012', '{"_id":"012","data":"Foo"}' );
+
+        $response = $db->get( '/test/_all_docs' );
+
+        $this->assertTrue(
+            $response instanceof phpillowResultSetResponse
+        );
+
+        $this->assertSame(
+            4,
+            $response->total_rows
+        );
+    }
 }
 

@@ -259,38 +259,45 @@ class phpillowConnection
     }
 
     /**
-     * Perform a request to the server and return the result
+     * Check for server connection
      *
-     * Perform a request to the server and return the result
+     * Checks if the connection already has been established, or tries to
+     * establish the connection, if not done yet.
+     * 
+     * @return void
+     */
+    protected function checkConnection()
+    {
+        // If the connection could not be established, fsockopen sadly does not
+        // only return false (as documented), but also always issues a warning.
+        if ( ( $this->connection === null ) &&
+             ( ( $this->connection = fsockopen( $this->options['ip'], $this->options['port'], $errno, $errstr ) ) === false ) )
+        {
+            // This is a bit hackisch...
+            throw new phpillowConnectionException(
+                "Could not connect to server at %ip:%port: '%errno: %error'",
+                array(
+                    'ip'    => $this->options['ip'],
+                    'port'  => $this->options['port'],
+                    'error' => $errstr,
+                    'errno' => $errno,
+                )
+            );
+        }
+    }
+
+    /**
+     * Build a HTTP 1.1 request
      *
+     * Build the HTTP 1.1 request headers from the gicven input.
+     * 
      * @param string $method
      * @param string $path
      * @param string $data
-     * @return phpillow...
+     * @return string
      */
-    protected function request( $method, $path, $data )
+    protected function buildRequest( $method, $path, $data )
     {
-        // Try establishing the connection to the server
-        //
-        // If the connection could not be established, fsockopen sadly does not
-        // only return false (as documented), but also always issues a warning.
-        if ( $this->connection === null )
-        {
-            if ( ( $this->connection = fsockopen( $this->options['ip'], $this->options['port'], $errno, $errstr ) ) === false )
-            {
-                // This is a bit hackisch...
-                throw new phpillowConnectionException(
-                    "Could not connect to server at %ip:%port: '%errno: %error'",
-                    array(
-                        'ip'    => $this->options['ip'],
-                        'port'  => $this->options['port'],
-                        'error' => $errstr,
-                        'errno' => $errno,
-                    )
-                );
-            }
-        }
-
         // Create basic request headers
         $request = "$method $path HTTP/1.1\r\nHost: {$this->options['host']}\r\n";
 
@@ -312,8 +319,26 @@ class phpillowConnection
             $request .= "\r\n";
         }
 
+        return $request;
+    }
+
+    /**
+     * Perform a request to the server and return the result
+     *
+     * Perform a request to the server and return the result
+     *
+     * @param string $method
+     * @param string $path
+     * @param string $data
+     * @return phpillow...
+     */
+    protected function request( $method, $path, $data )
+    {
+        // Try establishing the connection to the server
+        $this->checkConnection();
+
         // Send the build request to the server
-        fwrite( $this->connection, $request );
+        fwrite( $this->connection, $this->buildRequest( $method, $path, $data ) );
 
         // Read server response headers
         $headers = array(
