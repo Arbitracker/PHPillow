@@ -98,7 +98,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
                 'host'       => 'localhost',
                 'port'       => 5984,
                 'ip'         => '127.0.0.1',
-                'keep-alive' => false,
+                'keep-alive' => true,
             ),
             'options', $instance
         );
@@ -119,7 +119,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
                 'host'       => 'example.com',
                 'port'       => 80,
                 'ip'         => '127.0.0.1',
-                'keep-alive' => false,
+                'keep-alive' => true,
             ),
             'options', $instance
         );

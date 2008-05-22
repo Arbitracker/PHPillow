@@ -40,10 +40,7 @@ class phpillowConnection
         'host'       => 'localhost',
         'port'       => 5984,
         'ip'         => '127.0.0.1',
-        // Currently there is a problem with the mochiweb HTTP server, which
-        // causes Connection: Keep-Alive to cost far more time. Once this is
-        // fixed we will defualt to true here.
-        'keep-alive' => false,
+        'keep-alive' => true,
     );
 
     /**
