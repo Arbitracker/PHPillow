@@ -194,20 +194,12 @@ final class phpillowManager
         }
 
         $db = phpillowConnection::getInstance();
-        $revisions = $db->get( $db->getDatabase() . $id . '?revs=true' );
-        foreach ( $revisions->_revs as $revision )
-        {
-            try
-            {
-                $db->delete( $db->getDatabase() . $id . '?rev=' . $revision );
-            }
-            catch ( phpillowResponseConflictErrorException $e )
-            {
-                // @TODO: Check with the CouchDB guys, if this is really the
-                // desired behaviour and what may be a better way to wipe a
-                // document completely out of the database.
-            }
-        }
+        $revision = $db->get( $db->getDatabase() . $id );
+
+        // Only delete the current revision. This should delete all revisions
+        // in the database except somebody updates the document between the get
+        // and the delete request
+        $db->delete( $db->getDatabase() . $id . '?rev=' . $revision->_rev );
     }
 }
 
