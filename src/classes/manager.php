@@ -34,22 +34,35 @@ final class phpillowManager
     /**
      * Initial mapping of view types to view classes.
      *
+     * Mapping values may be added by the method setViewClass(). The array to
+     * store the values looks like:
+     * <code>
+     *  array(
+     *      'name' => 'class',
+     *      ...
+     *  )
+     * </code>
+     *
      * @var array
      */
     protected static $views = array(
-        'user'      => 'phpillowUserView',
-        'group'     => 'phpillowGroupView',
     );
 
     /**
      * Initial mapping of document types to document classes.
      *
+     * Mapping values may be added by the method setDocumentClass(). The array
+     * to store the values looks like:
+     * <code>
+     *  array(
+     *      'name' => 'class',
+     *      ...
+     *  )
+     * </code>
+     *
      * @var array
      */
     protected static $documents = array(
-        'user'              => 'phpillowUserDocument',
-        'group'             => 'phpillowGroupDocument',
-        'project'           => 'phpillowProjectDocument',
     );
 
     /**

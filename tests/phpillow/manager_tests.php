@@ -23,6 +23,7 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
 
     public function testGetView()
     {
+        phpillowManager::setViewClass( 'user', 'phpillowUserView' );
         $user = phpillowManager::getView( 'user' );
 
         $this->assertTrue(
@@ -54,15 +55,17 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
     public function testOverwriteViewClass()
     {
         phpillowManager::setViewClass( 'user', 'phpillowGroupView' );
+        phpillowManager::setViewClass( 'user', 'phpillowUserView' );
         $user = phpillowManager::getView( 'user' );
 
         $this->assertTrue(
-            $user instanceof phpillowGroupView
+            $user instanceof phpillowUserView
         );
     }
 
     public function testCreateDocument()
     {
+        phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
         $user = phpillowManager::createDocument( 'user' );
 
         $this->assertTrue(
@@ -83,6 +86,7 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
 
     public function testFetchDocument()
     {
+        phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
         phpillowConnection::createInstance();
         phpillowConnection::setDatabase( 'test' );
 
