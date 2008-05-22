@@ -21,6 +21,21 @@ class phpillowValidatorTests extends PHPUnit_Framework_TestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function testDummyValidator()
+    {
+        $validator = new phpillowNoValidator();
+        
+        $this->assertSame(
+            'String',
+            $validator->validate( 'String' )
+        );
+
+        $this->assertSame(
+            123,
+            $validator->validate( 123 )
+        );
+    }
+
     public function testStringValidator()
     {
         $validator = new phpillowStringValidator();

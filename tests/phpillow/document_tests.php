@@ -107,6 +107,22 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         $doc->save();
     }
 
+    public function testFetchDocumentByEmptyId()
+    {
+        try
+        {
+            $doc = phpillowUserDocument::fetchById( '' );
+            $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
+        }
+        catch ( phpillowResponseNotFoundErrorException $e )
+        {
+            $this->assertEquals(
+                'Error (404) in request: not_found (No document ID specified.).',
+                $e->getMessage()
+            );
+        }
+    }
+
     public function testFetchDocumentById()
     {
         $doc = phpillowUserDocument::createNew();
