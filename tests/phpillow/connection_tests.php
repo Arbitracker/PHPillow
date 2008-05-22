@@ -447,5 +447,19 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
             $response->total_rows
         );
     }
+
+    public function testUnknownOption()
+    {
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
+        $db = phpillowConnection::getInstance();
+
+        try
+        {
+            $db->setOption( 'unknownOption', 42 );
+            $this->fail( 'Expected phpillowOptionException.' );
+        }
+        catch( phpillowOptionException $e )
+        { /* Expected */ }
+    }
 }
 
