@@ -9,6 +9,15 @@
 // Set up environment
 require __DIR__ . '/test_environment.php';
 
+/*
+ * Set file whitelist for phpunit
+ */
+$files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
+foreach ( $files as $class => $file )
+{
+    PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
+}
+
 /**
  * Couchdb backend tests
  */
