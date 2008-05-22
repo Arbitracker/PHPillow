@@ -348,12 +348,6 @@ class phpillowConnection
         while ( ( ( $line = rtrim( fgets( $this->connection ) ) ) !== '' ) ||
                 ( $headers === array() ) ) 
         {
-            // Just skip empty lines
-            if ( $line === '' )
-            {
-                continue;
-            }
-
             // Extract header values
             if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))', $line, $match ) )
             {
