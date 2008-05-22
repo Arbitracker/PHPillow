@@ -1,6 +1,6 @@
 <?php
 /**
- * arbit couchdb backend test suite
+ * phpillow couchdb backend test suite
  *
  * @version $Revision$
  * @license GPLv3
@@ -29,7 +29,7 @@ require 'phpillow/view_user_tests.php';
 require 'phpillow/view_group_tests.php';
 
 /**
-* Test suite for arbit
+* Test suite for phpillow
 */
 class phpillowTestSuite extends PHPUnit_Framework_TestSuite
 {

@@ -23,7 +23,7 @@
  */
 
 /**
- * Basic arbit exception
+ * Basic phpillow exception
  * 
  * @package Core
  * @version $Revision$
