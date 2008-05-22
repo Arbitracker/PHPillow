@@ -32,7 +32,6 @@ return array(
     'phpillowConnection'                     => 'classes/connection.php',
     'phpillowDocument'                       => 'classes/document.php',
     'phpillowGroupDocument'                  => 'classes/document/group.php',
-    'phpillowProjectDocument'                => 'classes/document/project.php',
     'phpillowUserDocument'                   => 'classes/document/user.php',
     'phpillowException'                      => 'classes/exception.php',
     'phpillowRuntimeException'               => 'classes/exception.php',

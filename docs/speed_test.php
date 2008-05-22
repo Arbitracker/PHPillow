@@ -1,7 +1,16 @@
 <?php
 
-require_once __DIR__ . '/../../src/environment.php';
+// Include all required classes
+$autoload = require ( $base = __DIR__ . '/../src/' ) . 'classes/autoload.php';
+foreach ( $autoload as $file )
+{
+    require_once $base . $file;
+}
 
+// Initialize document manager
+phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
+
+// Configure parameters for speed testing
 $puts = 1000;
 $gets = 5000;
 $views = 2000;
