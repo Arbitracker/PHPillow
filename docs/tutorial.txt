@@ -17,9 +17,9 @@ CouchDB__ is a document based database. From their website:
     (NRDBMS). The CouchDb Quick Overview has a high level overview of the
     CouchDB system.
 
-More detailed information can be found at:
-http://www.couchdbwiki.com/index.php?title=CouchDb_Quick_Overview
+More detailed information can be found at here__.
 
+__ http://www.couchdbwiki.com/index.php?title=CouchDb_Quick_Overview
 __ http://couchdb.org
 
 Documents
@@ -30,10 +30,10 @@ As noted above the central object we have to deal with are documents.
 Define a custom document
 ------------------------
 
-All documents extend the abstract base class phpillowBackendCouchDbDocument. A
+All documents extend the abstract base class phpillowDocument. A
 complete model defining a blog entry could look like::
 
-    class myBlogDocument extends phpillowBackendCouchDbDocument
+    class myBlogDocument extends phpillowDocument
     {
         protected static $type = 'blog_entry';
 
@@ -45,9 +45,9 @@ complete model defining a blog entry could look like::
         protected function __construct()
         {
             $this->properties = array(
-                'title'     => new phpillowBackendCouchDbStringValidator(),
-                'text'      => new phpillowBackendCouchDbTextValidator(),
-                'comments'  => new phpillowBackendCouchDocumentArrayValidator(
+                'title'     => new phpillowStringValidator(),
+                'text'      => new phpillowTextValidator(),
+                'comments'  => new phpillowDocumentArrayValidator(
                     'myBlogComments'
                 ),
             );
@@ -65,13 +65,13 @@ The static property $type defines the type of the stored document and should be
 unique in the whole application. If you are implementing a module, prefix this
 type with the name of the module, like "blog" in this example.
 
-The array $requiredProperties defined the properties, which are mandatory to be
-set. The properties itself are defined in the $properties property, which is
-initialized in the constructor of the document. We associate a validator with
-each property which validates the input set on the document. There are quite
-complex validators, like the phpillowBackendCouchDocumentArrayValidator shown here,
-which will be described later, which are all documented in the `generated API
-documentation`__.
+The array $requiredProperties defined the properties, which are mandatory to
+be set. The properties itself are defined in the $properties property, which
+is initialized in the constructor of the document. We associate a validator
+with each property which validates the input set on the document. There are
+quite complex validators, like the phpillowDocumentArrayValidator shown here,
+which will be described later, which are all documented in the generated API
+documentation.
 
 The last thing you need to define is the generation of the document ID. An ID
 in CouchDB needs to fullfill some requirements, which are ensured by using the
@@ -119,11 +119,11 @@ Views
 
 Views in CouchDb are a way to index and access documents by their properties,
 perhaps filtered, or by complex self defined keys. Views for our documents
-extend the view base class phpillowBackendCouchDbView, and implement the view logic
+extend the view base class phpillowView, and implement the view logic
 as EcmaScript, executed on the server (currently using the SpiderMonkey
 implementation). A view definition for our blog entries could look like::
 
-    class myBlogView extends phpillowBackendCouchDbView
+    class myBlogView extends phpillowView
     {
         protected $viewDefinitions = array(
             // Index blog entries by their title, and list all comments
@@ -188,10 +188,10 @@ The manager provides a central registry for couchDB documents and views. You
 may set and overwrite the document class for one document type, or query this
 document class directly, whatever class has been set for it, like::
 
-    $doc = phpillowBackendCouchDbManager::createDocument( 'blog_entry' );
+    $doc = phpillowManager::createDocument( 'blog_entry' );
     // ...
 
-    $doc = phpillowBackendCouchDbManager::fetchDocument(
+    $doc = phpillowManager::fetchDocument(
         'blog_entry', 'blog_entry-new_blog_post'
     );
     // ...
