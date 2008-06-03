@@ -29,6 +29,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
     public function tearDown()
     {
         phpillowTestEnvironmentSetup::resetDatabase();
+        phpillowTestEnvironmentSetup::resetTmpDir();
     }
 
     public function testGetNonExitantConnection()
@@ -99,6 +100,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
                 'port'       => 5984,
                 'ip'         => '127.0.0.1',
                 'keep-alive' => true,
+                'http-log'   => false,
             ),
             'options', $instance
         );
@@ -120,6 +122,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
                 'port'       => 80,
                 'ip'         => '127.0.0.1',
                 'keep-alive' => true,
+                'http-log'   => false,
             ),
             'options', $instance
         );
@@ -461,5 +464,20 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         catch( phpillowOptionException $e )
         { /* Expected */ }
     }
+
+    public function testHttpLog()
+    {
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
+        $db = phpillowConnection::getInstance();
+        $db->setOption( 'http-log', $logFile = tempnam( __DIR__ . '/../temp', __CLASS__ ) );
+
+        $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
+        $response = $db->get( '/test/123' );
+
+        $this->assertTrue(
+            filesize( $logFile ) > 512
+        );
+    }
+
 }
 

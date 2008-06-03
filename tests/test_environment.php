@@ -75,5 +75,18 @@ class phpillowTestEnvironmentSetup
             phpillowConnectionTestHelper::reset();
         }
     }
+
+    /**
+     * Remove all temporary files from test directory
+     * 
+     * @return void
+     */
+    public static function resetTmpDir()
+    {
+        foreach( glob( __DIR__ . '/temp/*' ) as $file )
+        {
+            unlink( $file );
+        }
+    }
 }
 

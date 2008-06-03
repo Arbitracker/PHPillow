@@ -41,6 +41,7 @@ class phpillowConnection
         'port'       => 5984,
         'ip'         => '127.0.0.1',
         'keep-alive' => true,
+        'http-log'   => false,
     );
 
     /**
@@ -114,6 +115,10 @@ class phpillowConnection
         {
             case 'keep-alive':
                 $this->options[$option] = (bool) $value;
+                break;
+
+            case 'http-log':
+                $this->options[$option] = $value;
                 break;
 
             default:
@@ -335,9 +340,17 @@ class phpillowConnection
         $this->checkConnection();
 
         // Send the build request to the server
-        fwrite( $this->connection, $this->buildRequest( $method, $path, $data ) );
+        fwrite( $this->connection, $request = $this->buildRequest( $method, $path, $data ) );
+
+        // If requested log request information to http log
+        if ( $this->options['http-log'] !== false )
+        {
+            $fp = fopen( $this->options['http-log'], 'a' );
+            fwrite( $fp, $request );
+        }
 
         // Read server response headers
+        $rawHeaders = '';
         $headers = array(
             'connection' => ( $this->options['keep-alive'] ? 'Keep-Alive' : 'Close' ),
         );
@@ -345,6 +358,9 @@ class phpillowConnection
         while ( ( ( $line = rtrim( fgets( $this->connection ) ) ) !== '' ) ||
                 ( $headers === array() ) ) 
         {
+            // Also store raw headers for later logging
+            $rawHeaders .= $line . "\n";
+
             // Extract header values
             if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))', $line, $match ) )
             {
@@ -407,6 +423,13 @@ class phpillowConnection
         {
             fclose( $this->connection );
             $this->connection = null;
+        }
+
+        // If requested log response information to http log
+        if ( $this->options['http-log'] !== false )
+        {
+            fwrite( $fp, "\n" . $rawHeaders . "\n" . $body . "\n" );
+            fclose( $fp );
         }
 
         // Create repsonse object from couch db response
