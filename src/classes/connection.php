@@ -255,9 +255,10 @@ class phpillowConnection
 
         // Check if data has been provided
         $data = ( ( isset( $params[1] ) ) ? (string) $params[1] : null );
+        $raw  = ( ( isset( $params[2] ) ) ? (bool) $params[2] : false );
 
         // Finally perform request and return the result from the server
-        return $this->request( $method, $path, $data );
+        return $this->request( $method, $path, $data, $raw );
     }
 
     /**
@@ -327,14 +328,17 @@ class phpillowConnection
     /**
      * Perform a request to the server and return the result
      *
-     * Perform a request to the server and return the result
+     * Perform a request to the server and return the result converted into a
+     * phpillowResponse object. If you do not expect a JSON structure, which
+     * could be converted in such a response object, set the forth parameter to
+     * true, and you get a response object retuerned, containing the raw body.
      *
      * @param string $method
      * @param string $path
      * @param string $data
-     * @return phpillow...
+     * @return phpillowResponse
      */
-    protected function request( $method, $path, $data )
+    protected function request( $method, $path, $data, $raw = false )
     {
         // Try establishing the connection to the server
         $this->checkConnection();
@@ -433,7 +437,7 @@ class phpillowConnection
         }
 
         // Create repsonse object from couch db response
-        return phpillowResponseFactory::parse( $headers['status'], $body );
+        return phpillowResponseFactory::parse( $headers['status'], $body, $raw );
     }
 }
 

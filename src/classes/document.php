@@ -22,14 +22,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
-/*
- * TODO:
- *
- * - Handle existing IDs
- * - Store editor and editing date in revisions
- * - Make storing old versions optional
- */
-
 /**
  * Basic abstract document
  *
@@ -106,9 +98,17 @@ abstract class phpillowDocument
     protected static $specialProperties = array(
         '_id',
         '_rev',
+        '_attachments',
         'type',
         'revisions',
     );
+
+    /**
+     * List of new attachements to the document.
+     * 
+     * @var array
+     */
+    protected $newAttachments = array();
 
     /**
      * Construct new document
@@ -122,6 +122,7 @@ abstract class phpillowDocument
         $this->storage = new StdClass();
         $this->storage->revisions = array();
         $this->storage->_id = null;
+        $this->storage->_attachments = array();
 
         // Set all defined properties to null on construct
         foreach ( $this->properties as $property => $v )
@@ -220,7 +221,13 @@ abstract class phpillowDocument
 
         // Set special properties from response object
         $this->storage->_rev = $response->_rev;
-        $this->storage->_id = $response->_id;
+        $this->storage->_id  = $response->_id;
+
+        // Set attachements array, if the response object contains attachements.
+        if ( isset( $response->_attachments ) )
+        {
+            $this->storage->_attachments = $response->_attachments;
+        }
 
         // Check if the source document already contains a revision history and
         // store it in this case in the document object, if the object should
@@ -385,6 +392,12 @@ abstract class phpillowDocument
             $this->storage->_id = static::getDocumentId( static::$type, $this->generateId() );
         }
 
+        // Do not send an attachment array, if there aren't any attachements
+        if ( !count( $this->storage->_attachments ) )
+        {
+            unset( $this->storage->_attachments );
+        }
+
         // Store document in database
         $db = phpillowConnection::getInstance();
         $db->put(
@@ -420,6 +433,44 @@ abstract class phpillowDocument
         // Additionally we convert the string to lowercase, so that we get case
         // insensitive fetching
         return strtolower( $string );
+    }
+
+    /**
+     * Attach file to document
+     * 
+     * @param string $fileName 
+     * @return void
+     */
+    public function attachFile( $fileName )
+    {
+        $this->storage->_attachments[basename( $fileName )] = array(
+            'type' => 'base64',
+            'data' => base64_encode( file_get_contents( $fileName ) ),
+        );
+    }
+
+    /**
+     * Get file contents
+     *
+     * Get the contents of an attached file.
+     * 
+     * @param string $fileName 
+     * @return string
+     */
+    public function getFile( $fileName )
+    {
+        if ( !isset( $this->storage->_attachments[$fileName] ) )
+        {
+            throw new phpillowNoSuchPropertyException( $fileName );
+        }
+
+        $db = phpillowConnection::getInstance();
+        $response = $db->get(
+            phpillowConnection::getDatabase() . urlencode( $this->_id ) . '/' . $fileName, 
+            null, true
+        );
+
+        return $response->data;
     }
 }
 

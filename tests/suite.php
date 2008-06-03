@@ -30,6 +30,7 @@ require 'phpillow/validator_tests.php';
 require 'phpillow/document_validator_tests.php';
 
 require 'phpillow/document_tests.php';
+require 'phpillow/attachment_tests.php';
 require 'phpillow/document_user_tests.php';
 require 'phpillow/document_group_tests.php';
 
@@ -59,6 +60,7 @@ class phpillowTestSuite extends PHPUnit_Framework_TestSuite
         $this->addTest( phpillowDocumentValidatorTests::suite() );
 
         $this->addTest( phpillowDocumentTests::suite() );
+        $this->addTest( phpillowDocumentAttachmentTests::suite() );
         $this->addTest( phpillowDocumentUserTests::suite() );
         $this->addTest( phpillowDocumentGroupTests::suite() );
 

@@ -49,14 +49,17 @@ class phpillowResponseFactory
      * For all other cases most probably some error occured, which is
      * transformed into a phpillowResponseErrorException, which will be thrown
      * by the parse method.
+     *
+     * If the third parameter raw is set to true, the body will not expected to
+     * be some JSON structure, but just preserverd as a raw string.
      * 
      * @param int $status 
      * @param string $body 
      * @return phpillowResponse
      */
-    public static function parse( $status, $body )
+    public static function parse( $status, $body, $raw = false )
     {
-        $response = json_decode( $body );
+        $response = $raw === true ? $body : json_decode( $body );
 
         // To detect the type of the response from the couch DB server we use
         // the response status which indicates the return type.
@@ -70,14 +73,20 @@ class phpillowResponseFactory
                 // document we can check for the document properties _id or
                 // _rev, which are always available for documents and are only
                 // available for documents.
-                if ( isset( $response->_id ) )
+                if ( $raw === true )
+                {
+                    return new phpillowDataResponse( $response );
+                }
+                elseif ( isset( $response->_id ) )
                 {
                     return new phpillowResponse( $response );
                 }
-                else
+                elseif ( isset( $response->rows ) )
                 {
                     return new phpillowResultSetResponse( $response );
                 }
+
+                // Otherwise fall back to a plain status response. No break.
 
             case 201:
             case 202:
@@ -89,10 +98,11 @@ class phpillowResponseFactory
             case 404:
                 // The 404 and 409 (412) errors are using custom exceptions
                 // extending the base error exception, because they are often
-                // requeired to be handled in a special way by the application.
+                // required to be handled in a special way by the application.
                 //
                 // Feel free to extend this for other errors as well.
                 throw new phpillowResponseNotFoundErrorException( $response );
+
             case 409: // Conflict
             case 412: // Precondition Failed - we just consider this as a conflict.
                 throw new phpillowResponseConflictErrorException( $response );
@@ -103,90 +113,6 @@ class phpillowResponseFactory
                 // for valid repsonses.
                 throw new phpillowResponseErrorException( $status, $response );
         }
-    }
-}
-
-/**
- * Response factory to create response objects from JSON results
- *
- * @package Core
- * @version $Revision$
- * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
- */
-class phpillowResponse
-{
-    /**
-     * Array containing all response properties
-     * 
-     * @var array
-     */
-    protected $properties;
-
-    /**
-     * Construct response object from JSON result
-     * 
-     * @param StdClass $body 
-     * @return void
-     */
-    public function __construct( StdClass $body )
-    {
-        // Set all properties as virtual readonly repsonse object properties.
-        foreach ( $body as $property => $value )
-        {
-            // All direct descandents, which are objects (StdClass) should be
-            // transformed to arrays.
-            if ( is_object( $value ) )
-            {
-                $value = (array) $value;
-            }
-
-            $this->properties[$property] = $value;
-        }
-    }
-
-    /**
-     * Get available property
-     *
-     * Receive response object property, if available. If the property is not
-     * available, the method will throw an exception.
-     * 
-     * @param string $property 
-     * @return mixed
-     */
-    public function __get( $property )
-    {
-        // Check if such an property exists at all
-        if ( !isset( $this->properties[$property] ) )
-        {
-            throw new phpillowNoSuchPropertyException( $property );
-        }
-
-        return $this->properties[$property];
-    }
-
-    /**
-     * Check if property exists.
-     * 
-     * Check if property exists.
-     * 
-     * @param string $property 
-     * @return bool
-     */
-    public function __isset( $property )
-    {
-        return isset( $this->properties[$property] );
-    }
-
-    /**
-     * Silently ignore each write access on response object properties.
-     * 
-     * @param string $property 
-     * @param mixed $value 
-     * @return bool
-     */
-    public function __set( $property, $value )
-    {
-        return false;
     }
 }
 
