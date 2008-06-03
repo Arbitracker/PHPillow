@@ -2,7 +2,7 @@
 /**
  * Basic test cases for model connections
  *
- * @version $Revision: 18 $
+ * @version $Revision$
  * @license GPLv3
  */
 

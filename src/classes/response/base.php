@@ -18,7 +18,7 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @version $Revision: 4 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
@@ -26,7 +26,7 @@
  * Response factory to create response objects from JSON results
  *
  * @package Core
- * @version $Revision: 4 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 class phpillowResponse
