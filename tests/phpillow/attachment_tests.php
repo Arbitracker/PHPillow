@@ -88,4 +88,52 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
             $doc->getFile( 'image_png.png' )
         );
     }
+
+    public function testOverwriteAttachment()
+    {
+        $db = phpillowConnection::getInstance();
+
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->attachFile( __DIR__ . '/data/image_png.png' );
+        $doc->save();
+        
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc->attachFile( $file = __DIR__ . '/data/image_jpg.jpg', 'image_png.png' );
+        $doc->save();
+
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $this->assertSame(
+            file_get_contents( $file ),
+            $doc->getFile( 'image_png.png' )
+        );
+    }
+
+    public function testGetAttachementMultipleFiles()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->attachFile( __DIR__ . '/data/image_png.png' );
+        $doc->attachFile( __DIR__ . '/data/image_jpg.jpg' );
+        $doc->save();
+        
+        $attachment_1 = new StdClass();
+        $attachment_1->stub = true;
+        $attachment_1->content_type = 'application/octet-stream';
+        $attachment_1->length = 4484;
+        
+        $attachment_2 = new StdClass();
+        $attachment_2->stub = true;
+        $attachment_2->content_type = 'application/octet-stream';
+        $attachment_2->length = 3146;
+
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $this->assertEquals(
+            array(
+                'image_png.png' => $attachment_1,
+                'image_jpg.jpg' => $attachment_2,
+            ),
+            $doc->_attachments
+        );
+    }
 }

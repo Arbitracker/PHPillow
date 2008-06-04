@@ -437,16 +437,24 @@ abstract class phpillowDocument
 
     /**
      * Attach file to document
+     *
+     * The file passed to the method will be attached to the document and
+     * stored in the database. By default the filename of the provided file
+     * will be ued as a name, but you may optionally specify a name as the
+     * second parameter of the method.
      * 
      * @param string $fileName 
+     * @param string $name
      * @return void
      */
-    public function attachFile( $fileName )
+    public function attachFile( $fileName, $name = false )
     {
-        $this->storage->_attachments[basename( $fileName )] = array(
+        $name = ( $name === false ? basename( $fileName ) : $name );
+        $this->storage->_attachments[$name] = array(
             'type' => 'base64',
             'data' => base64_encode( file_get_contents( $fileName ) ),
         );
+        $this->modified = true;
     }
 
     /**
