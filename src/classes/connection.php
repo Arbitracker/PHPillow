@@ -437,7 +437,7 @@ class phpillowConnection
         }
 
         // Create repsonse object from couch db response
-        return phpillowResponseFactory::parse( $headers['status'], $body, $raw );
+        return phpillowResponseFactory::parse( $headers, $body, $raw );
     }
 }
 

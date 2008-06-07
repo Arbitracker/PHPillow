@@ -36,12 +36,14 @@ class phpillowDataResponse extends phpillowResponse
     /**
      * Construct response object from raw data
      * 
-     * @param mixed $body 
+     * @param string $contentType 
+     * @param string $body 
      * @return void
      */
-    public function __construct( $body )
+    public function __construct( $contentType, $body )
     {
-        $this->properties['data'] = substr( $body, 0, -2 );
+        $this->properties['contentType'] = $contentType;
+        $this->properties['data']        = substr( $body, 0, -2 );
     }
 }
 

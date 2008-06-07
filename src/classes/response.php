@@ -53,17 +53,17 @@ class phpillowResponseFactory
      * If the third parameter raw is set to true, the body will not expected to
      * be some JSON structure, but just preserverd as a raw string.
      * 
-     * @param int $status 
+     * @param array $headers
      * @param string $body 
      * @return phpillowResponse
      */
-    public static function parse( $status, $body, $raw = false )
+    public static function parse( array $headers, $body, $raw = false )
     {
         $response = $raw === true ? $body : json_decode( $body, true );
 
         // To detect the type of the response from the couch DB server we use
         // the response status which indicates the return type.
-        switch ( $status )
+        switch ( $headers['status'] )
         {
             case 200:
                 // The HTTP status code 200 - OK indicates, that we got a document
@@ -75,7 +75,7 @@ class phpillowResponseFactory
                 // available for documents.
                 if ( $raw === true )
                 {
-                    return new phpillowDataResponse( $response );
+                    return new phpillowDataResponse( $headers['content-type'], $response );
                 }
                 elseif ( isset( $response->_id ) )
                 {
@@ -111,7 +111,7 @@ class phpillowResponseFactory
                 // All other unhandled HTTP codes are for now handled as an error.
                 // This may not be true, as lots of other status code may be used
                 // for valid repsonses.
-                throw new phpillowResponseErrorException( $status, $response );
+                throw new phpillowResponseErrorException( $headers['status'], $response );
         }
     }
 }

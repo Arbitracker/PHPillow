@@ -81,10 +81,16 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->save();
         
         $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $response = $doc->getFile( 'image_png.png' );
 
         $this->assertSame(
             file_get_contents( $file ),
-            $doc->getFile( 'image_png.png' )
+            $response->data
+        );
+
+        $this->assertSame(
+            'application/octet-stream',
+            $response->contentType
         );
     }
 
@@ -102,9 +108,16 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->save();
 
         $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $response = $doc->getFile( 'image_png.png' );
+
         $this->assertSame(
             file_get_contents( $file ),
-            $doc->getFile( 'image_png.png' )
+            $response->data
+        );
+
+        $this->assertSame(
+            'application/octet-stream',
+            $response->contentType
         );
     }
 

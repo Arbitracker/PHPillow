@@ -467,10 +467,10 @@ abstract class phpillowDocument
     /**
      * Get file contents
      *
-     * Get the contents of an attached file.
+     * Get the contents of an attached file as a phpillowDataResponse.
      * 
      * @param string $fileName 
-     * @return string
+     * @return phpillowDataResponse
      */
     public function getFile( $fileName )
     {
@@ -485,7 +485,7 @@ abstract class phpillowDocument
             null, true
         );
 
-        return $response->data;
+        return $response;
     }
 }
 
