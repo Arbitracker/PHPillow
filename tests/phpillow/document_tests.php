@@ -218,17 +218,17 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             'kore',
-            $doc->revisions[0]->login
+            $doc->revisions[0]['login']
         );
 
         $this->assertSame(
             'Kore Nordmann',
-            $doc->revisions[1]->name
+            $doc->revisions[1]['name']
         );
 
         $this->assertSame(
             'Kore D. Nordmann',
-            $doc->revisions[2]->name
+            $doc->revisions[2]['name']
         );
     }
 }

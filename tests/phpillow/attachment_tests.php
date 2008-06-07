@@ -60,15 +60,14 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->attachFile( __DIR__ . '/data/image_png.png' );
         $doc->save();
         
-        $attachment = new StdClass();
-        $attachment->stub = true;
-        $attachment->content_type = 'application/octet-stream';
-        $attachment->length = 4484;
-
         $doc = phpillowUserDocument::fetchById( 'user-kore' );
         $this->assertEquals(
             array(
-                'image_png.png' => $attachment,
+                'image_png.png' => array(
+                    'stub'         => true,
+                    'content_type' => 'application/octet-stream',
+                    'length'       => 4484,
+                ),
             ),
             $doc->_attachments
         );
@@ -117,21 +116,19 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->attachFile( __DIR__ . '/data/image_jpg.jpg' );
         $doc->save();
         
-        $attachment_1 = new StdClass();
-        $attachment_1->stub = true;
-        $attachment_1->content_type = 'application/octet-stream';
-        $attachment_1->length = 4484;
-        
-        $attachment_2 = new StdClass();
-        $attachment_2->stub = true;
-        $attachment_2->content_type = 'application/octet-stream';
-        $attachment_2->length = 3146;
-
         $doc = phpillowUserDocument::fetchById( 'user-kore' );
         $this->assertEquals(
             array(
-                'image_png.png' => $attachment_1,
-                'image_jpg.jpg' => $attachment_2,
+                'image_png.png' => array(
+                    'stub'         => true,
+                    'content_type' => 'application/octet-stream',
+                    'length'       => 4484,
+                ),
+                'image_jpg.jpg' => array(
+                    'stub'         => true,
+                    'content_type' => 'application/octet-stream',
+                    'length'       => 3146,
+                ),
             ),
             $doc->_attachments
         );
@@ -144,15 +141,14 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->attachFile( __DIR__ . '/data/image_png.png', 'image_png.png', 'image/png' );
         $doc->save();
         
-        $attachment = new StdClass();
-        $attachment->stub = true;
-        $attachment->content_type = 'image/png';
-        $attachment->length = 4484;
-
         $doc = phpillowUserDocument::fetchById( 'user-kore' );
         $this->assertEquals(
             array(
-                'image_png.png' => $attachment,
+                'image_png.png' => array(
+                    'stub'         => true,
+                    'content_type' => 'image/png',
+                    'length'       => 4484,
+                ),
             ),
             $doc->_attachments
         );

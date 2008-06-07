@@ -41,21 +41,14 @@ class phpillowResponse
     /**
      * Construct response object from JSON result
      * 
-     * @param StdClass $body 
+     * @param array $body 
      * @return void
      */
-    public function __construct( StdClass $body )
+    public function __construct( array $body )
     {
         // Set all properties as virtual readonly repsonse object properties.
         foreach ( $body as $property => $value )
         {
-            // All direct descandents, which are objects (StdClass) should be
-            // transformed to arrays.
-            if ( is_object( $value ) )
-            {
-                $value = (array) $value;
-            }
-
             $this->properties[$property] = $value;
         }
     }

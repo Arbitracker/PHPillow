@@ -215,8 +215,11 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         catch ( phpillowResponseErrorException $e )
         {
             $this->assertSame(
-                'database_already_exists',
-                $e->getResponse()->error
+                array( 
+                    'error'  => 'database_already_exists',
+                    'reason' => 'Database "test" already exists.',
+                ),
+                $e->getResponse()
             );
         }
     }
@@ -274,7 +277,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
         $this->assertSame(
             '123',
-            $response->rows[0]->id
+            $response->rows[0]['id']
         );
     }
 

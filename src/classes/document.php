@@ -242,7 +242,7 @@ abstract class phpillowDocument
             }
 
             // Add current revision to revision history
-            $this->storage->revisions[] = $revision;
+            $this->storage->revisions[] = (array) $revision;
         }
 
         // Document freshly loaded, so it is not modified, and not a new
@@ -282,10 +282,10 @@ abstract class phpillowDocument
         // be hard to debug.
         if ( empty( $id ) )
         {
-            $error = new StdClass();
-            $error->error  = 'not_found';
-            $error->reason = 'No document ID specified.';
-            throw new phpillowResponseNotFoundErrorException( $error );
+            throw new phpillowResponseNotFoundErrorException( array( 
+                'error'  => 'not_found',
+                'reason' => 'No document ID specified.',
+            ) );
         }
 
         // Fetch object from database

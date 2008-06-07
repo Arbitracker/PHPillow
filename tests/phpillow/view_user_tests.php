@@ -28,7 +28,7 @@ class phpillowUserViewTests extends phpillowDataTestCase
         ) );
 
         $user = phpillowUserDocument::fetchById(
-            $results->rows[0]->value
+            $results->rows[0]['value']
         );
 
         $this->assertSame(

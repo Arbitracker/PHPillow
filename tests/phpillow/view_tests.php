@@ -153,13 +153,12 @@ class phpillowViewTests extends phpillowDataTestCase
         );
 
         $this->assertSame(
-            'kore',
-            $results->rows[0]->key
-        );
-
-        $this->assertSame(
-            'user-kore',
-            $results->rows[0]->id
+            array(
+                'id'    => 'user-kore',
+                'key'   => 'kore',
+                'value' => 'user-kore',
+            ),
+            $results->rows[0]
         );
     }
 
@@ -183,8 +182,12 @@ class phpillowViewTests extends phpillowDataTestCase
         );
 
         $this->assertSame(
-            'kore',
-            $results->rows[0]->key
+            array(
+                'id'    => 'user-kore',
+                'key'   => 'kore',
+                'value' => 'user-kore',
+            ),
+            $results->rows[0]
         );
     }
 

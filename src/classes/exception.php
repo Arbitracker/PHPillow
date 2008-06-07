@@ -270,7 +270,7 @@ class phpillowResponseErrorException extends phpillowException
      * Construct exception out of given response
      * 
      * @param int $status 
-     * @param StdClass $response 
+     * @param array $response 
      * @return phpillowResponseErrorException
      */
     public function __construct( $status, $response )
@@ -281,8 +281,8 @@ class phpillowResponseErrorException extends phpillowException
             "Error (%status) in request: %error (%reason).",
             array(
                 'status'    => $status,
-                'error'     => $response !== null ? $response->error : 'Unknown',
-                'reason'    => $response !== null ? $response->reason : 'Unknown',
+                'error'     => $response !== null ? $response['error'] : 'Unknown',
+                'reason'    => $response !== null ? $response['reason'] : 'Unknown',
             )
         );
     }

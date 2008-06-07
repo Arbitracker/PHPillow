@@ -28,7 +28,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         ) );
 
         $user = phpillowGroupDocument::fetchById(
-            $results->rows[0]->value
+            $results->rows[0]['value']
         );
 
         $this->assertSame(
@@ -57,7 +57,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $permissions = array();
         foreach ( $results->rows as $row )
         {
-            $permissions[] = $row->value;
+            $permissions[] = $row['value'];
         }
 
         // Unique and sort for reproducability
@@ -85,7 +85,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $permissions = array();
         foreach ( $results->rows as $row )
         {
-            $permissions[] = $row->value;
+            $permissions[] = $row['value'];
         }
 
         // Unique and sort for reproducability
