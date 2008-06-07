@@ -166,4 +166,25 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
             $doc->_attachments
         );
     }
+
+    public function testManuallySetContentType()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->attachFile( $file = __DIR__ . '/data/image_png.png', 'image_png.png', 'image/png' );
+        $doc->save();
+        
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $response = $doc->getFile( 'image_png.png' );
+
+        $this->assertSame(
+            file_get_contents( $file ),
+            $response->data
+        );
+
+        $this->assertSame(
+            'image/png',
+            $response->contentType
+        );
+    }
 }
