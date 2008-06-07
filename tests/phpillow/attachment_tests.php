@@ -136,4 +136,25 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
             $doc->_attachments
         );
     }
+
+    public function testAddFileWithMimeType()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->attachFile( __DIR__ . '/data/image_png.png', 'image_png.png', 'image/png' );
+        $doc->save();
+        
+        $attachment = new StdClass();
+        $attachment->stub = true;
+        $attachment->content_type = 'image/png';
+        $attachment->length = 4484;
+
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $this->assertEquals(
+            array(
+                'image_png.png' => $attachment,
+            ),
+            $doc->_attachments
+        );
+    }
 }

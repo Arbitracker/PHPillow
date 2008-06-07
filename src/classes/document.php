@@ -442,17 +442,24 @@ abstract class phpillowDocument
      * stored in the database. By default the filename of the provided file
      * will be ued as a name, but you may optionally specify a name as the
      * second parameter of the method.
+     *
+     * You may optionally specify a custom mime type as third parameter. If set
+     * it will be used, but not verified, that it matches the actual file
+     * contents. If left empty the mime type defaults to
+     * 'application/octet-stream'.
      * 
      * @param string $fileName 
      * @param string $name
+     * @param string $mimeType
      * @return void
      */
-    public function attachFile( $fileName, $name = false )
+    public function attachFile( $fileName, $name = false, $mimeType = false )
     {
         $name = ( $name === false ? basename( $fileName ) : $name );
         $this->storage->_attachments[$name] = array(
-            'type' => 'base64',
-            'data' => base64_encode( file_get_contents( $fileName ) ),
+            'type'         => 'base64',
+            'data'         => base64_encode( file_get_contents( $fileName ) ),
+            'content_type' => $mimeType === false ? 'application/octet-stream' : $mimeType,
         );
         $this->modified = true;
     }

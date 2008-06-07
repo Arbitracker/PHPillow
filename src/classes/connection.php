@@ -350,7 +350,7 @@ class phpillowConnection
         if ( $this->options['http-log'] !== false )
         {
             $fp = fopen( $this->options['http-log'], 'a' );
-            fwrite( $fp, $request );
+            fwrite( $fp, "\n\n" . $request );
         }
 
         // Read server response headers
