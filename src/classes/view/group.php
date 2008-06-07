@@ -47,8 +47,6 @@ class phpillowGroupView extends phpillowView
 }',
         // Fetch all rights of one user, which is defined by the groups a user
         // belongs to.
-        //
-        // @TODO: The future CouchDB feature reduce() will help a lot here.
         'user_permissions' => 'function( doc )
 {
     if ( doc.type == "group" )
@@ -61,6 +59,50 @@ class phpillowGroupView extends phpillowView
             }
         }
     }
+}',
+        // Fetch all rights of one user, which is defined by the groups a user
+        // belongs to.
+        'user_permissions_reduced' => 'function( doc )
+{
+    if ( doc.type == "group" )
+    {
+        for ( var i = 0; i < doc.users.length; ++i )
+        {
+            for ( var j = 0; j < doc.permissions.length; ++j )
+            {
+                emit( doc.users[i], doc.permissions[j] );
+            }
+        }
+    }
+}',
+    );
+
+    /**
+     * Reduce function for a view function.
+     *
+     * A reduce function may be used to aggregate / reduce the results
+     * calculated by a view function. See the CouchDB documentation for more
+     * results: @TODO: Not yet documented.
+     *
+     * Each view reduce function MUST have a view definition with the same
+     * name, otherwise there is nothing to reduce.
+     * 
+     * @var array
+     */
+    protected $viewReduces = array(
+        'user_permissions_reduced' => 'function( keys, values )
+{
+    var reduced = {};
+    for ( var i = 0; i < keys.length; ++i )
+    {
+        if ( !reduced[keys[i][0]] )
+        {
+            reduced[keys[i][0]] = {};
+        }
+
+        reduced[keys[i][0]][values[i]] = true;
+    }
+    return reduced;
 }',
     );
 

@@ -58,6 +58,20 @@ abstract class phpillowView extends phpillowDocument
     protected $viewDefinitions = array();
 
     /**
+     * Reduce function for a view function.
+     *
+     * A reduce function may be used to aggregate / reduce the results
+     * calculated by a view function. See the CouchDB documentation for more
+     * results: @TODO: Not yet documented.
+     *
+     * Each view reduce function MUST have a view definition with the same
+     * name, otherwise there is nothing to reduce.
+     * 
+     * @var array
+     */
+    protected $viewReduces = array();
+
+    /**
      * Construct new document
      * 
      * Construct new document
@@ -275,6 +289,13 @@ abstract class phpillowView extends phpillowDocument
         foreach ( $this->viewDefinitions as $name => $function )
         {
             $views[$name]['map'] = $function;
+
+            // Check if there is also a reduce function for the given view
+            // function.
+            if ( isset( $this->viewReduces[$name] ) )
+            {
+                $views[$name]['reduce'] = $this->viewReduces[$name];
+            }
         }
 
         $view->views = $views;

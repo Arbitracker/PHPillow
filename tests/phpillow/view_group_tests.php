@@ -97,5 +97,53 @@ class phpillowGroupViewTests extends phpillowDataTestCase
             $permissions
         );
     }
+
+    public function testFetchUsersPermissionsReduce()
+    {
+        $results = phpillowGroupView::user_permissions_reduced( array( 
+            'key' => 'kore'
+        ) );
+
+        $this->assertEquals(
+            array(
+                'kore' => array(
+                    'close_bug'  => true,
+                    'open_bug'   => true,
+                    'view_bug'   => true,
+                    'delete_bug' => true,
+                ),
+            ),
+            $results->rows[0]['value']
+        );
+    }
+
+    public function testFetchUsersPermissionsReduceNewGroup()
+    {
+        $doc = phpillowGroupTestDocument::createNew();
+        $doc->name = 'new_group';
+        $doc->permissions = array( 'blubb' );
+        $doc->users = array( 'kore' );
+        $doc->save();
+
+        $results = phpillowGroupView::user_permissions_reduced();
+
+        $this->assertEquals(
+            array(
+                'norro' => array(
+                    'close_bug'  => true,
+                    'open_bug'   => true,
+                    'view_bug'   => true,
+                ),
+                'kore' => array(
+                    'blubb'      => true,
+                    'close_bug'  => true,
+                    'open_bug'   => true,
+                    'view_bug'   => true,
+                    'delete_bug' => true,
+                ),
+            ),
+            $results->rows[0]['value']
+        );
+    }
 }
 
