@@ -9,9 +9,9 @@ __ http://couchdb.org/
 Prerequisites
 =============
 
-The following prerequisites must be fullfilled to use PHPillow:
+The following prerequisites must be fulfilled to use PHPillow:
 
-- A running CouchDB installion from current trunk.
+- A running CouchDB installation from current trunk.
 
   We already adapted the library to the current changes for 0.8, so that it
   won't work any more with the latest released version 0.7.2.
@@ -19,7 +19,7 @@ The following prerequisites must be fullfilled to use PHPillow:
 - PHP 5.3
 
   Since this is a wrapper for alpha software, which won't be stable really soon
-  and some of the features in PHP 5.3 (LSB) are usefull for the implementation,
+  and some of the features in PHP 5.3 (LSB) are useful for the implementation,
   we decided to work with PHP 5.3 as a prerequisite. It won't run and won't be
   ported to any older version of PHP. Don't even think of PHP 4.
 
@@ -31,13 +31,13 @@ State
 The library will stay in an alpha state at least as long as CouchDB is still
 alpha. We do not know about changes in API or storage mechanisms in CouchDB, so
 that we can't guarantee that the PHPillow API will stay completely stable, but
-we will try to keep backwards compability.
+we will try to keep backwards compatibility.
 
 License
 =======
 
-For the license we choosed the LGPL 3 as a license. This license gives you a
-lot rights on the source code with limitations we know and choosed
+For the license we have chosen the LGPL 3 as a license. This license gives you
+a lot rights on the source code with limitations we know and have chosen
 intentionally.
 
 Contributing
@@ -82,5 +82,5 @@ found at docs/tutorial.txt and a speed test which is a working script using the
 wrapper.
 
 You may also find example documents and views in the document/ and view/
-folders, which you may use as a starting oint for you implementations.
+folders, which you may use as a starting point for you implementations.
 
