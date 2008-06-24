@@ -1,0 +1,16 @@
+Changelog 0.2-alpha, $date, $revision
+------------------------------------------------------------------------------
+
+Changelog 0.1-alpha, 24.07.08, revision 36
+------------------------------------------------------------------------------
+
+- Implemented: Support for reduce
+- Implemented: Always return associative arrays instead of StdClass objects
+- Implemented: Store manually specified mime type for attachements.
+- Implemented: Specify attachment name
+- Implemented: Support for attachments in documents
+- Implemented: Option to log raw HTTP messages
+- Implemented: Handling of HTTP 1.1 Keep-Alive connections and chunked transfer
+  encoding.
+- Implemented: View API changes for CouchDB 0.8
+
