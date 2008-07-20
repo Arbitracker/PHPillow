@@ -256,14 +256,17 @@ abstract class phpillowDocument
      *
      * Composes the document ID out of the document type and the generated ID
      * for the current document.
+     *
+     * If null is provided as an ID, we keep this value and do not cstruct
+     * something else, to let the server autogenerate some ID.
      * 
      * @param string $type 
-     * @param string $id 
-     * @return string
+     * @param mixed $id 
+     * @return mixed
      */
     protected static function getDocumentId( $type, $id )
     {
-        return $type . '-' . $id;
+        return ( $id === null ? null : $type . '-' . $id );
     }
 
     /**
@@ -365,8 +368,10 @@ abstract class phpillowDocument
      * and return false. If the document has been been modified, the modified
      * document will be stored in the database, keeping all the old revision
      * intact and return true on success.
+     *
+     * On successful creation the (generated) ID will be returned.
      * 
-     * @return bool
+     * @return string
      */
     public function save()
     {
@@ -398,14 +403,28 @@ abstract class phpillowDocument
             unset( $this->storage->_attachments );
         }
 
-        // Store document in database
+        // If the document ID is null, the server should autogenerate some ID,
+        // but for this we need to use a different request method.
         $db = phpillowConnection::getInstance();
-        $db->put(
-            phpillowConnection::getDatabase() . urlencode( $this->_id ),
-            json_encode( $this->storage )
-        );
+        if ( $this->storage->_id === null )
+        {
+            // Store document in database
+            unset( $this->storage->_id );
+            $response = $db->post(
+                phpillowConnection::getDatabase(),
+                json_encode( $this->storage )
+            );
+        }
+        else
+        {
+            // Store document in database
+            $response = $db->put(
+                phpillowConnection::getDatabase() . urlencode( $this->_id ),
+                json_encode( $this->storage )
+            );
+        }
 
-        return true;
+        return $this->storage->_id = $response->id;
     }
 
     /**

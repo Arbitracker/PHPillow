@@ -55,6 +55,14 @@ class phpillowGroupTestDocument extends phpillowGroupDocument
     }
 }
 
+class phpillowTestNullIdDocument extends phpillowUserDocument
+{
+    protected function generateId()
+    {
+        return null;
+    }
+}
+
 class phpillowViewTestPublic extends phpillowView
 {
     public function buildViewQuery( array $options )
