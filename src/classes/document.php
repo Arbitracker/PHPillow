@@ -388,14 +388,15 @@ abstract class phpillowDocument
         }
 
         // Check if we need to store the stuff at all
-        if ( $this->modified === false )
+        if ( ( $this->modified === false ) &&
+             ( $this->newDocument !== true ) )
         {
             return false;
         }
 
         // Generate a new ID, if this is a new document, otherwise reuse the
         // existing document ID.
-        if ( $this->newDocument == true )
+        if ( $this->newDocument === true )
         {
             $this->storage->_id = static::getDocumentId( static::$type, $this->generateId() );
         }

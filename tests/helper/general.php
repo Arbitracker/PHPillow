@@ -57,6 +57,8 @@ class phpillowGroupTestDocument extends phpillowGroupDocument
 
 class phpillowTestNullIdDocument extends phpillowUserDocument
 {
+    protected $requiredProperties = array();
+
     protected function generateId()
     {
         return null;

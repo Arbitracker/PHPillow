@@ -118,6 +118,16 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCreateNewDocumentWithoutProperties()
+    {
+        $doc = phpillowTestNullIdDocument::createNew();
+        $doc->save();
+
+        $this->assertTrue(
+            (bool) preg_match( '(^[a-f0-9]+$)', $doc->_id )
+        );
+    }
+
     public function testFetchDocumentByEmptyId()
     {
         try
