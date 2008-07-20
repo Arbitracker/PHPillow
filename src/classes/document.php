@@ -324,8 +324,11 @@ abstract class phpillowDocument
      * The ID normally should be calculated on some meaningful / unique
      * property for the current ttype of documents. The returned string should
      * not be too long and should not contain multibyte characters.
+     *
+     * You can return null instead of an ID string, to trigger the ID
+     * autogeneration.
      * 
-     * @return string
+     * @return mixed
      */
     abstract protected function generateId();
 
