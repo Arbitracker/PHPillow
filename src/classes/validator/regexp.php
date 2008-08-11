@@ -51,6 +51,7 @@ class phpillowRegexpValidator extends phpillowValidator
     {
         $this->regexp = $regexp;
     }
+
     /**
      * Validate input string against a regexp
      *

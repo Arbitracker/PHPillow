@@ -66,6 +66,77 @@ class phpillowValidatorTests extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIntegerValidator()
+    {
+        $validator = new phpillowIntegerValidator();
+
+        $this->assertSame(
+            23,
+            $validator->validate( 23 )
+        );
+
+        $this->assertSame(
+            -23,
+            $validator->validate( -23 )
+        );
+
+        $this->assertSame(
+            23,
+            $validator->validate( 23.5 )
+        );
+
+        $this->assertSame(
+            23,
+            $validator->validate( '23' )
+        );
+    }
+
+    public function testIntegerValidatorBoundings1()
+    {
+        $validator = new phpillowIntegerValidator( 0 );
+
+        $this->assertSame(
+            23,
+            $validator->validate( 23 )
+        );
+
+        try
+        {
+            $validator->validate( -23 );
+            $this->fail( 'Expected phpillowValidationException.' );
+        }
+        catch ( phpillowValidationException $e )
+        {
+            $this->assertSame(
+                'Input value %input is not bigger or equal then %minimum.',
+                $e->getText()
+            );
+        }
+    }
+
+    public function testIntegerValidatorBoundings2()
+    {
+        $validator = new phpillowIntegerValidator( false, 0 );
+
+        $this->assertSame(
+            - 23,
+            $validator->validate( -23 )
+        );
+
+        try
+        {
+            $validator->validate( 23 );
+            $this->fail( 'Expected phpillowValidationException.' );
+        }
+        catch ( phpillowValidationException $e )
+        {
+            $this->assertSame(
+                'Input value %input is not lesser or equal then %maximum.',
+                $e->getText()
+            );
+        }
+    }
+
     public function testArrayValidator()
     {
         $validator = new phpillowArrayValidator();
