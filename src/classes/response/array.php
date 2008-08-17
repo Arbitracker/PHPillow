@@ -18,18 +18,31 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @version $Revision$
+ * @version $Revision: 33 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
 /**
- * Result set response
+ * Array response
+ *
+ * Response class used, when CouchDB only returned an array, like for database
+ * lists.
  *
  * @package Core
- * @version $Revision$
+ * @version $Revision: 33 $
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowResultSetResponse extends phpillowResponse
+class phpillowArrayResponse extends phpillowResponse
 {
+    /**
+     * Construct response object from response array
+     * 
+     * @param array $contentType 
+     * @return void
+     */
+    public function __construct( array $response )
+    {
+        $this->properties['data'] = $response;
+    }
 }
 

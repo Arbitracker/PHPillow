@@ -54,6 +54,16 @@ class phpillowResponse
     }
 
     /**
+     * Get full document
+     * 
+     * @return array
+     */
+    public function getFullDocument()
+    {
+        return $this->properties;
+    }
+
+    /**
      * Get available property
      *
      * Receive response object property, if available. If the property is not

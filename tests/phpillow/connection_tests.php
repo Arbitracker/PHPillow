@@ -408,6 +408,26 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testArrayResponse()
+    {
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
+        $db = phpillowConnection::getInstance();
+
+        $response = $db->get( '/_all_dbs' );
+
+        $this->assertTrue(
+            $response instanceof phpillowArrayResponse
+        );
+
+        $this->assertTrue(
+            is_array( $response->data )
+        );
+
+        $this->assertTrue(
+            in_array( 'test', $response->data )
+        );
+    }
+
     public function testCloseConnection()
     {
         phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );

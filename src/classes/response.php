@@ -77,6 +77,10 @@ class phpillowResponseFactory
                 {
                     return new phpillowDataResponse( $headers['content-type'], $response );
                 }
+                elseif ( $body[0] === '[' )
+                {
+                    return new phpillowArrayResponse( $response );
+                }
                 elseif ( isset( $response->_id ) )
                 {
                     return new phpillowResponse( $response );

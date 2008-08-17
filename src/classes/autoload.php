@@ -47,6 +47,7 @@ return array(
     'phpillowManager'                        => 'classes/manager.php',
     'phpillowResponseFactory'                => 'classes/response.php',
     'phpillowResponse'                       => 'classes/response/base.php',
+    'phpillowArrayResponse'                  => 'classes/response/array.php',
     'phpillowDataResponse'                   => 'classes/response/data.php',
     'phpillowResultSetResponse'              => 'classes/response/result.php',
     'phpillowStatusResponse'                 => 'classes/response/status.php',
