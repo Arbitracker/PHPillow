@@ -1,5 +1,17 @@
-Changelog 0.2-alpha, $date, $revision
+Changelog 0.3-alpha, $date, $revision
 ------------------------------------------------------------------------------
+
+Changelog 0.2-alpha, 17.08.08, revision 46
+------------------------------------------------------------------------------
+
+- Implemented: Trigger CouchDBs ID autogeneration, when ID generator returns
+  null
+- Implemented: Store new documents, even no properties were set.
+- Implemented: Integer validator
+- Implemented: Array response for CouchDB database listings
+- Implemented: Script to backup and restore database independant from CouchDBs
+  storage file format.
+
 
 Changelog 0.1-alpha, 24.07.08, revision 36
 ------------------------------------------------------------------------------
