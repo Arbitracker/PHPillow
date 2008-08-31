@@ -344,7 +344,16 @@ class phpillowConnection
         $this->checkConnection();
 
         // Send the build request to the server
-        fwrite( $this->connection, $request = $this->buildRequest( $method, $path, $data ) );
+        if ( fwrite( $this->connection, $request = $this->buildRequest( $method, $path, $data ) ) === false )
+        {
+            // Reestablish which seems to have been aborted
+            //
+            // The recursion in this method might be problematic if the
+            // connection establishing mechanism does not correctly throw an
+            // exception on failure.
+            $this->connection = null;
+            return $this->request( $method, $path, $data, $raw );
+        }
 
         // If requested log request information to http log
         if ( $this->options['http-log'] !== false )
@@ -378,6 +387,19 @@ class phpillowConnection
             }
         }
 
+        // Check if connection has been aborted by the server
+        if ( ( $line === false ) ||
+             ( $rawHeaders === '' ) )
+        {
+            // Reestablish which seems to have been aborted
+            //
+            // The recursion in this method might be problematic if the
+            // connection establishing mechanism does not correctly throw an
+            // exception on failure.
+            $this->connection = null;
+            return $this->request( $method, $path, $data, $raw );
+        }
+
         // Read response body
         $body = '';
         if ( !isset( $headers['transfer-encoding'] ) ||
@@ -385,9 +407,7 @@ class phpillowConnection
         {
             // HTTP 1.1 supports chunked transfer encoding, if the according
             // header is not set, just read the specified amount of bytes.
-            //
-            // @TODO: Maybe also handle missing content-length header.
-            $bytesToRead = (int) $headers['content-length'];
+            $bytesToRead = (int) ( isset( $headers['content-length'] ) ? $headers['content-length'] : 0 );
 
             // Read body only as specified by chunk sizes, everything else
             // are just footnotes, which are not relevant for us.
