@@ -375,7 +375,7 @@ class phpillowConnection
             $rawHeaders .= $line . "\n";
 
             // Extract header values
-            if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))', $line, $match ) )
+            if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))S', $line, $match ) )
             {
                 $headers['version'] = $match['version'];
                 $headers['status']  = (int) $match['status'];
@@ -433,13 +433,14 @@ class phpillowConnection
 
                     // Read body only as specified by chunk sizes, everything else
                     // are just footnotes, which are not relevant for us.
-                    while ( $bytesToRead > 0 )
+                    $bytesLeft = $bytesToRead;
+                    while ( $bytesLeft > 0 )
                     {
-                        $body .= $read = fgets( $this->connection, $bytesToRead + 3 );
-                        $bytesToRead -= strlen( $read );
+                        $body .= $read = fgets( $this->connection, $bytesLeft + 3 );
+                        $bytesLeft -= strlen( $read );
                     }
                 }
-            } while ( $line !== '' );
+            } while ( $bytesToRead > 0 );
         }
 
         // Reset the connection if the server asks for it.

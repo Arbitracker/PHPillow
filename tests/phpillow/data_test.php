@@ -94,7 +94,13 @@ class phpillowDataTestCase extends PHPUnit_Framework_TestCase
     {
         // Remove / clear test database
         $db = phpillowConnection::getInstance();
-        $db->delete( '/test' );
+
+        try
+        {
+            $db->delete( '/test' );
+        }
+        catch ( phpillowResponseNotFoundErrorException $e )
+        { /* Ignore */ }
 
         phpillowConnectionTestHelper::reset();
     }
