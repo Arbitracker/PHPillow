@@ -94,6 +94,23 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetAttachementFromBackendReadAfter()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->attachFile( $file = __DIR__ . '/data/image_png.png' );
+        $doc->save();
+        
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $response = $doc->getFile( 'image_png.png' );
+
+        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $this->assertSame(
+            'kore',
+            $doc->login
+        );
+    }
+
     public function testOverwriteAttachment()
     {
         $db = phpillowConnection::getInstance();
