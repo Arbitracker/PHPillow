@@ -369,8 +369,14 @@ class phpillowConnection
         );
 
         while ( ( ( $line = rtrim( fgets( $this->connection ) ) ) !== '' ) ||
-                ( $headers === array() ) ) 
+                ( $rawHeaders === '' ) ) 
         {
+            // Skip leading empty lines
+            if ( $line === '' )
+            {
+                continue;
+            }
+
             // Also store raw headers for later logging
             $rawHeaders .= $line . "\n";
 
@@ -385,19 +391,6 @@ class phpillowConnection
                 list( $key, $value ) = explode( ':', $line, 2 );
                 $headers[strtolower( $key )] = ltrim( $value );
             }
-        }
-
-        // Check if connection has been aborted by the server
-        if ( ( $line === false ) ||
-             ( $rawHeaders === '' ) )
-        {
-            // Reestablish which seems to have been aborted
-            //
-            // The recursion in this method might be problematic if the
-            // connection establishing mechanism does not correctly throw an
-            // exception on failure.
-            $this->connection = null;
-            return $this->request( $method, $path, $data, $raw );
         }
 
         // Read response body
