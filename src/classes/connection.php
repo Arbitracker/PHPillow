@@ -368,30 +368,34 @@ class phpillowConnection
             'connection' => ( $this->options['keep-alive'] ? 'Keep-Alive' : 'Close' ),
         );
 
-        while ( ( ( $line = rtrim( fgets( $this->connection ) ) ) !== '' ) ||
-                ( $rawHeaders === '' ) ) 
-        {
-            // Skip leading empty lines
-            if ( $line === '' )
-            {
-                continue;
-            }
+        // Remove leading newlines, should not accur at all, actually.
+        while ( ( ( $line = fgets( $this->connection ) ) !== false ) &&
+                ( ( $lineContent = rtrim( $line ) ) === '' ) );
 
+        // Thow exception, if connection has been aborted by the server, and
+        // leave handling to the user for now.
+        if ( $line === false )
+        {
+            throw new phpillowConnectionException( 'Connection abborted unexpectedly.', array() );
+        }
+
+        do {
             // Also store raw headers for later logging
-            $rawHeaders .= $line . "\n";
+            $rawHeaders .= $lineContent . "\n";
 
             // Extract header values
-            if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))S', $line, $match ) )
+            if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))S', $lineContent, $match ) )
             {
                 $headers['version'] = $match['version'];
                 $headers['status']  = (int) $match['status'];
             }
             else
             {
-                list( $key, $value ) = explode( ':', $line, 2 );
+                list( $key, $value ) = explode( ':', $lineContent, 2 );
                 $headers[strtolower( $key )] = ltrim( $value );
             }
-        }
+        }  while ( ( ( $line = fgets( $this->connection ) ) !== false ) &&
+                   ( ( $lineContent = rtrim( $line ) ) !== '' ) );
 
         // Read response body
         $body = '';
