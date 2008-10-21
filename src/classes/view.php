@@ -196,6 +196,7 @@ abstract class phpillowView extends phpillowDocument
                     $queryString .= $key . '=' . urlencode( (string) $value );
                     break;
 
+                case 'group':
                 case 'update':
                 case 'descending':
                     // These two values may only contain boolean values, passed
@@ -206,6 +207,7 @@ abstract class phpillowView extends phpillowDocument
 
                 case 'skip':
                 case 'count':
+                case 'group_level':
                     // Theses options accept integers defining the limits of
                     // the query. We try to typecast to int.
                     $queryString .= $key . '=' . ( (int) $value );
