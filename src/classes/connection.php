@@ -40,6 +40,7 @@ class phpillowConnection
         'host'       => 'localhost',
         'port'       => 5984,
         'ip'         => '127.0.0.1',
+        'timeout'    => .01,
         'keep-alive' => true,
         'http-log'   => false,
     );
@@ -313,6 +314,7 @@ class phpillowConnection
                         'content'       => $data,
                         'ignore_errors' => true,
                         'user_agent'    => 'PHPillow $Revision$',
+                        'timeout'       => $this->options['timeout'],
                     ),
                 )
             )
