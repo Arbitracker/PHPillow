@@ -433,7 +433,7 @@ class phpillowConnection
                     $bytesLeft = $bytesToRead;
                     while ( $bytesLeft > 0 )
                     {
-                        $body .= $read = fgets( $this->connection, $bytesLeft + 3 );
+                        $body .= $read = fread( $this->connection, $bytesLeft + 2 );
                         $bytesLeft -= strlen( $read );
                     }
                 }
