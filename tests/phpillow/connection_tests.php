@@ -516,7 +516,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         $response = $db->get( '/test/123' );
 
         $this->assertTrue(
-            filesize( $logFile ) > 512
+            filesize( $logFile ) > 128
         );
     }
 

@@ -43,7 +43,7 @@ class phpillowDataResponse extends phpillowResponse
     public function __construct( $contentType, $body )
     {
         $this->properties['contentType'] = $contentType;
-        $this->properties['data']        = substr( $body, 0, -2 );
+        $this->properties['data']        = $body;
     }
 }
 
