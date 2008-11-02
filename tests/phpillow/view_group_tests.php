@@ -49,7 +49,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         ) );
 
         $this->assertSame(
-            7,
+            2,
             count( $results->rows )
         );
 
@@ -57,7 +57,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $permissions = array();
         foreach ( $results->rows as $row )
         {
-            $permissions[] = $row['value'];
+            $permissions = array_merge( $permissions, $row['value'] );
         }
 
         // Unique and sort for reproducability
@@ -77,7 +77,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         ) );
 
         $this->assertSame(
-            3,
+            1,
             count( $results->rows )
         );
 
@@ -85,7 +85,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $permissions = array();
         foreach ( $results->rows as $row )
         {
-            $permissions[] = $row['value'];
+            $permissions = array_merge( $permissions, $row['value'] );
         }
 
         // Unique and sort for reproducability
@@ -103,17 +103,17 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $results = phpillowGroupView::user_permissions_reduced( array( 
             'key' => 'kore'
         ) );
+        $permissions = $results->rows[0]['value'];
+        sort( $permissions );
 
         $this->assertEquals(
             array(
-                'kore' => array(
-                    'close_bug'  => true,
-                    'open_bug'   => true,
-                    'view_bug'   => true,
-                    'delete_bug' => true,
-                ),
+                'close_bug',
+                'delete_bug',
+                'open_bug',
+                'view_bug',
             ),
-            $results->rows[0]['value']
+            $permissions
         );
     }
 
@@ -126,23 +126,18 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $doc->save();
 
         $results = phpillowGroupView::user_permissions_reduced();
+        $permissions = $results->rows[0]['value'];
+        sort( $permissions );
 
         $this->assertEquals(
             array(
-                'norro' => array(
-                    'close_bug'  => true,
-                    'open_bug'   => true,
-                    'view_bug'   => true,
-                ),
-                'kore' => array(
-                    'blubb'      => true,
-                    'close_bug'  => true,
-                    'open_bug'   => true,
-                    'view_bug'   => true,
-                    'delete_bug' => true,
-                ),
+                'blubb',
+                'close_bug',
+                'delete_bug',
+                'open_bug',
+                'view_bug',
             ),
-            $results->rows[0]['value']
+            $permissions
         );
     }
 }

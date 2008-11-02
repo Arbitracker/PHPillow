@@ -53,10 +53,7 @@ class phpillowGroupView extends phpillowView
     {
         for ( var i = 0; i < doc.users.length; ++i )
         {
-            for ( var j = 0; j < doc.permissions.length; ++j )
-            {
-                emit( doc.users[i], doc.permissions[j] );
-            }
+            emit( doc.users[i], doc.permissions );
         }
     }
 }',
@@ -92,17 +89,15 @@ class phpillowGroupView extends phpillowView
     protected $viewReduces = array(
         'user_permissions_reduced' => 'function( keys, values )
 {
-    var reduced = {};
-    for ( var i = 0; i < keys.length; ++i )
+    var permissions = [];
+    for ( var i = 0; i < values.length; ++i )
     {
-        if ( !reduced[keys[i][0]] )
+        if ( permissions.indexOf( values[i] ) == -1 )
         {
-            reduced[keys[i][0]] = {};
+            permissions.push( values[i] );
         }
-
-        reduced[keys[i][0]][values[i]] = true;
     }
-    return reduced;
+    return permissions;
 }',
     );
 
