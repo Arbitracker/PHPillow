@@ -218,8 +218,8 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         {
             $this->assertSame(
                 array( 
-                    'error'  => 'database_already_exists',
-                    'reason' => 'Database "test" already exists.',
+                    'error'  => 'file_exists',
+                    'reason' => 'The database could not becreated, the file already exists.',
                 ),
                 $e->getResponse()
             );
