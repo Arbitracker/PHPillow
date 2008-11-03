@@ -25,6 +25,8 @@
 /**
  * Basic couch DB connection handling class
  *
+ * Default connection ahndler using PHPs stream wrappers.
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
@@ -58,14 +60,6 @@ class phpillowConnection
      * @var phpillowConnection
      */
     protected static $instance = null;
-
-    /**
-     * Connection pointer for connections, once keep alive is working on the
-     * CouchDb side.
-     * 
-     * @var resource
-     */
-    protected $connection;
 
     /**
      * Array containing the list of allowed HTTP methods to interact with couch
@@ -153,7 +147,7 @@ class phpillowConnection
 
         // Create connection and store it in static property to be accessible
         // by static getInstance() method.
-        self::$instance = new phpillowConnection( $host, $port );
+        self::$instance = new static( $host, $port );
     }
 
     /**
@@ -260,34 +254,6 @@ class phpillowConnection
 
         // Finally perform request and return the result from the server
         return $this->request( $method, $path, $data, $raw );
-    }
-
-    /**
-     * Check for server connection
-     *
-     * Checks if the connection already has been established, or tries to
-     * establish the connection, if not done yet.
-     * 
-     * @return void
-     */
-    protected function checkConnection()
-    {
-        // If the connection could not be established, fsockopen sadly does not
-        // only return false (as documented), but also always issues a warning.
-        if ( ( $this->connection === null ) &&
-             ( ( $this->connection = fsockopen( $this->options['ip'], $this->options['port'], $errno, $errstr ) ) === false ) )
-        {
-            // This is a bit hackisch...
-            throw new phpillowConnectionException(
-                "Could not connect to server at %ip:%port: '%errno: %error'",
-                array(
-                    'ip'    => $this->options['ip'],
-                    'port'  => $this->options['port'],
-                    'error' => $errstr,
-                    'errno' => $errno,
-                )
-            );
-        }
     }
 
     /**
