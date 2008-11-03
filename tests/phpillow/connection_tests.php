@@ -181,7 +181,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         catch ( PHPUnit_Framework_Error $e )
         {
             $this->assertSame(
-                'fsockopen(): unable to connect to 127.0.0.1:12345 (Connection refused)',
+                'fopen(): Couldn\'t connect to server',
                 $e->getMessage()
             );
         }

@@ -272,7 +272,7 @@ class phpillowConnection
     protected function request( $method, $path, $data, $raw = false )
     {
         $httpFilePointer = fopen(
-            $url = 'http://' . $this->options['host']  . ':5984' . $path, 'r', false,
+            $url = 'http://' . $this->options['host']  . ':' . $this->options['port'] . $path, 'r', false,
             stream_context_create(
                 array(
                     'http' => array(
