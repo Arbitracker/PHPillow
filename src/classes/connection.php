@@ -294,7 +294,9 @@ class phpillowConnection
         }
         
         $metaData   = stream_get_meta_data( $httpFilePointer );
-        $rawHeaders = $metaData['wrapper_data']['headers'];
+        // @TODO: This seems to have changed in last CVS versions of PHP 5.3,
+        // should be removeable, once there is a next release of PHP 5.3
+        $rawHeaders = isset( $metaData['wrapper_data']['headers'] ) ? $metaData['wrapper_data']['headers'] : $metaData['wrapper_data'];
         $headers    = array();
 
         foreach ( $rawHeaders as $lineContent )
