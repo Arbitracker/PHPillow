@@ -16,6 +16,11 @@ class phpillowConnectionTestHelper extends phpillowConnection
         self::$instance = null;
         self::$database = null;
     }
+
+    protected function request( $method, $path, $data, $raw = false )
+    {
+        return null;
+    }
 }
 
 /**

@@ -96,6 +96,7 @@ class phpillowCustomConnection extends phpillowConnection
         // of the request.
         if ( $data !== null )
         {
+            $request .= "Content-type: application/json\r\n";
             $request .= "Content-Length: " . strlen( $data ) . "\r\n\r\n";
             $request .= "$data\r\n";
         }
@@ -220,6 +221,9 @@ class phpillowCustomConnection extends phpillowConnection
                     }
                 }
             } while ( $bytesToRead > 0 );
+
+            // Chop off \r\n from the end.
+            $body = substr( $body, 0, -2 );
         }
 
         // Reset the connection if the server asks for it.

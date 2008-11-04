@@ -48,20 +48,30 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testReCreateDefaultInstance()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
 
         try
         {
-            phpillowConnection::createInstance();
+            phpillowCustomConnection::createInstance();
             $this->fail( 'Expected phpillowConnectionException.' );
         }
         catch ( phpillowConnectionException $e )
         { /* Expected exception */ }
     }
 
+    public function testGetExtendedConnectionHandler()
+    {
+        phpillowCustomConnection::createInstance();
+
+        $this->assertTrue(
+            phpillowConnection::getInstance() instanceof phpillowCustomConnection,
+            'Expected instance of phpillowCustomConnection.'
+        );
+    }
+
     public function testSetAndGetDatabase()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
 
         phpillowConnection::setDatabase( 'test' );
 
@@ -73,7 +83,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testGetNotSetDatabase()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
 
         try
         {
@@ -84,9 +94,9 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         { /* Expected exception */ }
     }
 
-    public function testCreateDefaultInstance()
+    public function testDefaultInstanceOptions()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
 
         $instance = phpillowConnection::getInstance();
 
@@ -107,7 +117,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateNonDefaultInstance()
+    public function testCreateDefaultInstance()
     {
         phpillowConnection::createInstance( 'example.com', '80' );
 
@@ -117,22 +127,36 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
             $instance instanceof phpillowConnection
         );
 
-        $this->assertAttributeSame(
-            array(
-                'host'       => 'example.com',
-                'port'       => 80,
-                'ip'         => '127.0.0.1',
-                'timeout'    => .01,
-                'keep-alive' => true,
-                'http-log'   => false,
-            ),
-            'options', $instance
+        $this->assertTrue(
+            $instance instanceof phpillowCustomConnection
+        );
+    }
+
+    public function testCreateNonDefaultInstance()
+    {
+        phpillowCustomConnection::createInstance( 'example.com', '80' );
+
+        $instance = phpillowConnection::getInstance();
+
+        $this->assertTrue(
+            $instance instanceof phpillowCustomConnection
+        );
+    }
+
+    public function testCreateNonDefaultStreamInstance()
+    {
+        phpillowStreamConnection::createInstance( 'example.com', '80' );
+
+        $instance = phpillowConnection::getInstance();
+
+        $this->assertTrue(
+            $instance instanceof phpillowStreamConnection
         );
     }
 
     public function testSingletonIsSingleton()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
 
         $this->assertSame(
             phpillowConnection::getInstance(),
@@ -142,7 +166,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testUnsupportedMethod()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
         $db = phpillowConnection::getInstance();
 
         try
@@ -156,7 +180,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testInvalidPath()
     {
-        phpillowConnection::createInstance();
+        phpillowCustomConnection::createInstance();
         $db = phpillowConnection::getInstance();
 
         try
@@ -167,360 +191,5 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         catch ( phpillowInvalidRequestException $e )
         { /* Expected exception */ }
     }
-
-    public function testNoConnectionPossible()
-    {
-        phpillowConnection::createInstance( '127.0.0.1', 12345 );
-        $db = phpillowConnection::getInstance();
-
-        try
-        {
-            $response = $db->get( '/test' );
-            $this->fail( 'Expected phpillowConnectionException.' );
-        }
-        catch ( PHPUnit_Framework_Error $e )
-        {
-            $this->assertSame(
-                'fopen(): Couldn\'t connect to server',
-                $e->getMessage()
-            );
-        }
-    }
-
-    public function testCreateDatabase()
-    {
-        phpillowConnection::createInstance();
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->put( '/test' );
-
-        $this->assertTrue(
-            $response instanceof phpillowStatusResponse
-        );
-
-        $this->assertSame(
-            true,
-            $response->ok
-        );
-    }
-
-    public function testForErrorOnDatabaseRecreation()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        try
-        {
-            $response = $db->put( '/test' );
-            $this->fail( 'Expected phpillowResponseErrorException.' );
-        }
-        catch ( phpillowResponseErrorException $e )
-        {
-            $this->assertSame(
-                array( 
-                    'error'  => 'file_exists',
-                    'reason' => 'The database could not becreated, the file already exists.',
-                ),
-                $e->getResponse()
-            );
-        }
-    }
-
-    public function testGetDatabaseInformation()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->get( '/' );
-
-        $this->assertTrue(
-            $response instanceof phpillowResponse
-        );
-
-        $this->assertSame(
-            'Welcome',
-            $response->couchdb
-        );
-    }
-
-    public function testAddDocumentToDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-
-        $this->assertTrue(
-            $response instanceof phpillowStatusResponse
-        );
-
-        $this->assertSame(
-            true,
-            $response->ok
-        );
-    }
-
-    public function testGetAllDocsFormDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-        $response = $db->get( '/test/_all_docs' );
-
-        $this->assertTrue(
-            $response instanceof phpillowResultSetResponse
-        );
-
-        $this->assertSame(
-            1,
-            $response->total_rows
-        );
-
-        $this->assertSame(
-            '123',
-            $response->rows[0]['id']
-        );
-    }
-
-    public function testGetSingleDocumentFromDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-        $response = $db->get( '/test/123' );
-
-        $this->assertTrue(
-            $response instanceof phpillowResponse
-        );
-
-        $this->assertSame(
-            '123',
-            $response->_id
-        );
-
-        try
-        {
-            $response->unknownProperty;
-            $this->fail( 'Expected phpillowNoSuchPropertyException.' );
-        }
-        catch ( phpillowNoSuchPropertyException $e )
-        { /* Expected exception */ }
-
-        $this->assertTrue(
-            isset( $response->_id )
-        );
-
-        $this->assertFalse(
-            isset( $response->unknownProperty )
-        );
-
-        $response->_id = 'foo';
-        $this->assertSame(
-            '123',
-            $response->_id
-        );
-    }
-
-    public function testGetUnknownDocumentFromDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        try
-        {
-            $response = $db->get( '/test/not_existant' );
-            $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
-        }
-        catch ( phpillowResponseNotFoundErrorException $e )
-        { /* Expected exception */ }
-    }
-
-    public function testGetDocumentFromNotExistantDatabase()
-    {
-        $this->markTestSkipped( 'It is currently not possible to detect from the CouchDB response, see: https://issues.apache.org/jira/browse/COUCHDB-41' );
-
-        phpillowConnection::createInstance();
-        phpillowConnection::setDatabase( 'test' );
-        $db = phpillowConnection::getInstance();
-
-        try
-        {
-            $response = $db->delete( '/test' );
-        }
-        catch ( phpillowResponseErrorException $e )
-        { /* Ignore */ }
-
-        try
-        {
-            $response = $db->get( '/test/not_existant' );
-            $this->fail( 'Expected phpillowDatabaseNotFoundErrorException.' );
-        }
-        catch ( phpillowDatabaseNotFoundErrorException $e )
-        { /* Expected exception */ }
-    }
-
-    public function testDeleteUnknownDocumentFromDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        try
-        {
-            $response = $db->delete( '/test/not_existant' );
-            $this->fail( 'Expected phpillowResponseErrorException.' );
-        }
-        catch ( phpillowResponseErrorException $e )
-        { /* Expected exception */ }
-    }
-
-    public function testDeleteSingleDocumentFromDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-        $response = $db->get( '/test/123' );
-        $db->delete( '/test/123?rev=' . $response->_rev );
-
-        try
-        {
-            $response = $db->get( '/test/123' );
-            $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
-        }
-        catch ( phpillowResponseNotFoundErrorException $e )
-        { /* Expected exception */ }
-    }
-
-    public function testDeleteDatabase()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->delete( '/test' );
-
-        $this->assertTrue(
-            $response instanceof phpillowStatusResponse
-        );
-
-        $this->assertSame(
-            true,
-            $response->ok
-        );
-    }
-
-    public function testArrayResponse()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->get( '/_all_dbs' );
-
-        $this->assertTrue(
-            $response instanceof phpillowArrayResponse
-        );
-
-        $this->assertTrue(
-            is_array( $response->data )
-        );
-
-        $this->assertTrue(
-            in_array( 'test', $response->data )
-        );
-    }
-
-    public function testGetFullResponseBody()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        $response = $db->get( '/_all_dbs' );
-
-        $body = $response->getFullDocument();
-
-        $this->assertTrue(
-            is_array( $body['data'] )
-        );
-
-        $this->assertTrue(
-            in_array( 'test', $body['data'] )
-        );
-    }
-
-    public function testCloseConnection()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-        $db->setOption( 'keep-alive', false );
-
-        $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-        $db->put( '/test/456', '{"_id":"456","data":"Foo"}' );
-        $db->put( '/test/789', '{"_id":"789","data":"Foo"}' );
-        $db->put( '/test/012', '{"_id":"012","data":"Foo"}' );
-
-        $response = $db->get( '/test/_all_docs' );
-
-        $this->assertTrue(
-            $response instanceof phpillowResultSetResponse
-        );
-
-        $this->assertSame(
-            4,
-            $response->total_rows
-        );
-    }
-
-    public function testKeepAliveConnection()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-        $db->setOption( 'keep-alive', true );
-
-        $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-        $db->put( '/test/456', '{"_id":"456","data":"Foo"}' );
-        $db->put( '/test/789', '{"_id":"789","data":"Foo"}' );
-        $db->put( '/test/012', '{"_id":"012","data":"Foo"}' );
-
-        $response = $db->get( '/test/_all_docs' );
-
-        $this->assertTrue(
-            $response instanceof phpillowResultSetResponse
-        );
-
-        $this->assertSame(
-            4,
-            $response->total_rows
-        );
-    }
-
-    public function testUnknownOption()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-
-        try
-        {
-            $db->setOption( 'unknownOption', 42 );
-            $this->fail( 'Expected phpillowOptionException.' );
-        }
-        catch( phpillowOptionException $e )
-        { /* Expected */ }
-    }
-
-    public function testHttpLog()
-    {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test' ) );
-        $db = phpillowConnection::getInstance();
-        $db->setOption( 'http-log', $logFile = tempnam( __DIR__ . '/../temp', __CLASS__ ) );
-
-        $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
-        $response = $db->get( '/test/123' );
-
-        $this->assertTrue(
-            filesize( $logFile ) > 128
-        );
-    }
-
 }
 

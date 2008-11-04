@@ -53,7 +53,10 @@ class phpillowTestEnvironmentSetup
     public static function resetDatabase( array $options = array() )
     {
         phpillowConnectionTestHelper::reset();
-        phpillowConnection::createInstance();
+
+        // Initilize wanted connection handler
+        $handler = isset( $options['handler'] ) ? $options['handler'] : 'phpillowConnection';
+        $handler::createInstance();
         $db = phpillowConnection::getInstance();
 
         try

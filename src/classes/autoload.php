@@ -31,6 +31,7 @@
 return array(
     'phpillowConnection'                     => 'classes/connection.php',
     'phpillowCustomConnection'               => 'classes/connection/custom.php',
+    'phpillowStreamConnection'               => 'classes/connection/stream.php',
     'phpillowDocument'                       => 'classes/document.php',
     'phpillowGroupDocument'                  => 'classes/document/group.php',
     'phpillowUserDocument'                   => 'classes/document/user.php',

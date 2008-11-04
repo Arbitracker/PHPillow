@@ -9,7 +9,7 @@
 /**
  * Tests for the basic model
  */
-class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
+class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 {
     /**
      * Return test suite
@@ -28,13 +28,13 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'handler' => 'phpillowStreamConnection' ) );
         phpillowTestEnvironmentSetup::resetTmpDir();
     }
 
     public function testNoConnectionPossible()
     {
-        phpillowCustomConnection::createInstance( '127.0.0.1', 12345 );
+        phpillowStreamConnection::createInstance( '127.0.0.1', 12345 );
         $db = phpillowConnection::getInstance();
 
         try
@@ -42,10 +42,10 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
             $response = $db->get( '/test' );
             $this->fail( 'Expected phpillowConnectionException.' );
         }
-        catch ( PHPUnit_Framework_Error $e )
+        catch ( phpillowConnectionException $e )
         {
             $this->assertSame(
-                'fsockopen(): unable to connect to 127.0.0.1:12345 (Connection refused)',
+                'Could not connect to server at 127.0.0.1:12345: fopen(http://127.0.0.1:12345/test): failed to open stream: Connection refused',
                 $e->getMessage()
             );
         }
@@ -53,7 +53,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testCreateDatabase()
     {
-        phpillowCustomConnection::createInstance();
+        phpillowStreamConnection::createInstance();
         $db = phpillowConnection::getInstance();
 
         $response = $db->put( '/test' );
@@ -70,7 +70,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testForErrorOnDatabaseRecreation()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         try
@@ -92,7 +92,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testGetDatabaseInformation()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->get( '/' );
@@ -109,7 +109,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testAddDocumentToDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
@@ -126,7 +126,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testGetAllDocsFormDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
@@ -149,7 +149,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testGetSingleDocumentFromDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
@@ -189,7 +189,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testGetUnknownDocumentFromDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         try
@@ -205,7 +205,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped( 'It is currently not possible to detect from the CouchDB response, see: https://issues.apache.org/jira/browse/COUCHDB-41' );
 
-        phpillowCustomConnection::createInstance();
+        phpillowStreamConnection::createInstance();
         phpillowConnection::setDatabase( 'test' );
         $db = phpillowConnection::getInstance();
 
@@ -227,7 +227,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testDeleteUnknownDocumentFromDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         try
@@ -241,7 +241,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testDeleteSingleDocumentFromDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
@@ -259,7 +259,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testDeleteDatabase()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->delete( '/test' );
@@ -276,7 +276,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testArrayResponse()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->get( '/_all_dbs' );
@@ -296,7 +296,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testGetFullResponseBody()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         $response = $db->get( '/_all_dbs' );
@@ -314,7 +314,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testCloseConnection()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
         $db->setOption( 'keep-alive', false );
 
@@ -337,7 +337,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testKeepAliveConnection()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
         $db->setOption( 'keep-alive', true );
 
@@ -360,7 +360,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testUnknownOption()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
 
         try
@@ -374,7 +374,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     public function testHttpLog()
     {
-        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
+        phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowStreamConnection' ) );
         $db = phpillowConnection::getInstance();
         $db->setOption( 'http-log', $logFile = tempnam( __DIR__ . '/../temp', __CLASS__ ) );
 

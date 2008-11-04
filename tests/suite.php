@@ -24,6 +24,7 @@ foreach ( $files as $class => $file )
 require 'phpillow/data_test.php';
 
 require 'phpillow/connection_tests.php';
+require 'phpillow/stream_connection_tests.php';
 require 'phpillow/custom_connection_tests.php';
 require 'phpillow/manager_tests.php';
 
@@ -55,6 +56,7 @@ class phpillowTestSuite extends PHPUnit_Framework_TestSuite
         $this->setName( 'phpillow - PHP CouchDB wrapper' );
 
         $this->addTest( phpillowConnectionTests::suite() );
+        $this->addTest( phpillowStreamConnectionTests::suite() );
         $this->addTest( phpillowCustomConnectionTests::suite() );
         $this->addTest( phpillowManagerTests::suite() );
 

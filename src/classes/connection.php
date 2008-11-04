@@ -31,7 +31,7 @@
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
-class phpillowConnection
+abstract class phpillowConnection
 {
     /**
      * CouchDB connection options
@@ -145,9 +145,16 @@ class phpillowConnection
             );
         }
 
+        // Deafult to custom connection, if root class has been called. This
+        // currently is the safer default.
+        if ( ( $called = get_called_class() ) === __CLASS__ )
+        {
+            $called = 'phpillowCustomConnection';
+        }
+
         // Create connection and store it in static property to be accessible
         // by static getInstance() method.
-        self::$instance = new static( $host, $port );
+        self::$instance = new $called( $host, $port );
     }
 
     /**
@@ -269,65 +276,6 @@ class phpillowConnection
      * @param string $data
      * @return phpillowResponse
      */
-    protected function request( $method, $path, $data, $raw = false )
-    {
-        $httpFilePointer = fopen(
-            $url = 'http://' . $this->options['host']  . ':' . $this->options['port'] . $path, 'r', false,
-            stream_context_create(
-                array(
-                    'http' => array(
-                        'method'        => $method,
-                        'content'       => $data,
-                        'ignore_errors' => true,
-                        'user_agent'    => 'PHPillow $Revision$',
-                        'timeout'       => $this->options['timeout'],
-                    ),
-                )
-            )
-        );
-
-        // Read request body
-        $body = '';
-        while ( !feof( $httpFilePointer ) )
-        {
-            $body .= fgets( $httpFilePointer );
-        }
-        
-        $metaData   = stream_get_meta_data( $httpFilePointer );
-        // @TODO: This seems to have changed in last CVS versions of PHP 5.3,
-        // should be removeable, once there is a next release of PHP 5.3
-        $rawHeaders = isset( $metaData['wrapper_data']['headers'] ) ? $metaData['wrapper_data']['headers'] : $metaData['wrapper_data'];
-        $headers    = array();
-
-        foreach ( $rawHeaders as $lineContent )
-        {
-            // Extract header values
-            if ( preg_match( '(^HTTP/(?P<version>\d+\.\d+)\s+(?P<status>\d+))S', $lineContent, $match ) )
-            {
-                $headers['version'] = $match['version'];
-                $headers['status']  = (int) $match['status'];
-            }
-            else
-            {
-                list( $key, $value ) = explode( ':', $lineContent, 2 );
-                $headers[strtolower( $key )] = ltrim( $value );
-            }
-        }
-
-        // If requested log response information to http log
-        if ( $this->options['http-log'] !== false )
-        {
-            file_put_contents( $this->options['http-log'],
-                sprintf( "Requested: %s\n\n%s\n\n%s\n\n",
-                    $url,
-                    implode( "\n", $rawHeaders ),
-                    $body
-                )
-            );
-        }
-
-        // Create repsonse object from couch db response
-        return phpillowResponseFactory::parse( $headers, $body, $raw );
-    }
+    abstract protected function request( $method, $path, $data, $raw = false );
 }
 
