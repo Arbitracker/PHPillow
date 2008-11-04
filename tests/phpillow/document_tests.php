@@ -51,43 +51,47 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
             in_array( 
                 $string = $document->stringToId( 'öäü' ),
                 array( 
+                    '_',
                     'oau', 
                     'oeaeue'
                 )
             ),
-            "String '$string' not in valid expectations."
+            "1 String '$string' not in valid expectations."
         );
 
         $this->assertTrue(
             in_array( 
                 $string = $document->stringToId( 'Žluťoučký kůň' ),
                 array( 
+                    '_lu_ou_k_k_', 
                     'zlutoucky_kun', 
                 )
             ),
-            "String '$string' not in valid expectations."
+            "2 String '$string' not in valid expectations."
         );
 
         $this->assertTrue(
             in_array( 
                 $string = $document->stringToId( '!"§$%&/(=)Ä\'Ö*``\'"' ),
                 array( 
+                    '_',
                     '_a_o_',
                     '_ae_oe_'
                 )
             ),
-            "String '$string' not in valid expectations."
+            "3 String '$string' not in valid expectations."
         );
 
         $this->assertTrue(
             in_array( 
                 $string = $document->stringToId( '!"§$%&/(=)Ä\'Ö*``\'"', '-' ),
                 array( 
+                    '-',
                     '-a-o-', 
                     '-ae-oe-'
                 )
             ),
-            "String '$string' not in valid expectations."
+            "4 String '$string' not in valid expectations."
         );
     }
 
