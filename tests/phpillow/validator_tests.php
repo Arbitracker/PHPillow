@@ -284,6 +284,49 @@ class phpillowValidatorTests extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIndexableDateFromNumeric()
+    {
+        $validator = new phpillowIndexableDateValidator();
+
+        $this->assertSame(
+            array( 2009, 2, 13, 23, 31, 30 ),
+            $validator->validate( 1234567890 ),
+            'Test from int.'
+        );
+
+        $this->assertSame(
+            array( 2009, 2, 13, 23, 31, 30 ),
+            $validator->validate( '1234567890' ),
+            'Test from numeric string.'
+        );
+
+        $this->assertSame(
+            array( 2009, 2, 13, 23, 31, 30 ),
+            $validator->validate( 1234567890. ),
+            'Test from float.'
+        );
+    }
+
+    public function testIndexableDateFromString()
+    {
+        $validator = new phpillowIndexableDateValidator();
+
+        $this->assertSame(
+            array( 1981, 4, 15, 8, 16, 0 ),
+            $validator->validate( '15 Apr 1981 8:16' )
+        );
+
+        $this->assertSame(
+            array( 1981, 4, 15, 8, 16, 0 ),
+            $validator->validate( '15.04.1981 8:16' )
+        );
+
+        $this->assertSame(
+            array( 1981, 4, 15, 8, 16, 0 ),
+            $validator->validate( '04/15/81 8:16' )
+        );
+    }
+
     public function testImageNotExisting()
     {
         $validator = new phpillowImageFileLocationValidator();

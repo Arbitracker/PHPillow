@@ -61,6 +61,7 @@ return array(
     'phpillowEmailValidator'                 => 'classes/validator/email.php',
     'phpillowFloatValidator'                 => 'classes/validator/float.php',
     'phpillowImageFileLocationValidator'     => 'classes/validator/image_file_location.php',
+    'phpillowIndexableDateValidator'         => 'classes/validator/indexable_date.php',
     'phpillowIntegerValidator'               => 'classes/validator/integer.php',
     'phpillowNoValidator'                    => 'classes/validator/no.php',
     'phpillowRegexpValidator'                => 'classes/validator/regexp.php',
