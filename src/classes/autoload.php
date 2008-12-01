@@ -59,6 +59,7 @@ return array(
     'phpillowDocumentValidator'              => 'classes/validator/document.php',
     'phpillowDocumentArrayValidator'         => 'classes/validator/document_array.php',
     'phpillowEmailValidator'                 => 'classes/validator/email.php',
+    'phpillowFloatValidator'                 => 'classes/validator/float.php',
     'phpillowImageFileLocationValidator'     => 'classes/validator/image_file_location.php',
     'phpillowIntegerValidator'               => 'classes/validator/integer.php',
     'phpillowNoValidator'                    => 'classes/validator/no.php',

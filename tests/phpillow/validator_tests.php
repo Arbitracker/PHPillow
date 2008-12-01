@@ -137,6 +137,77 @@ class phpillowValidatorTests extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function testFloatValidator()
+    {
+        $validator = new phpillowFloatValidator();
+
+        $this->assertSame(
+            23.,
+            $validator->validate( 23 )
+        );
+
+        $this->assertSame(
+            -23.,
+            $validator->validate( -23 )
+        );
+
+        $this->assertSame(
+            23.5,
+            $validator->validate( 23.5 )
+        );
+
+        $this->assertSame(
+            23.,
+            $validator->validate( '23' )
+        );
+    }
+
+    public function testFloatValidatorBoundings1()
+    {
+        $validator = new phpillowFloatValidator( 0 );
+
+        $this->assertSame(
+            23.,
+            $validator->validate( 23 )
+        );
+
+        try
+        {
+            $validator->validate( -23 );
+            $this->fail( 'Expected phpillowValidationException.' );
+        }
+        catch ( phpillowValidationException $e )
+        {
+            $this->assertSame(
+                'Input value %input is not bigger or equal then %minimum.',
+                $e->getText()
+            );
+        }
+    }
+
+    public function testFloatValidatorBoundings2()
+    {
+        $validator = new phpillowFloatValidator( false, 0 );
+
+        $this->assertSame(
+            -23.,
+            $validator->validate( -23 )
+        );
+
+        try
+        {
+            $validator->validate( 23 );
+            $this->fail( 'Expected phpillowValidationException.' );
+        }
+        catch ( phpillowValidationException $e )
+        {
+            $this->assertSame(
+                'Input value %input is not lesser or equal then %maximum.',
+                $e->getText()
+            );
+        }
+    }
+
     public function testArrayValidator()
     {
         $validator = new phpillowArrayValidator();
