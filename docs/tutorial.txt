@@ -85,7 +85,7 @@ Using a document
 With a document definition like above you can use the document in your code as
 simple as::
 
-    $doc = new myBlogDocument();
+    $doc = myBlogDocument::createNew();
     $doc->title = 'New blog post';
     $doc->text  = 'Hello world.';
     $doc->save();
