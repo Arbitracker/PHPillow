@@ -211,6 +211,21 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         { /* Expected exception */ }
     }
 
+    public function testDocumentIssetKnownProperty()
+    {
+        $doc = phpillowUserDocument::createNew();
+
+        $this->assertTrue( isset( $doc->name ) );
+        $this->assertTrue( isset( $doc->_id ) );
+    }
+
+    public function testDocumentIssetUnknownProperty()
+    {
+        $doc = phpillowUserDocument::createNew();
+
+        $this->assertFalse( isset( $doc->unknown ) );
+    }
+
     public function testDocumentSetUnknownProperty()
     {
         $doc = phpillowUserDocument::createNew();

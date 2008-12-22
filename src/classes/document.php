@@ -192,6 +192,27 @@ abstract class phpillowDocument
     }
 
     /**
+     * Check if document property is set
+     * 
+     * Check if document property is set
+     *
+     * @param string $property 
+     * @return boolean
+     */
+    public function __isset( $property )
+    {
+        // Check if property exists as a custom document property
+        if ( array_key_exists( $property, $this->properties ) ||
+             in_array( $property, self::$specialProperties ) )
+        {
+            return true;
+        }
+
+        // If none of the above checks passed, the request is invalid.
+        return false;
+    }
+
+    /**
      * Set values from a response object
      *
      * Set values of the document from the response object, if they are
