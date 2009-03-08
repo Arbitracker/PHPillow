@@ -292,7 +292,7 @@ abstract class phpillowView extends phpillowDocument
         {
             $view = static::fetchById( '_design/' . static::getViewName() );
         }
-        catch ( phpillowResponseErrorException $e )
+        catch ( phpillowResponseNotFoundErrorException $e )
         {
             // If the view does not exist yet, recreate it
             $view = static::createNew();
