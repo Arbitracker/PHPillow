@@ -205,12 +205,24 @@ abstract class phpillowView extends phpillowDocument
                     $queryString .= $key . '=' . ( $value ? 'true' : 'false' );
                     break;
 
-                case 'skip':
-                case 'count':
                 case 'group_level':
                     // Theses options accept integers defining the limits of
                     // the query. We try to typecast to int.
                     $queryString .= $key . '=' . ( (int) $value );
+                    break;
+
+                case 'skip':
+                case 'offset':
+                    // Theses options accept integers defining the limits of
+                    // the query. We try to typecast to int.
+                    $queryString .= 'offset=' . ( (int) $value );
+                    break;
+
+                case 'count':
+                case 'limit':
+                    // Theses options accept integers defining the limits of
+                    // the query. We try to typecast to int.
+                    $queryString .= 'limit=' . ( (int) $value );
                     break;
 
                 default:
