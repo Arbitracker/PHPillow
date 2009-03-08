@@ -240,6 +240,17 @@ class phpillowCustomConnection extends phpillowConnection
             fclose( $fp );
         }
 
+        // Handle some response state as special cases
+        switch ( $headers['status'] )
+        {
+            case 301:
+            case 302:
+            case 303:
+            case 307:
+                $path = parse_url( $headers['location'], PHP_URL_PATH );
+                return $this->request( $method, $path, $data, $raw );
+        }
+
         // Create repsonse object from couch db response
         return phpillowResponseFactory::parse( $headers, $body, $raw );
     }
