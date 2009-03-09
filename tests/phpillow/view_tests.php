@@ -280,9 +280,9 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = new phpillowViewTestPublic();
 
         $this->assertSame(
-            '?count=42',
+            '?limit=42',
             $view->buildViewQuery( array( 
-                'count' => 42.5
+                'limit' => 42.5
             ) )
         );
     }
@@ -292,7 +292,7 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = new phpillowViewTestPublic();
 
         $this->assertSame(
-            '?key=%5B%22foo%22%2C23%5D&startkey=%5B%22foo%22%2C23%5D&endkey=%5B%22foo%22%2C23%5D&startkey_docid=foo&update=true&descending=false&skip=23&count=42',
+            '?key=%5B%22foo%22%2C23%5D&startkey=%5B%22foo%22%2C23%5D&endkey=%5B%22foo%22%2C23%5D&startkey_docid=foo&update=true&descending=false&skip=23&limit=42',
             $view->buildViewQuery( array( 
                 'key' => array( 'foo', 23 ),
                 'startkey' => array( 'foo', 23 ),
@@ -301,7 +301,7 @@ class phpillowViewTests extends phpillowDataTestCase
                 'update' => true,
                 'descending' => null,
                 'skip' => 23,
-                'count' => 42.5,
+                'limit' => 42.5,
             ) )
         );
     }
