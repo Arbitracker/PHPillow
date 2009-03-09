@@ -212,7 +212,7 @@ abstract class phpillowView extends phpillowDocument
                     $queryString .= $key . '=' . ( (int) $value );
                     break;
 
-                case 'count':
+                case 'count': // CouchDB 0.8. compat
                 case 'limit':
                     // Theses options accept integers defining the limits of
                     // the query. We try to typecast to int.
@@ -246,7 +246,7 @@ abstract class phpillowView extends phpillowDocument
     {
         // Build query string, just as a normal HTTP GET query string
         $url = phpillowConnection::getDatabase() . 
-            '_view/' . $this->getViewName() . '/' . $view;
+            '_design/' . $this->getViewName() . '/_view/' . $view;
         $url .= $this->buildViewQuery( $options );
 
         // Get database connection, because we directly execute a query here.
