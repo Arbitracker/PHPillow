@@ -102,13 +102,31 @@ class phpillowGroupView extends phpillowView
     );
 
     /**
+     * Create a new instance of the document class
+     *
+     * Create a new instance of the statically called document class.
+     * Implementing this method should only be required when using PHP 5.2 and
+     * lower, otherwise the class can be determined using LSB.
+     *
+     * Do not pass a parameter to this method, this is only used to maintain
+     * the called class information for PHP 5.2 and lower.
+     *
+     * @param mixed $docType
+     * @returns phpillowDocument
+     */
+    public static function createNew( $docType = null )
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
+    }
+
+    /**
      * Get name of view
      * 
      * Get name of view
      * 
      * @return string
      */
-    protected static function getViewName()
+    protected function getViewName()
     {
         return 'groups';
     }

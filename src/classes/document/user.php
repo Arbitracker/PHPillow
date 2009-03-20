@@ -56,7 +56,7 @@ class phpillowUserDocument extends phpillowDocument
      * 
      * @return void
      */
-    protected function __construct()
+    public function __construct()
     {
         $this->properties = array(
             'login'         => new phpillowRegexpValidator( '(^[\x21-\x7e]+$)i' ),
@@ -85,6 +85,39 @@ class phpillowUserDocument extends phpillowDocument
     protected function generateId()
     {
         return $this->stringToId( $this->storage->login );
+    }
+
+    /**
+     * Return document type name
+     *
+     * This method is required to be implemented to return the document type
+     * for PHP versions lower then 5.2. When only using PHP 5.3 and higher you
+     * might just implement a method which does "return static:$type" in a base
+     * class.
+     * 
+     * @return void
+     */
+    protected function getType()
+    {
+        return self::$type;
+    }
+
+    /**
+     * Create a new instance of the document class
+     *
+     * Create a new instance of the statically called document class.
+     * Implementing this method should only be required when using PHP 5.2 and
+     * lower, otherwise the class can be determined using LSB.
+     *
+     * Do not pass a parameter to this method, this is only used to maintain
+     * the called class information for PHP 5.2 and lower.
+     *
+     * @param mixed $docType
+     * @returns phpillowDocument
+     */
+    public static function createNew( $docType = null )
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
     }
 }
 

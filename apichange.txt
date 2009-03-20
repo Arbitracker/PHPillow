@@ -1,0 +1,53 @@
+===========
+API changes
+===========
+
+PHPillow has been converted to also run with PHP 5.2, instead of just PHP 5.3
+and higher. This process involved some API changes, which are listed below.
+
+- fetchById() cannot be called statically any more.
+ 
+  For static calls with the same functionality you should use the manager
+  class, like::
+
+    $document = phpillowManager::fetchDocument( 'name', 'id' );
+
+  This works basically the same. If you want to call the fetchById method
+  without using the manager you may just do::
+
+    $document = new myPhillowDocument();
+    $document->fetchById( 'id' );
+
+- The static property $type cannot be used anymore to define the document
+  type. The document type has to be returned by the getType method in *each*
+  of your document classes.
+
+  When using PHP 5.3 or higher you may still implement a generic base class
+  for all your documents, which implements this method in a generic way and
+  extend all your concrete document classes from this one. The generic
+  implementation would then look like::
+
+    protected function getType()
+    {
+        return static::$type;
+    }
+
+- If you still want to use the static document factory method createNew() for
+  your document classes with PHP 5.2 or lower you need to implement a generic
+  createNew() method in *each* of your classes, because PHP 5.2 does not
+  support late static binding. But you can now instantiate the document
+  classes directly. Generally either the registry should be used or normal
+  instantiations of the document classes. This generic method would look
+  like::
+
+    public static function createNew( $docType = null )
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
+    }
+
+  This implementation works fine when extending from this document class, as
+  long as all extending classes again implement this method.
+
+  Using PHP 5.3 you may still omit this method in all document classes. The
+  example classes all implement this method to be compatible with PHP 5.2.
+

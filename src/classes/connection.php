@@ -47,7 +47,7 @@ abstract class phpillowConnection
         'http-log'   => false,
     );
 
-    /**
+   /**
      * Currently used database
      *
      * @var string
@@ -133,7 +133,7 @@ abstract class phpillowConnection
      * @param int $port
      * @return void
      */
-    public static function createInstance( $host = 'localhost', $port = 5984 )
+    public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowCustomConnection" )
     {
         // Prevent from reestablishing connection during one run, without
         // explicit cleanup before.
@@ -145,12 +145,13 @@ abstract class phpillowConnection
             );
         }
 
-        // Deafult to custom connection, if root class has been called. This
-        // currently is the safer default.
-        if ( ( $called = get_called_class() ) === __CLASS__ )
-        {
-            $called = 'phpillowCustomConnection';
-        }
+        // // Deafult to custom connection, if root class has been called. This
+        // // currently is the safer default.
+        // if ( !$called )
+        // {
+        //     $called = 'phpillowCustomConnection';
+        // }
+
 
         // Create connection and store it in static property to be accessible
         // by static getInstance() method.

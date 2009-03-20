@@ -21,13 +21,21 @@ class phpillowGroupViewTests extends phpillowDataTestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function setUp()
+    {
+        parent::setUp();
+        phpillowManager::setDocumentClass( 'group', 'phpillowGroupDocument' );
+    }
+
     public function testFetchGroupByName()
     {
-        $results = phpillowGroupView::group( array( 
+        $view = new phpillowGroupView();
+        $results = $view->query( 'group', array( 
             'key' => 'Maintainer'
         ) );
 
-        $user = phpillowGroupDocument::fetchById(
+        $user = phpillowManager::fetchDocument(
+            'group',
             $results->rows[0]['value']
         );
 
@@ -44,7 +52,8 @@ class phpillowGroupViewTests extends phpillowDataTestCase
 
     public function testFetchUsersPermissions1()
     {
-        $results = phpillowGroupView::user_permissions( array( 
+        $view = new phpillowGroupView();
+        $results = $view->query( 'user_permissions', array( 
             'key' => 'kore'
         ) );
 
@@ -72,7 +81,8 @@ class phpillowGroupViewTests extends phpillowDataTestCase
 
     public function testFetchUsersPermissions2()
     {
-        $results = phpillowGroupView::user_permissions( array( 
+        $view = new phpillowGroupView();
+        $results = $view->query( 'user_permissions', array( 
             'key' => 'norro'
         ) );
 
@@ -100,7 +110,8 @@ class phpillowGroupViewTests extends phpillowDataTestCase
 
     public function testFetchUsersPermissionsReduce()
     {
-        $results = phpillowGroupView::user_permissions_reduced( array( 
+        $view = new phpillowGroupView();
+        $results = $view->query( 'user_permissions_reduced', array( 
             'key' => 'kore'
         ) );
         $permissions = $results->rows[0]['value'];
@@ -125,7 +136,8 @@ class phpillowGroupViewTests extends phpillowDataTestCase
         $doc->users = array( 'kore' );
         $doc->save();
 
-        $results = phpillowGroupView::user_permissions_reduced();
+        $view = new phpillowGroupView();
+        $results = $view->query( 'user_permissions_reduced' );
         $permissions = $results->rows[0]['value'];
         sort( $permissions );
 

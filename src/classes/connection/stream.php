@@ -33,6 +33,11 @@
  */
 class phpillowStreamConnection extends phpillowConnection
 {
+    public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowStreamConnection" )
+    {
+        parent::createInstance( $host, $port, $called );
+    }
+
     /**
      * Perform a request to the server and return the result
      *

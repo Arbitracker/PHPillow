@@ -21,13 +21,21 @@ class phpillowUserViewTests extends phpillowDataTestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function setUp()
+    {
+        parent::setUp();
+        phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
+    }
+
     public function testFetchUserByLogin()
     {
-        $results = phpillowUserView::user( array( 
+        $view = new phpillowUserView();
+        $results = $view->query( 'user', array( 
             'key' => 'kore'
         ) );
 
-        $user = phpillowUserDocument::fetchById(
+        $user = phpillowManager::fetchDocument(
+            'user',
             $results->rows[0]['value']
         );
 

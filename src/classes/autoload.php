@@ -72,3 +72,12 @@ return array(
     'phpillowUserView'                       => 'classes/view/user.php',
 );
 
+/**
+ * dummy
+ */
+if ( !function_exists('get_called_class') )
+{
+    function get_called_class()
+    {
+    }
+}

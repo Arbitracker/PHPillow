@@ -43,6 +43,11 @@ class phpillowCustomConnection extends phpillowConnection
      */
     protected $connection;
 
+    public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowCustomConnection" )
+    {
+        parent::createInstance( $host, $port, $called );
+    }
+
     /**
      * Check for server connection
      *

@@ -146,7 +146,7 @@ final class phpillowManager
 
         // Instantiate and return document.
         $className = self::$documents[$name];
-        return $className::createNew();
+        return call_user_func( array( $className, 'createNew' ) );
     }
 
     /**
@@ -169,7 +169,8 @@ final class phpillowManager
 
         // Instantiate and return document.
         $className = self::$documents[$name];
-        return $className::fetchById( $id );
+        $document  = new $className();
+        return $document->fetchById( $id );
     }
 
     /**

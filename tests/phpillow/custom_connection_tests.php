@@ -376,7 +376,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
     {
         phpillowTestEnvironmentSetup::resetDatabase( array( 'database' => 'test', 'handler' => 'phpillowCustomConnection' ) );
         $db = phpillowConnection::getInstance();
-        $db->setOption( 'http-log', $logFile = tempnam( __DIR__ . '/../temp', __CLASS__ ) );
+        $db->setOption( 'http-log', $logFile = tempnam( dirname(__FILE__) . '/../temp', __CLASS__ ) );
 
         $response = $db->put( '/test/123', '{"_id":"123","data":"Foo"}' );
         $response = $db->get( '/test/123' );

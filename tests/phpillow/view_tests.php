@@ -21,6 +21,12 @@ class phpillowViewTests extends phpillowDataTestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function setUp()
+    {
+        parent::setUp();
+        phpillowManager::setDocumentClass( 'userview', 'phpillowUserView' );
+    }
+
     public function testCreateView()
     {
         $view = phpillowUserView::createNew();
@@ -37,7 +43,7 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = phpillowUserView::createNew();
         $view->save();
 
-        $view = phpillowUserView::fetchById( '_design/users' );
+        $view = phpillowManager::fetchDocument( 'userview', '_design/users' );
         $this->assertSame(
             '_design/users',
             $view->_id
@@ -53,13 +59,13 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = phpillowUserView::createNew();
         $view->save();
 
-        $view = phpillowUserView::fetchById( '_design/users' );
+        $view = phpillowManager::fetchDocument( 'userview', '_design/users' );
         $views = $view->views;
         $views['foo'] = $function = 'function( doc ) { return; }';
         $view->views = $views;
         $view->save();
 
-        $view = phpillowUserView::fetchById( '_design/users' );
+        $view = phpillowManager::fetchDocument( 'userview', '_design/users' );
         $this->assertSame(
             '_design/users',
             $view->_id
@@ -76,7 +82,7 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = phpillowUserView::createNew();
         $view->verifyView();
 
-        $view = phpillowUserView::fetchById( '_design/users' );
+        $view = phpillowManager::fetchDocument( 'userview', '_design/users' );
         $this->assertSame(
             '_design/users',
             $view->_id
@@ -92,7 +98,7 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = phpillowUserView::createNew();
         $view->save();
 
-        $view = phpillowUserView::fetchById( '_design/users' );
+        $view = phpillowManager::fetchDocument( 'userview', '_design/users' );
         $views = $view->views;
         $views['foo'] = $function = 'function( doc ) { return; }';
         $view->views = $views;
@@ -101,7 +107,7 @@ class phpillowViewTests extends phpillowDataTestCase
         $view = phpillowUserView::createNew();
         $view->verifyView();
 
-        $view = phpillowUserView::fetchById( '_design/users' );
+        $view = phpillowManager::fetchDocument( 'userview', '_design/users' );
         $this->assertSame(
             '_design/users',
             $view->_id
@@ -164,6 +170,11 @@ class phpillowViewTests extends phpillowDataTestCase
 
     public function testDirectStaticQuery()
     {
+        if ( version_compare( PHP_VERSION, '5.3', '<' ) )
+        {
+            $this->markTestSkipped( 'PHP 5.3 is minimum requirement for this test.' );
+        }
+
         $results = phpillowUserView::all();
 
         $this->assertSame(
@@ -174,6 +185,11 @@ class phpillowViewTests extends phpillowDataTestCase
 
     public function testDirectStaticQueryWithOptions()
     {
+        if ( version_compare( PHP_VERSION, '5.3', '<' ) )
+        {
+            $this->markTestSkipped( 'PHP 5.3 is minimum requirement for this test.' );
+        }
+
         $results = phpillowUserView::user( array( 'key' => 'kore' ) );
 
         $this->assertSame(
@@ -189,6 +205,22 @@ class phpillowViewTests extends phpillowDataTestCase
             ),
             $results->rows[0]
         );
+    }
+
+    public function testDirectStaticQueryViewNameDefinitionMissing()
+    {
+        if ( version_compare( PHP_VERSION, '5.3', '<' ) )
+        {
+            $this->markTestSkipped( 'PHP 5.3 is minimum requirement for this test.' );
+        }
+
+        try
+        {
+            phpillowViewTestPublic::all();
+            $this->fail( 'Expected phpillowRuntimeException.' );
+        }
+        catch ( phpillowRuntimeException $e )
+        { /* Expected exception */ }
     }
 
     public function testTransformKey()
@@ -318,17 +350,6 @@ class phpillowViewTests extends phpillowDataTestCase
             $this->fail( 'Expected phpillowNoSuchPropertyException.' );
         }
         catch ( phpillowNoSuchPropertyException $e )
-        { /* Expected exception */ }
-    }
-
-    public function testViewNameDefinitionMissing()
-    {
-        try
-        {
-            phpillowViewTestPublic::all();
-            $this->fail( 'Expected phpillowRuntimeException.' );
-        }
-        catch ( phpillowRuntimeException $e )
         { /* Expected exception */ }
     }
 }

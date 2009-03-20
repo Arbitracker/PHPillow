@@ -58,7 +58,7 @@ class phpillowDataTestCase extends PHPUnit_Framework_TestCase
         {
             foreach ( $documents as $nr => $document )
             {
-                $doc = $type::createNew();
+                $doc = call_user_func(array($type, 'createNew'));
 
                 foreach ( $document as $property => $value )
                 {

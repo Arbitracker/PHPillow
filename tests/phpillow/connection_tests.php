@@ -106,7 +106,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
         $this->assertAttributeSame(
             array(
-                'host'       => 'localhost',
+                'host'       => '127.0.0.1',
                 'port'       => 5984,
                 'ip'         => '127.0.0.1',
                 'timeout'    => .01,

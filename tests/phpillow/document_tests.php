@@ -28,6 +28,7 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
                 'database' => 'test',
             )
         );
+        phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
     }
 
     public function testIdFromString()
@@ -136,7 +137,7 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
     {
         try
         {
-            $doc = phpillowUserDocument::fetchById( '' );
+            $doc = phpillowManager::fetchDocument( 'user', '' );
             $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
         }
         catch ( phpillowResponseNotFoundErrorException $e )
@@ -154,7 +155,7 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
 
         $this->assertSame(
             'kore',
@@ -173,11 +174,11 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $doc->name = 'Kore (update)';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $doc->name = 'Kore (update)';
 
         $this->assertSame(
@@ -192,7 +193,7 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $this->assertFalse(
             $doc->save()
         );
@@ -245,16 +246,16 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $doc->login = 'Kore_2';
         $doc->name = 'Kore Nordmann';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $doc->name = 'Kore D. Nordmann';
         $doc->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
 
         $this->assertSame(
             'kore',

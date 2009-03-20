@@ -159,7 +159,7 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
         $author->login = 'kore';
         $author->save();
 
-        $doc = phpillowUserDocument::fetchById( 'user-kore' );
+        $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $doc->name = 'Kore';
         $doc->save();
 

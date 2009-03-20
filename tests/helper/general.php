@@ -38,14 +38,34 @@ class phpillowDocumentAllPublic extends phpillowDocument
         return null;
     }
 
+    protected function getType()
+    {
+        return self::$type;
+    }
+
     public function stringToId( $string, $replace = '_' )
     {
         return parent::stringToId( $string, $replace );
+    }
+
+    public static function createNew( $docType = null )
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
     }
 }
 
 class phpillowUserTestDocument extends phpillowUserDocument
 {
+    public static function createNew($docType = null)
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
+    }
+
+    protected function getType()
+    {
+        return 'user';
+    }
+
     public function generateId()
     {
         return parent::generateId();
@@ -54,6 +74,16 @@ class phpillowUserTestDocument extends phpillowUserDocument
 
 class phpillowGroupTestDocument extends phpillowGroupDocument
 {
+    public static function createNew($docType = null)
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
+    }
+
+    protected function getType()
+    {
+        return 'group';
+    }
+
     public function generateId()
     {
         return parent::generateId();
@@ -63,6 +93,16 @@ class phpillowGroupTestDocument extends phpillowGroupDocument
 class phpillowTestNullIdDocument extends phpillowUserDocument
 {
     protected $requiredProperties = array();
+
+    public static function createNew( $docType = null )
+    {
+        return parent::createNew( $docType === null ? __CLASS__ : $docType );
+    }
+
+    protected function getType()
+    {
+        return 'null';
+    }
 
     protected function generateId()
     {

@@ -351,7 +351,7 @@ class phpillowValidatorTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $validator->validate( __DIR__ . '/data/image_bmp.bmp' );
+            $validator->validate( dirname(__FILE__) . '/data/image_bmp.bmp' );
             $this->fail( 'Expected phpillowValidationException.' );
         }
         catch ( phpillowValidationException $e )
@@ -368,9 +368,9 @@ class phpillowValidatorTests extends PHPUnit_Framework_TestCase
         $validator = new phpillowImageFileLocationValidator();
 
         $images = array(
-            __DIR__ . '/data/image_png.png',
-            __DIR__ . '/data/image_gif.gif',
-            __DIR__ . '/data/image_jpg.jpg',
+            dirname(__FILE__) . '/data/image_png.png',
+            dirname(__FILE__) . '/data/image_gif.gif',
+            dirname(__FILE__) . '/data/image_jpg.jpg',
         );
 
         foreach ( $images as $image )

@@ -43,14 +43,6 @@ abstract class phpillowView extends phpillowDocument
     );
 
     /**
-     * Document type, may be a string matching the regular expression:
-     *  (^[a-zA-Z0-9_]+$)
-     * 
-     * @var string
-     */
-    protected static $type = '_view';
-
-    /**
      * View functions to be registered on the server
      *
      * @var array
@@ -98,7 +90,7 @@ abstract class phpillowView extends phpillowDocument
      * 
      * @return string
      */
-    protected static function getViewName()
+    protected function getViewName()
     {
         throw new phpillowRuntimeException(
             'This method should be considerd abstract, but PHP does not allow this.'
@@ -115,9 +107,24 @@ abstract class phpillowView extends phpillowDocument
      * @param string $id 
      * @return string
      */
-    protected static function getDocumentId( $type, $id )
+    protected function getDocumentId( $type, $id )
     {
         return '_design/' . $id;
+    }
+
+    /**
+     * Return document type name
+     *
+     * This method is required to be implemented to return the document type
+     * for PHP versions lower then 5.2. When only using PHP 5.3 and higher you
+     * might just implement a method which does "return static:$type" in a base
+     * class.
+     * 
+     * @return void
+     */
+    protected function getType()
+    {
+        return '_view';
     }
 
     /**
@@ -131,7 +138,7 @@ abstract class phpillowView extends phpillowDocument
      */
     protected function generateId()
     {
-        return $this->stringToId( static::getViewName() );
+        return $this->stringToId( $this->getViewName() );
     }
 
     /**
@@ -140,14 +147,18 @@ abstract class phpillowView extends phpillowDocument
      * Wrap all static calls to a extended view class, instantiate it and then
      * call query method on the view object, reusing the called method name to
      * query the view.
-     * 
+     *
+     * This convinient method only works with PHP in version 5.3 or greater.
+     * Otherwise just call the query method directly on an instantiated view.
+     *
      * @param string $method 
      * @param array $parameters 
      * @return phpillowResultArray
      */
     public static function __callStatic( $method, $parameters )
     {
-        $view = new static();
+        $class = get_called_class();
+        $view  = new $class();
 
         // Check if options were set
         $options = ( isset( $parameters[0] ) ? $parameters[0] : array() );
@@ -284,12 +295,12 @@ abstract class phpillowView extends phpillowDocument
         // Fetch view definition from database
         try
         {
-            $view = static::fetchById( '_design/' . static::getViewName() );
+            $view = self::fetchById( '_design/' . $this->getViewName() );
         }
         catch ( phpillowResponseNotFoundErrorException $e )
         {
-            // If the view does not exist yet, recreate it
-            $view = static::createNew();
+            // If the view does not exist yet, recreate it from current view
+            $view = $this;
         }
         
         // Force setting of view definitions

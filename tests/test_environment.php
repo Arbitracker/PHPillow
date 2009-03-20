@@ -11,7 +11,7 @@ date_default_timezone_set( 'UTC' );
 
 function __autoload( $class )
 {
-    $files = require __DIR__ . '/../src/classes/autoload.php';
+    $files = require dirname(__FILE__) . '/../src/classes/autoload.php';
 
     if ( !isset( $files[$class] ) )
     {
@@ -19,16 +19,16 @@ function __autoload( $class )
     }
     else
     {
-        return require __DIR__ . '/../src/' . $files[$class];
+        return require dirname(__FILE__) . '/../src/' . $files[$class];
     }
 }
 
-require __DIR__ . '/helper/general.php';
+require dirname(__FILE__) . '/helper/general.php';
 
 /**
  * Fix error reporting settings for test runs
  */
-error_reporting( E_ALL | E_STRICT | E_DEPRECATED );
+error_reporting( E_ALL | E_STRICT );
 ini_set( 'display_errors', true );
 if ( function_exists( 'xdebug_enable' ) )
 {
@@ -56,7 +56,7 @@ class phpillowTestEnvironmentSetup
 
         // Initilize wanted connection handler
         $handler = isset( $options['handler'] ) ? $options['handler'] : 'phpillowConnection';
-        $handler::createInstance();
+        call_user_func(array($handler, 'createInstance'));
         $db = phpillowConnection::getInstance();
 
         try
@@ -86,7 +86,7 @@ class phpillowTestEnvironmentSetup
      */
     public static function resetTmpDir()
     {
-        foreach( glob( __DIR__ . '/temp/*' ) as $file )
+        foreach( glob( dirname(__FILE__) . '/temp/*' ) as $file )
         {
             unlink( $file );
         }

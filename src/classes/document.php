@@ -111,13 +111,20 @@ abstract class phpillowDocument
     protected $newAttachments = array();
 
     /**
+     * Set this before calling static functions.
+     *
+     * @var string
+     */
+    public static $docType = null;
+
+    /**
      * Construct new document
      * 
      * Construct new document
      * 
      * @return void
      */
-    protected function __construct()
+    public function __construct()
     {
         $this->storage = new StdClass();
         $this->storage->revisions = array();
@@ -131,7 +138,7 @@ abstract class phpillowDocument
         }
 
         // Also store document type in document
-        $this->storage->type = static::$type;
+        $this->storage->type = $this->getType();
     }
 
     /**
@@ -285,7 +292,7 @@ abstract class phpillowDocument
      * @param mixed $id 
      * @return mixed
      */
-    protected static function getDocumentId( $type, $id )
+    protected function getDocumentId( $type, $id )
     {
         return ( $id === null ? null : $type . '-' . $id );
     }
@@ -299,7 +306,7 @@ abstract class phpillowDocument
      * @param string $id 
      * @return phpillowDocument
      */
-    public static function fetchById( $id )
+    public function fetchById( $id )
     {
         // If a fetch is called with an empty ID, we throw an exception, as we
         // would get database statistics otherwise, and the following error may
@@ -318,26 +325,51 @@ abstract class phpillowDocument
             phpillowConnection::getDatabase() . urlencode( $id )
         );
 
-        // Create document object fetched object
-        $docType = get_called_class();
-        $document = new $docType();
-        $document->fromResponse( $response );
+        // Create document contents from fetched object
+        $this->fromResponse( $response );
 
-        return $document;
+        return $this;
     }
 
     /**
-     * Create a new document
+     * Create a new instance of the document class
      *
-     * Create and initialize a new document
-     * 
-     * @return phpillowDocument
+     * Create a new instance of the statically called document class.
+     * Implementing this method should only be required when using PHP 5.2 and
+     * lower, otherwise the class can be determined using LSB.
+     *
+     * Do not pass a parameter to this method, this is only used to maintain
+     * the called class information for PHP 5.2 and lower.
+     *
+     * @param mixed $docType
+     * @returns phpillowDocument
      */
-    public static function createNew()
+    public static function createNew( $docType = null )
     {
-        $docType = get_called_class();
+        if ( ( $docType === null ) &&
+             function_exists( 'get_called_class' ) )
+        {
+            $docType = get_called_class();
+        }
+        elseif ( $docType === null )
+        {
+            throw new phpillowRuntimeException( 'Invalid docType provided to createNew.' );
+        }
+
         return new $docType();
     }
+
+    /**
+     * Return document type name
+     *
+     * This method is required to be implemented to return the document type
+     * for PHP versions lower then 5.2. When only using PHP 5.3 and higher you
+     * might just implement a method which does "return static:$type" in a base
+     * class.
+     * 
+     * @return string
+     */
+    abstract protected function getType();
 
     /**
      * Get ID from document
@@ -399,6 +431,9 @@ abstract class phpillowDocument
      */
     public function save()
     {
+        // Get document type
+        $type = $this->getType();
+
         // Ensure all requirements are checked, otherwise bail out with a
         // runtime exception.
         if ( $this->checkRequirements() !== true )
@@ -419,11 +454,12 @@ abstract class phpillowDocument
         // existing document ID.
         if ( $this->newDocument === true )
         {
-            $this->storage->_id = static::getDocumentId( static::$type, $this->generateId() );
+            $this->storage->_id = $this->getDocumentId( $type, $this->generateId() );
         }
 
         // Do not send an attachment array, if there aren't any attachements
-        if ( !count( $this->storage->_attachments ) )
+        if ( !isset( $this->storage->_attachments ) ||
+             !count( $this->storage->_attachments ) )
         {
             unset( $this->storage->_attachments );
         }
