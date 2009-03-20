@@ -37,7 +37,7 @@ class phpillowArrayResponse extends phpillowResponse
     /**
      * Construct response object from response array
      * 
-     * @param array $contentType 
+     * @param array $response 
      * @return void
      */
     public function __construct( array $response )

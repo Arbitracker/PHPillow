@@ -264,8 +264,6 @@ abstract class phpillowDocument
         {
             if ( isset( $response->revisions ) )
             {
-                // @TODO: We may want tpo store old revisions as attachements
-                // instead of polluting the normal document namespace.
                 $this->storage->revisions = $response->revisions;
             }
 

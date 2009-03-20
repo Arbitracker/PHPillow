@@ -47,7 +47,7 @@ abstract class phpillowConnection
         'http-log'   => false,
     );
 
-   /**
+    /**
      * Currently used database
      *
      * @var string
@@ -129,8 +129,14 @@ abstract class phpillowConnection
      *
      * The host and its port default to localhost:5984.
      *
+     * Optionally the class name of the called class can be provided. By
+     * default the better working "custom connection" connection handler is
+     * instantiated and used. The stream based connection handler is slower and
+     * might not work at all.
+     *
      * @param string $host
      * @param int $port
+     * @param string $called
      * @return void
      */
     public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowCustomConnection" )
@@ -269,12 +275,13 @@ abstract class phpillowConnection
      *
      * Perform a request to the server and return the result converted into a
      * phpillowResponse object. If you do not expect a JSON structure, which
-     * could be converted in such a response object, set the forth parameter to
+     * could be converted in such a response object, set the fourth parameter to
      * true, and you get a response object retuerned, containing the raw body.
      *
      * @param string $method
      * @param string $path
      * @param string $data
+     * @param bool $raw
      * @return phpillowResponse
      */
     abstract protected function request( $method, $path, $data, $raw = false );

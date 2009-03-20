@@ -43,6 +43,19 @@ class phpillowCustomConnection extends phpillowConnection
      */
     protected $connection;
 
+    /**
+     * Create a new couch DB connection instance.
+     *
+     * Static method to create a new couch DB connection instance. This method
+     * should be used to configure the connection for later use.
+     *
+     * The host and its port default to localhost:5984.
+     *
+     * @param string $host
+     * @param int $port
+     * @param string $called
+     * @return void
+     */
     public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowCustomConnection" )
     {
         parent::createInstance( $host, $port, $called );
@@ -124,6 +137,7 @@ class phpillowCustomConnection extends phpillowConnection
      * @param string $method
      * @param string $path
      * @param string $data
+     * @param bool $raw
      * @return phpillowResponse
      */
     protected function request( $method, $path, $data, $raw = false )

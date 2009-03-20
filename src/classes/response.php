@@ -55,6 +55,7 @@ class phpillowResponseFactory
      * 
      * @param array $headers
      * @param string $body 
+     * @param bool $raw
      * @return phpillowResponse
      */
     public static function parse( array $headers, $body, $raw = false )
