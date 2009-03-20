@@ -23,7 +23,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
  */
 
-$basePath = dirname(__FILE__) . '/../';
+$basePath = dirname( __FILE__ ) . '/../';
 
 // Add core to search paths
 $searchPaths = array(

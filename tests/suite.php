@@ -7,7 +7,7 @@
  */
 
 // Set up environment
-require dirname(__FILE__) . '/test_environment.php';
+require dirname( __FILE__ ) . '/test_environment.php';
 
 /*
  * Set file whitelist for phpunit

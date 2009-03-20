@@ -11,7 +11,7 @@ date_default_timezone_set( 'UTC' );
 
 function __autoload( $class )
 {
-    $files = require dirname(__FILE__) . '/../src/classes/autoload.php';
+    $files = require dirname( __FILE__ ) . '/../src/classes/autoload.php';
 
     if ( !isset( $files[$class] ) )
     {
@@ -19,11 +19,11 @@ function __autoload( $class )
     }
     else
     {
-        return require dirname(__FILE__) . '/../src/' . $files[$class];
+        return require dirname( __FILE__ ) . '/../src/' . $files[$class];
     }
 }
 
-require dirname(__FILE__) . '/helper/general.php';
+require dirname( __FILE__ ) . '/helper/general.php';
 
 /**
  * Fix error reporting settings for test runs
@@ -86,7 +86,7 @@ class phpillowTestEnvironmentSetup
      */
     public static function resetTmpDir()
     {
-        foreach( glob( dirname(__FILE__) . '/temp/*' ) as $file )
+        foreach( glob( dirname( __FILE__ ) . '/temp/*' ) as $file )
         {
             unlink( $file );
         }

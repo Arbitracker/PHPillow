@@ -58,7 +58,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( dirname(__FILE__) . '/data/image_png.png' );
+        $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
@@ -78,7 +78,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( $file = dirname(__FILE__) . '/data/image_png.png' );
+        $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
@@ -99,7 +99,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( $file = dirname(__FILE__) . '/data/image_png.png' );
+        $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
@@ -118,11 +118,11 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
 
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( dirname(__FILE__) . '/data/image_png.png' );
+        $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
-        $doc->attachFile( $file = dirname(__FILE__) . '/data/image_jpg.jpg', 'image_png.png' );
+        $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_jpg.jpg', 'image_png.png' );
         $doc->save();
 
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
@@ -143,8 +143,8 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( dirname(__FILE__) . '/data/image_png.png' );
-        $doc->attachFile( dirname(__FILE__) . '/data/image_jpg.jpg' );
+        $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png' );
+        $doc->attachFile( dirname( __FILE__ ) . '/data/image_jpg.jpg' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
@@ -169,7 +169,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( dirname(__FILE__) . '/data/image_png.png', 'image_png.png', 'image/png' );
+        $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png', 'image_png.png', 'image/png' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
@@ -189,7 +189,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
-        $doc->attachFile( $file = dirname(__FILE__) . '/data/image_png.png', 'image_png.png', 'image/png' );
+        $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_png.png', 'image_png.png', 'image/png' );
         $doc->save();
         
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );

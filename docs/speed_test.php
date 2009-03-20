@@ -1,7 +1,7 @@
 <?php
 
 // Include all required classes
-$autoload = require ( $base = dirname(__FILE__) . '/../src/' ) . 'classes/autoload.php';
+$autoload = require ( $base = dirname( __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
 foreach ( $autoload as $file )
 {
     require_once $base . $file;
