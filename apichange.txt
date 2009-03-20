@@ -2,6 +2,11 @@
 API changes
 ===========
 
+This document documents backwards compability breaking API changes.
+
+0.2-alpha to 0.3-alpha
+======================
+
 PHPillow has been converted to also run with PHP 5.2, instead of just PHP 5.3
 and higher. This process involved some API changes, which are listed below.
 
