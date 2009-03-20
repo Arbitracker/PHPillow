@@ -18,7 +18,7 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @version $Revision: 61 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
@@ -28,7 +28,7 @@
  * Connection handler using PHPs stream wrappers.
  *
  * @package Core
- * @version $Revision: 61 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 class phpillowStreamConnection extends phpillowConnection
@@ -61,7 +61,7 @@ class phpillowStreamConnection extends phpillowConnection
                         'method'        => $method,
                         'content'       => $data,
                         'ignore_errors' => true,
-                        'user_agent'    => 'PHPillow $Revision: 61 $',
+                        'user_agent'    => 'PHPillow $Revision$',
                         'timeout'       => $this->options['timeout'],
                         'header'        => 'Content-type: application/json',
                     ),

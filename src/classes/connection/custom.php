@@ -18,7 +18,7 @@
  * Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @package Core
- * @version $Revision: 54 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 
@@ -30,7 +30,7 @@
  * extension dependecies.
  *
  * @package Core
- * @version $Revision: 54 $
+ * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
  */
 class phpillowCustomConnection extends phpillowConnection
