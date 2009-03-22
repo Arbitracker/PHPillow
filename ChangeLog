@@ -1,6 +1,24 @@
 Changelog 0.3-alpha, $date, $revision
 ------------------------------------------------------------------------------
 
+- Implemented: Support PHP 5.2
+- Implemented: Support for HTTP-Redirects. They only work on the same server,
+  which should be OK, especially for CouchDB.
+- Implemented: BC handling for old CouchDB view paramters introduced using new
+  view parameter names. Breaks support for CouchDB 0.8.1, since trunk and and
+  0.8.1 are API incompatible now.
+- Implemented: __isset() for phpillow documents
+- Implemented: Indexable date validator
+- Implemented: Float number validator
+- Implemented: Made connection base class abstract and layed out stream
+  connection handler in custom class.
+- Implemented: Option to set the timeout directly in the connection class with
+  a lower default timeout.
+- Implemented: Use PHPs stream wrapper for HTTP communication
+- Implemented: Support for group and group_level view parameters
+- Implemented: Script to backup and restore database independant from CouchDBs
+  storage file format.
+
 Changelog 0.2-alpha, 17.08.08, revision 46
 ------------------------------------------------------------------------------
 
