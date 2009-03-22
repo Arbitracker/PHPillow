@@ -56,3 +56,10 @@ and higher. This process involved some API changes, which are listed below.
   Using PHP 5.3 you may still omit this method in all document classes. The
   example classes all implement this method to be compatible with PHP 5.2.
 
+- There are two class interface changes:
+
+  - The constructor of the document classes now need to be public, so that the
+    document classes can be instantiated directly.
+
+  - The getViewName() method in views must not be static.
+
