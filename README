@@ -13,17 +13,14 @@ The following prerequisites must be fulfilled to use PHPillow:
 
 - A running CouchDB installation from current trunk.
 
-  We already adapted the library to the current changes for 0.8, so that it
-  won't work any more with the latest released version 0.7.2.
+  We already adapted the library to the current changes for 0.9, so that it
+  won't work any more with the latest released version 0.8.1.
 
-- PHP 5.3
+- PHP 5.2
 
-  Since this is a wrapper for alpha software, which won't be stable really soon
-  and some of the features in PHP 5.3 (LSB) are useful for the implementation,
-  we decided to work with PHP 5.3 as a prerequisite. It won't run and won't be
-  ported to any older version of PHP. Don't even think of PHP 4.
-
-  There aren't any non-default extensions or settings required for PHP.
+  The wrapped has been tested with the latest releases from the PHP 5.2 tree.
+  It might also work with earlier versions of PHP, but this is not supported.
+  Some features might only be available using LSB from PHP 5.3.
 
 State
 =====
@@ -48,7 +45,7 @@ mails are still going to the same mailinglist_, same for discussions. If you
 want to contribute to the library please send your patches to the mailinglist_,
 or ask for commit access on either the mailinglist or IRC_.
 
-__ http://arbitracker.org
+__ http://tracker.arbitracker.org/phpillow
 
 Mailinglist
 -----------

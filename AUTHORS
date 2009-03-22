@@ -7,4 +7,6 @@ may regenerate this statistic with::
 	$ svn log | grep '^r' | awk '{print $3}' | sort | uniq -c | sort -n | tac
 
 - Kore Nordmann <kore@arbitracker.org>
+- Jan Lehnhardt <jan@apache.org>
+- Till Klampaeckel <till@php.net>
 
