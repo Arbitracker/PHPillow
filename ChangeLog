@@ -1,4 +1,4 @@
-Changelog 0.3-alpha, $date, $revision
+Changelog 0.3-alpha, 24.03.09, revision 100
 ------------------------------------------------------------------------------
 
 - Implemented: Support PHP 5.2
@@ -10,14 +10,14 @@ Changelog 0.3-alpha, $date, $revision
 - Implemented: __isset() for phpillow documents
 - Implemented: Indexable date validator
 - Implemented: Float number validator
+- Implemented: Use PHPs stream wrapper for HTTP communication
 - Implemented: Made connection base class abstract and layed out stream
   connection handler in custom class.
 - Implemented: Option to set the timeout directly in the connection class with
   a lower default timeout.
-- Implemented: Use PHPs stream wrapper for HTTP communication
 - Implemented: Support for group and group_level view parameters
 - Implemented: Script to backup and restore database independant from CouchDBs
-  storage file format.
+  storage file format. (experimental)
 
 Changelog 0.2-alpha, 17.08.08, revision 46
 ------------------------------------------------------------------------------

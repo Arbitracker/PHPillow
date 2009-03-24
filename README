@@ -14,13 +14,17 @@ The following prerequisites must be fulfilled to use PHPillow:
 - A running CouchDB installation from current trunk.
 
   We already adapted the library to the current changes for 0.9, so that it
-  won't work any more with the latest released version 0.8.1.
+  won't work any more with the old release in version 0.8.1, and older.
+
+  Versions prior to 0.3-alpha worked only with older versions of CouchDB.
 
 - PHP 5.2
 
   The wrapped has been tested with the latest releases from the PHP 5.2 tree.
   It might also work with earlier versions of PHP, but this is not supported.
   Some features might only be available using LSB from PHP 5.3.
+
+  Version prior to 0.3-alpha required PHP 5.3.
 
 State
 =====
