@@ -7,13 +7,10 @@ foreach ( $autoload as $file )
     require_once $base . $file;
 }
 
-// Initialize document manager
-phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
-
 // Configure parameters for speed testing
-$puts = 1000;
-$gets = 5000;
-$views = 2000;
+$puts = 100;
+$gets = 500;
+$views = 200;
 
 // Set up backend connection
 phpillowConnection::createInstance();
@@ -29,7 +26,7 @@ $db->put( '/test' );
 $start = microtime( true );
 for ( $i = 0; $i < $puts; ++$i )
 {
-    $doc = phpillowManager::createDocument( 'user' );
+    $doc = new phpillowUserDocument();
     $doc->login = 'kore_' . $i;
     $doc->name = 'Kore Nordmann';
     $doc->save();
@@ -43,7 +40,7 @@ printf( "%d PUTs in %.2fs (%d req/s)\n",
 $start = microtime( true );
 for ( $i = 0; $i < $gets; ++$i )
 {
-    $doc = phpillowManager::fetchDocument( 'user', 'user-kore_0' );
+    $doc = new phpillowUserDocument( 'user-kore_0' );
 }
 printf( "%d GETs in %.2fs (%d req/s)\n",
     $gets,
