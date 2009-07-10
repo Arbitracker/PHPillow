@@ -112,6 +112,8 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
                 'timeout'    => .01,
                 'keep-alive' => true,
                 'http-log'   => false,
+                'username'   => null,
+                'password'   => null,
             ),
             'options', $instance
         );

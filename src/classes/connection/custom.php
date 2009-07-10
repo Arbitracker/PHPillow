@@ -53,12 +53,14 @@ class phpillowCustomConnection extends phpillowConnection
      *
      * @param string $host
      * @param int $port
+     * @param string $username
+     * @param string $password
      * @param string $called
      * @return void
      */
-    public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowCustomConnection" )
+    public static function createInstance( $host = '127.0.0.1', $port = 5984, $username = null, $password = null, $called = "phpillowCustomConnection" )
     {
-        parent::createInstance( $host, $port, $called );
+        parent::createInstance( $host, $port, $username, $password, $called );
     }
 
     /**
@@ -103,6 +105,14 @@ class phpillowCustomConnection extends phpillowConnection
     {
         // Create basic request headers
         $request = "$method $path HTTP/1.1\r\nHost: {$this->options['host']}\r\n";
+
+        // Add basic auth if set
+        if ( $this->options['username'] )
+        {
+            $request .= sprintf( "Authorization: Basic %s\r\n",
+                base64_encode( $this->options['username'] . ':' . $this->options['password'] )
+            );
+        }
 
         // Set keep-alive header, which helps to keep to connection
         // initilization costs low, especially when the database server is not

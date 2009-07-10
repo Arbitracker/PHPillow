@@ -45,6 +45,8 @@ abstract class phpillowConnection
         'timeout'    => .01,
         'keep-alive' => true,
         'http-log'   => false,
+        'username'   => null,
+        'password'   => null,
     );
 
     /**
@@ -85,13 +87,22 @@ abstract class phpillowConnection
      * @param int $port
      * @return phpillowConnection
      */
-    protected function __construct( $host, $port )
+    protected function __construct( $host, $port, $username = null, $password = null, $ip = null )
     {
-        $this->options['host'] = (string) $host;
-        $this->options['port'] = (int) $port;
+        $this->options['host']     = (string) $host;
+        $this->options['port']     = (int) $port;
+        $this->options['username'] = $username;
+        $this->options['password'] = $password;
 
         // @TODO: Implement this properly
-        $this->options['ip']   = '127.0.0.1';
+        if ($ip === null)
+        {
+            $this->options['ip'] = gethostbyname($this->options['host']);
+        }
+        else
+        {
+            $this->options['ip'] = $ip;
+        }
     }
 
     /**
@@ -113,6 +124,8 @@ abstract class phpillowConnection
                 break;
 
             case 'http-log':
+            case 'password':
+            case 'username':
                 $this->options[$option] = $value;
                 break;
 
@@ -136,10 +149,12 @@ abstract class phpillowConnection
      *
      * @param string $host
      * @param int $port
+     * @param string $username
+     * @param string $password
      * @param string $called
      * @return void
      */
-    public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowCustomConnection" )
+    public static function createInstance( $host = '127.0.0.1', $port = 5984, $username = null, $password = null, $called = "phpillowCustomConnection" )
     {
         // Prevent from reestablishing connection during one run, without
         // explicit cleanup before.
@@ -161,7 +176,7 @@ abstract class phpillowConnection
 
         // Create connection and store it in static property to be accessible
         // by static getInstance() method.
-        self::$instance = new $called( $host, $port );
+        self::$instance = new $called( $host, $port, $username, $password );
     }
 
     /**

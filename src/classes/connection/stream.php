@@ -43,12 +43,14 @@ class phpillowStreamConnection extends phpillowConnection
      *
      * @param string $host
      * @param int $port
+     * @param string $username
+     * @param string $password
      * @param string $called
      * @return void
      */
-    public static function createInstance( $host = '127.0.0.1', $port = 5984, $called = "phpillowStreamConnection" )
+    public static function createInstance( $host = '127.0.0.1', $port = 5984, $username = null, $password = null, $called = "phpillowStreamConnection" )
     {
-        parent::createInstance( $host, $port, $called );
+        parent::createInstance( $host, $port, $username, $password, $called );
     }
 
     /**
@@ -66,6 +68,14 @@ class phpillowStreamConnection extends phpillowConnection
      */
     protected function request( $method, $path, $data, $raw = false )
     {
+        $basicAuth = '';
+        if ( $this->options['username'] )
+        {
+            $basicAuth .= "{$this->options['username']}:{$this->options['password']}@";
+        }
+
+        $url = 'http://' . $basicAuth . $this->options['host']  . ':' . $this->options['port'] . $path;
+
         $httpFilePointer = @fopen(
             $url = 'http://' . $this->options['host']  . ':' . $this->options['port'] . $path, 'r', false,
             stream_context_create(
