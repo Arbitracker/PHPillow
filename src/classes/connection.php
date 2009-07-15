@@ -236,16 +236,18 @@ abstract class phpillowConnection
     /**
      * HTTP method request wrapper
      *
-     * Wraps the HTTP method requests to interact with teh couch server. The
+     * Wraps the HTTP method requests to interact with the couch server. The
      * supported methods are:
      *  - GET
      *  - DELETE
      *  - POST
      *  - PUT
      *
-     * Each request takes the request path as the first parameter and
-     * optionally data as the second parameter. The requests will return a
-     * object wrapping the server response.
+     * Each request takes the full request path as the first parameter and
+     * optionally data as the second parameter. The path must include the
+     * database name, if the request should operate on a specific database.
+     *
+     * The requests will return a object wrapping the server response.
      *
      * @param string $method
      * @param array $params
