@@ -361,7 +361,7 @@ abstract class phpillowDocument
      * Return document type name
      *
      * This method is required to be implemented to return the document type
-     * for PHP versions lower then 5.2. When only using PHP 5.3 and higher you
+     * for PHP versions lower than 5.3. When only using PHP 5.3 and higher you
      * might just implement a method which does "return static:$type" in a base
      * class.
      * 
