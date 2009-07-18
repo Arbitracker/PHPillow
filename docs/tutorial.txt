@@ -19,8 +19,19 @@ CouchDB__ is a document based database. From their website:
 
 More detailed information can be found at here__.
 
-__ http://www.couchdbwiki.com/index.php?title=CouchDb_Quick_Overview
-__ http://couchdb.org
+__ http://couchdb.apache.org/docs/overview.html
+__ http://couchdb.apache.org
+
+Connection
+==========
+
+To connect to your CouchDB instance simply use the phpillowConnection
+class like shown here::
+
+    phpillowConnection::createInstance('localhost', 5984, 'user', 'password');
+    
+Once created this connection will be used in your document and view
+classes automatically.
 
 Documents
 =========
@@ -42,7 +53,7 @@ complete model defining a blog entry could look like::
             'text',
         );
 
-        protected function __construct()
+        public function __construct()
         {
             $this->properties = array(
                 'title'     => new phpillowStringValidator(),
@@ -59,11 +70,19 @@ complete model defining a blog entry could look like::
         {
             return $this->stringToId( $this->storage->title );
         }
+        
+        protected function getType()
+        {
+            return self::$type;
+        }
     }
 
 The static property $type defines the type of the stored document and should be
 unique in the whole application. If you are implementing a module, prefix this
-type with the name of the module, like "blog" in this example.
+type with the name of the module, like "blog" in this example. If you happen
+to use a PHP version prior 5.3 you have to return the document type in *each*
+of your document classes like shown above. 5.3 and above users can use a more
+generic approach with returning 'static::$type' in a base document class.
 
 The array $requiredProperties defined the properties, which are mandatory to
 be set. The properties itself are defined in the $properties property, which
@@ -74,10 +93,11 @@ which will be described later, which are all documented in the generated API
 documentation.
 
 The last thing you need to define is the generation of the document ID. An ID
-in CouchDB needs to fullfill some requirements, which are ensured by using the
-protected method stringToId(). Normally you use one somehow unqiue property of
+in CouchDB needs to fulfill some requirements, which are ensured by using the
+protected method stringToId(). Normally you use one somehow unique property of
 the document. If this is not entirely unique the document handler will append
-something, so taht it will get unique.
+something, so that it will get unique. Just return null if you want CouchDB
+to give you an unique id for the document.
 
 Using a document
 ----------------
@@ -85,7 +105,7 @@ Using a document
 With a document definition like above you can use the document in your code as
 simple as::
 
-    $doc = myBlogDocument::createNew();
+    $doc = new myBlogDocument();
     $doc->title = 'New blog post';
     $doc->text  = 'Hello world.';
     $doc->save();
@@ -99,14 +119,15 @@ database. After this a new magic property is available for the document::
 Using documents directly this ID is the way to fetch the document back from the
 database, like::
 
-    $doc = myBlogDocument::fetchById( 'blog_entry-new_blog_post' );
+    $doc = new myBlogDocument();
+    $doc->fetchById( 'blog_entry-new_blog_post' );
 
 This call retrieved the above document back from the database. The magic
 CouchDB properties _id and _rev (for revision) are set for the document. Beside
 the defined properties another property has been created by the wrapper, called
 revisions, which contains all old (and the current) revisions of the document::
 
-    echo $doc->revisions[0]->title;
+    echo $doc->revisions[0]['title'];
     > New blog post
 
 If you now change a property on the object and store it again in the database
@@ -131,18 +152,22 @@ implementation). A view definition for our blog entries could look like::
     {
         if ( doc.type == "blog_entry" )
         {
-            map( doc.title, doc._id );
+            emit( doc.title, doc._id );
 
-            map( [doc._id, 0], doc._id );
-            for ( var i = 0; i < doc.comments.length; ++i )
+            emit( [doc._id, 0], doc._id );
+            
+            if ( doc.comments )
             {
-                map( [doc._id, 1], doc.comments[i] );
+                for ( var i = 0; i < doc.comments.length; ++i )
+                {
+                    emit( [doc._id, 1], doc.comments[i] );
+                }
             }
         }
     }',
         );
 
-        protected static function getViewName()
+        protected function getViewName()
         {
             return 'blog_entries';
         }
@@ -152,23 +177,23 @@ For detailed information how views work, you should read the `CouchDB
 documentation on views`__, but the here implemented shows some nice features of
 CouchDB views.
 
-__ http://www.couchdbwiki.com/index.php?title=Views
+__ http://wiki.apache.org/couchdb/Introduction_to_CouchDB_views
 
 All view definitions are stored in the property $viewDefinitions and are
 automatically written to the database. The view has a name, which is used to
 identify the set of views in the database and does not really matter.
 
 In one view the defined EcmaScript should only operate on one type of
-documents, but is not forced to do so. The CouchDB function map() takes a key and
-some content as paramters and indexes the given content by the given key. The
-first call to map indexes all blog entries by their title, a simple string to
-string index. As views are also completely generated you should not store the
-entire documents, but only the ID, as shown above. You may now fetch the
+documents, but is not forced to do so. The CouchDB function emit() takes a key
+and some content as parameters and indexes the given content by the given key.
+The first call to map indexes all blog entries by their title, a simple string
+to string index. As views are also completely generated you should not store
+the entire documents, but only the ID, as shown above. You may now fetch the
 document by its original title::
 
     $doc = myBlogView::entries( array( 'key' => 'New blog post' ) );
 
-The next two map functions create a complex index, so you may retreive the IDs
+The next two map functions create a complex index, so you may retrieve the IDs
 of one blog entry and all comments related to that blog entry with one query::
 
     $docs = myBlogView::entries( array(
@@ -179,15 +204,16 @@ of one blog entry and all comments related to that blog entry with one query::
 For details why and how this works you may want to read the section on `view
 collation`__ in the CouchDB wiki.
 
-__ http://www.couchdbwiki.com/index.php?title=View_Collation
+__ http://wiki.apache.org/couchdb/View_collation
 
 The manager
 ===========
 
-The manager provides a central registry for couchDB documents and views. You
+The manager provides a central registry for CouchDB documents and views. You
 may set and overwrite the document class for one document type, or query this
 document class directly, whatever class has been set for it, like::
 
+    phpillowManager::setDocumentClass( 'blog_entry', 'myBlogDocument' );
     $doc = phpillowManager::createDocument( 'blog_entry' );
     // ...
 
