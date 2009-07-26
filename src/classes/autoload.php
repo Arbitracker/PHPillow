@@ -46,6 +46,9 @@ return array(
     'phpillowResponseErrorException'         => 'classes/exception.php',
     'phpillowResponseNotFoundErrorException' => 'classes/exception.php',
     'phpillowResponseConflictErrorException' => 'classes/exception.php',
+    'phpillowView'                           => 'classes/view.php',
+    'phpillowFileView'                       => 'classes/file_view.php',
+    'phpillowUserFileView'                   => 'classes/file_view/user.php',
     'phpillowManager'                        => 'classes/manager.php',
     'phpillowResponseFactory'                => 'classes/response.php',
     'phpillowResponse'                       => 'classes/response/base.php',
@@ -67,7 +70,6 @@ return array(
     'phpillowRegexpValidator'                => 'classes/validator/regexp.php',
     'phpillowStringValidator'                => 'classes/validator/string.php',
     'phpillowTextValidator'                  => 'classes/validator/text.php',
-    'phpillowView'                           => 'classes/view.php',
     'phpillowGroupView'                      => 'classes/view/group.php',
     'phpillowUserView'                       => 'classes/view/user.php',
 );

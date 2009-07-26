@@ -37,6 +37,7 @@ require 'phpillow/document_user_tests.php';
 require 'phpillow/document_group_tests.php';
 
 require 'phpillow/view_tests.php';
+require 'phpillow/file_view_tests.php';
 require 'phpillow/view_user_tests.php';
 require 'phpillow/view_group_tests.php';
 
@@ -68,6 +69,7 @@ class phpillowTestSuite extends PHPUnit_Framework_TestSuite
         $this->addTest( phpillowDocumentUserTests::suite() );
         $this->addTest( phpillowDocumentGroupTests::suite() );
 
+        $this->addTest( phpillowFileViewTests::suite() );
         $this->addTest( phpillowViewTests::suite() );
         $this->addTest( phpillowUserViewTests::suite() );
         $this->addTest( phpillowGroupViewTests::suite() );
