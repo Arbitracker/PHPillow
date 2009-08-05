@@ -202,7 +202,7 @@ class phpillowTool
             return json_encode( $source );
         }
 
-        throw new Exception( "Invalid document: " . var_export( $document, true ) );
+        throw new phpillowMultipartParserException( "Invalid document: " . var_export( $document, true ) );
     }
 
     /**
@@ -226,7 +226,7 @@ class phpillowTool
         }
 
         // Open input stream to read contents from
-        $stream = isset( $options['input'] ) ? fopen( $options['input'] ) : STDIN;
+        $stream = isset( $this->options['input'] ) ? fopen( $this->options['input'], 'r' ) : STDIN;
         $multipartParser = new phpillowToolMultipartParser( $stream );
 
         phpillowConnection::createInstance(
@@ -239,8 +239,6 @@ class phpillowTool
 
         while ( ( $document = $multipartParser->getDocument() ) !== false )
         {
-            // @TODO: Check hash
-            // @TODO: Add error handling
             try
             {
                 $path = $this->connectionInfo['path'] . '/' . $document['Content-ID'];
