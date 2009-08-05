@@ -76,6 +76,11 @@ class phpillowTool
     {
         $this->dsn     = $dsn;
         $this->options = $options;
+
+        if ( !array_search( 'string', stream_get_wrappers() ) )
+        {
+            stream_wrapper_register( 'string', 'phpillowToolStringStream' );
+        }
     }
 
     /**
@@ -163,6 +168,44 @@ class phpillowTool
     }
 
     /**
+     * Clean up document definition
+     *
+     * Returns the cleaned up document body as a result.
+     * 
+     * @param array $document 
+     * @return string
+     */
+    protected function getDocumentBody( array $document )
+    {
+        if ( strpos( $document['Content-Type'], 'application/json' ) === 0 )
+        {
+            $source = json_decode( $document['body'], true );
+            unset( $source['_rev'] );
+            return json_encode( $source );
+        }
+
+        if ( is_array( $document['body'] ) )
+        {
+            $main   = array_shift( $document['body'] );
+            $source = json_decode( $main['body'], true );
+            unset( $source['_rev'] );
+
+            $source['_attachments'] = array();
+            foreach ( $document['body'] as $attachment )
+            {
+                $source['_attachments'][$attachment['Content-ID']] = array(
+                    'content_type' => $attachment['Content-Type'],
+                    'data'         => base64_encode( $attachment['body'] ),
+                );
+            }
+
+            return json_encode( $source );
+        }
+
+        throw new Exception( "Invalid document: " . var_export( $document, true ) );
+    }
+
+    /**
      * Execute load command
      *
      * Returns a proper status code indicating successful execution of the
@@ -180,6 +223,27 @@ class phpillowTool
         if ( !$this->parseConnectionInformation() )
         {
             return 1;
+        }
+
+        // Open input stream to read contents from
+        $stream = isset( $options['input'] ) ? fopen( $options['input'] ) : STDIN;
+        $multipartParser = new phpillowToolMultipartParser( $stream );
+
+        phpillowConnection::createInstance(
+            $this->connectionInfo['host'],
+            $this->connectionInfo['port'],
+            $this->connectionInfo['user'],
+            $this->connectionInfo['pass']
+        );
+        $db = phpillowConnection::getInstance();
+
+        while ( ( $document = $multipartParser->getDocument() ) !== false )
+        {
+            // @TODO: Check hash
+            // @TODO: Add error handling
+
+            $path = $this->connectionInfo['path'] . '/' . $document['Content-ID'];
+            $db->put( $path, $this->getDocumentBody( $document ) );
         }
 
         return 0;
