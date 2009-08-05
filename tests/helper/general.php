@@ -118,3 +118,11 @@ class phpillowViewTestPublic extends phpillowView
     }
 }
 
+class phpillowTestTool extends phpillowTool {
+    public function getConnectionInformation()
+    {
+        $this->parseConnectionInformation();
+        return $this->connectionInfo;
+    }
+}
+

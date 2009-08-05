@@ -36,6 +36,33 @@
 class phpillowTool
 {
     /**
+     * Data source name for the CouchDB connection
+     * 
+     * @var string
+     */
+    protected $dsn;
+
+    /**
+     * CLI tool options
+     * 
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * Parsed connection information
+     * 
+     * @var array
+     */
+    protected $connectionInfo = array(
+        'host' => 'localhost',
+        'port' => '5984',
+        'user' => null,
+        'pass' => null,
+        'path' => '/',
+    );
+
+    /**
      * Construct tool
      *
      * Construct tool from database DSN (Data-Source-Name, the URL defining the
@@ -76,6 +103,43 @@ class phpillowTool
     }
 
     /**
+     * Parse the provided connection information
+     *
+     * Returns false,if the conenction information could not be parser
+     * properly.
+     * 
+     * @return bool
+     */
+    protected function parseConnectionInformation()
+    {
+        if ( ( $info = @parse_url( $this->dsn ) ) === false )
+        {
+            echo "Could not parse provided DSN.\n";
+            return false;
+        }
+
+        foreach ( $info as $key => $value )
+        {
+            if ( array_key_exists( $key, $this->connectionInfo ) )
+            {
+                $this->connectionInfo[$key] = $value;
+            }
+        }
+
+        if ( isset( $this->options['username'] ) )
+        {
+            $this->connectionInfo['user'] = $this->options['username'];
+        }
+
+        if ( isset( $this->options['password'] ) )
+        {
+            $this->connectionInfo['pass'] = $this->options['password'];
+        }
+
+        return true;
+    }
+
+    /**
      * Execute dump command
      *
      * Returns a proper status code indicating successful execution of the
@@ -89,6 +153,13 @@ class phpillowTool
         {
             return 0;
         }
+
+        if ( !$this->parseConnectionInformation() )
+        {
+            return 1;
+        }
+
+        return 0;
     }
 
     /**
@@ -105,6 +176,13 @@ class phpillowTool
         {
             return 0;
         }
+
+        if ( !$this->parseConnectionInformation() )
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }
 
