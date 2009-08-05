@@ -16,6 +16,7 @@ if ( !defined( 'PHPILLOW_TEST_ENV_SET_UP' ) )
  * Couchdb tool tests
  */
 require 'tool/main_test.php';
+require 'tool/string_stream_test.php';
 
 /**
 * Test suite for phpillow
@@ -33,6 +34,7 @@ class phpillowToolTestSuite extends PHPUnit_Framework_TestSuite
         $this->setName( 'Tool tests' );
 
         $this->addTest( phpillowToolTests::suite() );
+        $this->addTest( phpillowStringStreamTests::suite() );
     }
 
     /**
