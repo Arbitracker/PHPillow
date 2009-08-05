@@ -46,6 +46,7 @@ return array(
     'phpillowResponseErrorException'         => 'classes/exception.php',
     'phpillowResponseNotFoundErrorException' => 'classes/exception.php',
     'phpillowResponseConflictErrorException' => 'classes/exception.php',
+    'phpillowMultipartParserException'       => 'classes/exception.php',
     'phpillowView'                           => 'classes/view.php',
     'phpillowFileView'                       => 'classes/file_view.php',
     'phpillowUserFileView'                   => 'classes/file_view/user.php',

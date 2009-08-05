@@ -17,6 +17,7 @@ if ( !defined( 'PHPILLOW_TEST_ENV_SET_UP' ) )
  */
 require 'tool/main_test.php';
 require 'tool/string_stream_test.php';
+require 'tool/multipart_parser_test.php';
 
 /**
 * Test suite for phpillow
@@ -35,6 +36,7 @@ class phpillowToolTestSuite extends PHPUnit_Framework_TestSuite
 
         $this->addTest( phpillowToolTests::suite() );
         $this->addTest( phpillowStringStreamTests::suite() );
+        $this->addTest( phpillowMultipartParserTests::suite() );
     }
 
     /**

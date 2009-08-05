@@ -344,3 +344,24 @@ class phpillowResponseConflictErrorException extends phpillowResponseErrorExcept
     }
 }
 
+/**
+ * Exception thrown if the parsing of a multipart/mixed document failed.
+ * 
+ * @package Core
+ * @version $Revision$
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ */
+class phpillowMultipartParserException extends phpillowException
+{
+    /**
+     * Construct parent from message
+     * 
+     * @param string $message
+     * @return void
+     */
+    public function __construct( $message )
+    {
+        parent::__construct( $message, array() );
+    }
+}
+
