@@ -3,8 +3,8 @@
 
 // List of special test modules.
 $modules = array(
-	// No modules yet...
-	// 'module' => array( 'phpillowModuleTestSuite', 'tests/module_suite.php' ),
+	'phpillow' => array( 'phpillowBackendTestSuite', 'tests/phpillow_suite.php' ),
+	'tool'     => array( 'phpillowToolTestSuite', 'tests/tool_suite.php' ),
 );
 
 // Check if the test should only be run for a specified module.

@@ -56,6 +56,7 @@ return array(
     'phpillowDataResponse'                   => 'classes/response/data.php',
     'phpillowResultSetResponse'              => 'classes/response/result.php',
     'phpillowStatusResponse'                 => 'classes/response/status.php',
+    'phpillowTool'                           => 'classes/tool.php',
     'phpillowValidator'                      => 'classes/validator.php',
     'phpillowArrayValidator'                 => 'classes/validator/array.php',
     'phpillowDateValidator'                  => 'classes/validator/date.php',

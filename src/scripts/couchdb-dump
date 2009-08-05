@@ -66,13 +66,12 @@ function __autoload( $class )
         $autoloads = include __DIR__ . '/../classes/autoload.php';
     }
 
-    if ( ( strpos( $class, 'phpillow' ) === 0 ) &&
-         isset( $autoload[$class] ) )
+    if ( isset( $autoloads[$class] ) )
     {
         require __DIR__ . '/../' . $autoloads[$class];
     }
 }
 
 $tool = new phpillowTool( end( $argv ), $options );
-$tool->dump();
+exit( $tool->dump() );
 

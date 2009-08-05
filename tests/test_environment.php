@@ -3,6 +3,7 @@
 /**
  * Test environment constants
  */
+define( 'PHPILLOW_TEST_ENV_SET_UP', true );
 
 /**
  * Set timezone to get clearly defined dates

@@ -7,7 +7,10 @@
  */
 
 // Set up environment
-require dirname( __FILE__ ) . '/test_environment.php';
+if ( !defined( 'PHPILLOW_TEST_ENV_SET_UP' ) )
+{
+    require dirname( __FILE__ ) . '/test_environment.php';
+}
 
 /*
  * Set file whitelist for phpunit
@@ -19,27 +22,10 @@ foreach ( $files as $class => $file )
 }
 
 /**
- * Couchdb backend tests
+ * Suites
  */
-require 'phpillow/data_test.php';
-
-require 'phpillow/connection_tests.php';
-require 'phpillow/stream_connection_tests.php';
-require 'phpillow/custom_connection_tests.php';
-require 'phpillow/manager_tests.php';
-
-require 'phpillow/validator_tests.php';
-require 'phpillow/document_validator_tests.php';
-
-require 'phpillow/document_tests.php';
-require 'phpillow/attachment_tests.php';
-require 'phpillow/document_user_tests.php';
-require 'phpillow/document_group_tests.php';
-
-require 'phpillow/view_tests.php';
-require 'phpillow/file_view_tests.php';
-require 'phpillow/view_user_tests.php';
-require 'phpillow/view_group_tests.php';
+require_once 'phpillow_suite.php';
+require_once 'tool_suite.php';
 
 /**
 * Test suite for phpillow
@@ -56,23 +42,8 @@ class phpillowTestSuite extends PHPUnit_Framework_TestSuite
         parent::__construct();
         $this->setName( 'phpillow - PHP CouchDB wrapper' );
 
-        $this->addTest( phpillowConnectionTests::suite() );
-        $this->addTest( phpillowStreamConnectionTests::suite() );
-        $this->addTest( phpillowCustomConnectionTests::suite() );
-        $this->addTest( phpillowManagerTests::suite() );
-
-        $this->addTest( phpillowValidatorTests::suite() );
-        $this->addTest( phpillowDocumentValidatorTests::suite() );
-
-        $this->addTest( phpillowDocumentTests::suite() );
-        $this->addTest( phpillowDocumentAttachmentTests::suite() );
-        $this->addTest( phpillowDocumentUserTests::suite() );
-        $this->addTest( phpillowDocumentGroupTests::suite() );
-
-        $this->addTest( phpillowFileViewTests::suite() );
-        $this->addTest( phpillowViewTests::suite() );
-        $this->addTest( phpillowUserViewTests::suite() );
-        $this->addTest( phpillowGroupViewTests::suite() );
+        $this->addTest( phpillowBackendTestSuite::suite() );
+        $this->addTest( phpillowToolTestSuite::suite() );
     }
 
     /**
