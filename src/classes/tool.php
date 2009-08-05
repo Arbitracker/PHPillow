@@ -241,9 +241,19 @@ class phpillowTool
         {
             // @TODO: Check hash
             // @TODO: Add error handling
-
-            $path = $this->connectionInfo['path'] . '/' . $document['Content-ID'];
-            $db->put( $path, $this->getDocumentBody( $document ) );
+            try
+            {
+                $path = $this->connectionInfo['path'] . '/' . $document['Content-ID'];
+                $db->put( $path, $this->getDocumentBody( $document ) );
+            }
+            catch ( phpillowException $e )
+            {
+                if ( !isset( $this->options['ignore-errors'] ) )
+                {
+                    fwrite( STDERR, $e->getMessage() . "\n" );
+                    return 1;
+                }
+            }
         }
 
         return 0;
