@@ -59,6 +59,7 @@ return array(
     'phpillowStatusResponse'                 => 'classes/response/status.php',
     'phpillowTool'                           => 'classes/tool.php',
     'phpillowToolMultipartParser'            => 'classes/tool/multipart_parser.php',
+    'phpillowToolMultipartWriter'            => 'classes/tool/multipart_writer.php',
     'phpillowToolStringStream'               => 'classes/tool/string_stream.php',
     'phpillowValidator'                      => 'classes/validator.php',
     'phpillowArrayValidator'                 => 'classes/validator/array.php',

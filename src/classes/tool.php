@@ -164,6 +164,26 @@ class phpillowTool
             return 1;
         }
 
+        phpillowConnection::createInstance(
+            $this->connectionInfo['host'],
+            $this->connectionInfo['port'],
+            $this->connectionInfo['user'],
+            $this->connectionInfo['pass']
+        );
+        $db = phpillowConnection::getInstance();
+
+        $writer = new phpillowToolMultipartWriter( STDOUT );
+        $docs = $db->get( $this->connectionInfo['path'] . '/_all_docs' );
+        
+        foreach ( $docs->rows as $doc )
+        {
+            $writer->writeDocument(
+                $db->get( $this->connectionInfo['path'] . '/' . $doc['id'] . '?attachments=true' )
+            );
+        }
+
+        unset( $writer );
+
         return 0;
     }
 
