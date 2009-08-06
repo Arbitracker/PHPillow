@@ -90,8 +90,6 @@ class phpillowCustomConnection extends phpillowConnection
                 )
             );
         }
-
-        var_dump( $this->connection );
     }
 
     /**
