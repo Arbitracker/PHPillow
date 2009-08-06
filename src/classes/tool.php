@@ -303,5 +303,43 @@ class phpillowTool
 
         return 0;
     }
+
+    /**
+     * Prime caches of all views
+     * 
+     * Returns a proper status code indicating successful execution of the
+     * command.
+     *
+     * @return int
+     */
+    public function primeCaches()
+    {
+        if ( $this->printVersion() )
+        {
+            return 0;
+        }
+
+        if ( !$this->parseConnectionInformation() )
+        {
+            return 1;
+        }
+
+        // Open connection
+        $db = new phpillowCustomConnection(
+            $this->connectionInfo['host'],
+            $this->connectionInfo['port'],
+            $this->connectionInfo['user'],
+            $this->connectionInfo['pass']
+        );
+        $designDocs = $db->get( $this->connectionInfo['path'] . '/_all_docs?startkey=%22_design%2F%22&endkey=%22_design0%22' );
+        foreach ( $designDocs->rows as $doc )
+        {
+            $views = $db->get( $this->connectionInfo['path'] . '/' . $doc['id'] );
+            foreach ( $views->views as $view => $functions )
+            {
+                $db->get( $this->connectionInfo['path'] . '/' . $doc['id'] . '/_view/' . $view );
+            }
+        }
+    }
 }
 
