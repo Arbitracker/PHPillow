@@ -1,3 +1,14 @@
+Changelog 0.5-alpha, [DATE], revision [REV]
+------------------------------------------------------------------------------
+
+- Implemented: View base class, which allows to store map and reduce functions
+  in external files
+- Implemented: couchdb-python compatible couchdb-dump utility
+- Implemented: couchdb-python compatible couchdb-load utility
+- Fixed: Connection error to exception conversion in custom connection
+  handler.
+- Documented: tutorial now reflects the new API
+
 Changelog 0.4-alpha, 10.07.09, revision 106
 ------------------------------------------------------------------------------
 
