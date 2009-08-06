@@ -206,7 +206,7 @@ class phpillowTool
         foreach ( $docs->rows as $doc )
         {
             $writer->writeDocument(
-                $db->get( $this->connectionInfo['path'] . '/' . $doc['id'] . '?attachments=true' )
+                $db->get( $this->connectionInfo['path'] . '/' . urlencode( $doc['id'] ) . '?attachments=true' )
             );
         }
 
