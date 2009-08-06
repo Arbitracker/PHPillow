@@ -76,9 +76,10 @@ class phpillowCustomConnection extends phpillowConnection
         // If the connection could not be established, fsockopen sadly does not
         // only return false (as documented), but also always issues a warning.
         if ( ( $this->connection === null ) &&
-             ( ( $this->connection = fsockopen( $this->options['ip'], $this->options['port'], $errno, $errstr ) ) === false ) )
+             ( ( $this->connection = @fsockopen( $this->options['ip'], $this->options['port'], $errno, $errstr ) ) === false ) )
         {
             // This is a bit hackisch...
+            $this->connection = null;
             throw new phpillowConnectionException(
                 "Could not connect to server at %ip:%port: '%errno: %error'",
                 array(
@@ -89,6 +90,8 @@ class phpillowCustomConnection extends phpillowConnection
                 )
             );
         }
+
+        var_dump( $this->connection );
     }
 
     /**
