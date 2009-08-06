@@ -284,6 +284,17 @@ class phpillowTool
             $this->connectionInfo['pass']
         );
 
+        // Create database if it does not exist yet
+        try
+        {
+            $db->get( $this->connectionInfo['path'] );
+        }
+        catch ( phpillowResponseNotFoundErrorException $e )
+        {
+            $db->put( $this->connectionInfo['path'] );
+        }
+
+        // Import the documents
         while ( ( $document = $multipartParser->getDocument() ) !== false )
         {
             try
