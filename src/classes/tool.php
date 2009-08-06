@@ -63,6 +63,20 @@ class phpillowTool
     );
 
     /**
+     * Standard output stream
+     * 
+     * @var resource
+     */
+    protected $stdout = STDOUT;
+
+    /**
+     * Standard error stream
+     * 
+     * @var resource
+     */
+    protected $stderr = STDERR;
+
+    /**
      * Construct tool
      *
      * Construct tool from database DSN (Data-Source-Name, the URL defining the
@@ -81,6 +95,21 @@ class phpillowTool
         {
             stream_wrapper_register( 'string', 'phpillowToolStringStream' );
         }
+    }
+
+    /**
+     * Set ouput streams
+     *
+     * Set the output streams to be used by the tool.
+     * 
+     * @param resource $stdout 
+     * @param resource $stderr 
+     * @return void
+     */
+    public function setOutputStreams( $stdout = STDOUT, $stderr = STDERR )
+    {
+        $this->stdout = $stdout;
+        $this->stderr = $stderr;
     }
 
     /**
@@ -164,15 +193,14 @@ class phpillowTool
             return 1;
         }
 
-        phpillowConnection::createInstance(
+        $db = new phpillowCustomConnection(
             $this->connectionInfo['host'],
             $this->connectionInfo['port'],
             $this->connectionInfo['user'],
             $this->connectionInfo['pass']
         );
-        $db = phpillowConnection::getInstance();
 
-        $writer = new phpillowToolMultipartWriter( STDOUT );
+        $writer = new phpillowToolMultipartWriter( $this->stdout );
         $docs = $db->get( $this->connectionInfo['path'] . '/_all_docs' );
         
         foreach ( $docs->rows as $doc )
@@ -249,13 +277,12 @@ class phpillowTool
         $stream = isset( $this->options['input'] ) ? fopen( $this->options['input'], 'r' ) : STDIN;
         $multipartParser = new phpillowToolMultipartParser( $stream );
 
-        phpillowConnection::createInstance(
+        $db = new phpillowCustomConnection(
             $this->connectionInfo['host'],
             $this->connectionInfo['port'],
             $this->connectionInfo['user'],
             $this->connectionInfo['pass']
         );
-        $db = phpillowConnection::getInstance();
 
         while ( ( $document = $multipartParser->getDocument() ) !== false )
         {
@@ -268,7 +295,7 @@ class phpillowTool
             {
                 if ( !isset( $this->options['ignore-errors'] ) )
                 {
-                    fwrite( STDERR, $e->getMessage() . "\n" );
+                    fwrite( $this->stderr, $e->getMessage() . "\n" );
                     return 1;
                 }
             }
