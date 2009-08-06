@@ -80,21 +80,24 @@ abstract class phpillowConnection
      * Construct a couch DB connection
      *
      * Construct a couch DB connection from basic connection parameters for one
-     * given database. Method is protected and should not be called directly.
-     * For initializing a connection use the static method createInstance().
+     * given database.
+     *
+     * In most cases you want to use the createInstance() method to register
+     * the connection instance, so it can be used by the document and view
+     * classes. If you want to operate directly on a raw connection you may
+     * also instantiate it directly, though.
      *
      * @param string $host
      * @param int $port
      * @return phpillowConnection
      */
-    protected function __construct( $host, $port, $username = null, $password = null, $ip = null )
+    public function __construct( $host, $port, $username = null, $password = null, $ip = null )
     {
         $this->options['host']     = (string) $host;
         $this->options['port']     = (int) $port;
         $this->options['username'] = $username;
         $this->options['password'] = $password;
 
-        // @TODO: Implement this properly
         if ($ip === null)
         {
             $this->options['ip'] = gethostbyname($this->options['host']);
