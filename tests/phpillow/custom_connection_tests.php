@@ -42,10 +42,10 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
             $response = $db->get( '/test' );
             $this->fail( 'Expected phpillowConnectionException.' );
         }
-        catch ( PHPUnit_Framework_Error $e )
+        catch ( phpillowConnectionException $e )
         {
             $this->assertSame(
-                'fsockopen(): unable to connect to 127.0.0.1:12345 (Connection refused)',
+                'Could not connect to server at 127.0.0.1:12345: \'111: Connection refused\'',
                 $e->getMessage()
             );
         }
