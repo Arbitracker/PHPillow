@@ -1,0 +1,9 @@
+Content-Type: multipart/mixed; boundary="==0efdbe9ae3f59c712d04103c11cdfa0f=="
+
+--==0efdbe9ae3f59c712d04103c11cdfa0f==
+Content-ID: user-http_xlogon.net_kore
+Content-Length: 195
+Content-Type: application/json
+
+{"_id":"user-http_xlogon.net_kore","_rev":"1-1469861985","revisions":[],"login":"http:\/\/xlogon.net\/kore","email":null,"name":null,"valid":null,"auth_type":null,"auth_infos":null,"type":"user"}
+--==0efdbe9ae3f59c712d04103c11cdfa0f==--

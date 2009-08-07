@@ -1,0 +1,15 @@
+Content-Type: multipart/mixed; boundary="==90ba4c871a801eb66f33cab258c481f4=="
+
+--==90ba4c871a801eb66f33cab258c481f4==
+Content-ID: user-http_xlogon.net_kore
+Content-Length: 194
+Content-Type: application/json
+
+{"_id":"user-http_xlogon.net_kore","_rev":"1-775120585","revisions":[],"login":"http:\/\/xlogon.net\/kore","email":null,"name":null,"valid":null,"auth_type":null,"auth_infos":null,"type":"user"}
+--==90ba4c871a801eb66f33cab258c481f4==
+Content-ID: user-kore
+Content-Length: 158
+Content-Type: application/json
+
+{"_id":"user-kore","_rev":"1-2781747434","revisions":[],"login":"kore","email":null,"name":null,"valid":null,"auth_type":null,"auth_infos":null,"type":"user"}
+--==90ba4c871a801eb66f33cab258c481f4==--

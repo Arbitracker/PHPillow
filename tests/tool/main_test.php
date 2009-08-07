@@ -21,40 +21,76 @@ class phpillowToolTests extends PHPUnit_Framework_TestCase
 		return new PHPUnit_Framework_TestSuite( __CLASS__ );
 	}
 
+    public function setUp()
+    {
+        if ( !array_search( 'string', stream_get_wrappers() ) )
+        {
+            stream_wrapper_register( 'string', 'phpillowToolStringStream' );
+        }
+    }
+
     public function testDumpVersionOutput()
     {
         $tool = new phpillowTool( null, array( 'version' => false ) );
-        ob_start();
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
         $this->assertEquals( 0, $tool->dump() );
 
-        $this->assertTrue( (bool) preg_match( '(^PHPillow backup tool - version: .*$)', ob_get_clean() ) );
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertTrue( (bool) preg_match( '(^PHPillow backup tool - version: .*$)', stream_get_contents( $stdout ) ) );
+        $this->assertEquals( '', stream_get_contents( $stderr ) );
     }
 
     public function testLoadVersionOutput()
     {
         $tool = new phpillowTool( null, array( 'version' => false ) );
-        ob_start();
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
         $this->assertEquals( 0, $tool->load() );
 
-        $this->assertTrue( (bool) preg_match( '(^PHPillow backup tool - version: .*$)', ob_get_clean() ) );
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertTrue( (bool) preg_match( '(^PHPillow backup tool - version: .*$)', stream_get_contents( $stdout ) ) );
+        $this->assertEquals( '', stream_get_contents( $stderr ) );
     }
 
     public function testDumpParseBrokenDsn()
     {
         $tool = new phpillowTool( ':/' );
-        ob_start();
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
         $this->assertEquals( 1, $tool->dump() );
 
-        $this->assertEquals( "Could not parse provided DSN.\n", ob_get_clean() );
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertEquals( '', stream_get_contents( $stdout ) );
+        $this->assertEquals( "Could not parse provided DSN: :/\n", stream_get_contents( $stderr ) );
     }
 
     public function testLoadParseBrokenDsn()
     {
         $tool = new phpillowTool( ':/' );
-        ob_start();
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
         $this->assertEquals( 1, $tool->load() );
 
-        $this->assertEquals( "Could not parse provided DSN.\n", ob_get_clean() );
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertEquals( '', stream_get_contents( $stdout ) );
+        $this->assertEquals( "Could not parse provided DSN: :/\n", stream_get_contents( $stderr ) );
     }
 
     public static function getDsnConfigurations()

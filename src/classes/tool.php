@@ -113,6 +113,23 @@ class phpillowTool
     }
 
     /**
+     * Echo a message
+     *
+     * Echo a progress message to STDERR, if the verbose flag is set.
+     * 
+     * @param string $message 
+     * @return void
+     */
+    protected function out( $message )
+    {
+        if ( isset( $this->options['v'] ) ||
+             isset( $this->options['verbose'] ) )
+        {
+            fwrite( $this->stderr, $message );
+        }
+    }
+
+    /**
      * Print version
      *
      * Print version of the tool, if the version flag has been set.
@@ -132,7 +149,7 @@ class phpillowTool
             $version = 'svn-' . $match['revision'];
         }
 
-        echo "PHPillow backup tool - version: ", $version, "\n";
+        fwrite( $this->stdout, "PHPillow backup tool - version: $version\n" );
         return true;
     }
 
@@ -148,7 +165,7 @@ class phpillowTool
     {
         if ( ( $info = @parse_url( $this->dsn ) ) === false )
         {
-            echo "Could not parse provided DSN.\n";
+            fwrite( $this->stderr, "Could not parse provided DSN: {$this->dsn}\n" );
             return false;
         }
 
@@ -205,6 +222,7 @@ class phpillowTool
         
         foreach ( $docs->rows as $doc )
         {
+            $this->out( "Dumping document " . $doc['id'] . "\n" );
             $writer->writeDocument(
                 $db->get( $this->connectionInfo['path'] . '/' . urlencode( $doc['id'] ) . '?attachments=true' )
             );
@@ -299,6 +317,7 @@ class phpillowTool
         {
             try
             {
+                $this->out( "Loading document " . $document['Content-ID'] . "\n" );
                 $path = $this->connectionInfo['path'] . '/' . $document['Content-ID'];
                 $db->put( $path, $this->getDocumentBody( $document ) );
             }
@@ -348,6 +367,7 @@ class phpillowTool
             $views = $db->get( $this->connectionInfo['path'] . '/' . $doc['id'] );
             foreach ( $views->views as $view => $functions )
             {
+                $this->out( "Priming view " . $doc['id'] . "/" . $view . "\n" );
                 $db->get( $this->connectionInfo['path'] . '/' . $doc['id'] . '/_view/' . $view );
             }
         }
