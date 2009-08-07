@@ -88,7 +88,7 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
 
     public function testDumpDocument()
     {
-        $doc = phpillowUserTestDocument::createNew();
+        $doc = new phpillowUserDocument();
         $doc->login = 'http://xlogon.net/kore';
         $doc->save();
 
@@ -108,11 +108,11 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
 
     public function testDumpMultipleDocuments()
     {
-        $doc = phpillowUserTestDocument::createNew();
+        $doc = new phpillowUserDocument();
         $doc->login = 'http://xlogon.net/kore';
         $doc->save();
 
-        $doc = phpillowUserTestDocument::createNew();
+        $doc = new phpillowUserDocument();
         $doc->login = 'kore';
         $doc->save();
 
@@ -132,7 +132,7 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
 
     public function testDumpDocumentWithAttachment()
     {
-        $doc = phpillowUserTestDocument::createNew();
+        $doc = new phpillowUserDocument();
         $doc->login = 'kore';
         $doc->attachFile( $file = dirname( __FILE__ ) . '/../phpillow/data/image_png.png' );
         $doc->save();
@@ -149,6 +149,84 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
 
         $this->compareDump( __FUNCTION__, stream_get_contents( $stdout ) );
         $this->assertEquals( "Dumping document user-kore\n", stream_get_contents( $stderr ) );
+    }
+
+    public function testLoadSingleDocument()
+    {
+        $tool = new phpillowTool( 'http://localhost:5984/test', array(
+            'verbose' => false,
+            'input'   => dirname( __FILE__ ) . '/data/testDumpDocument.dump',
+        ) );
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
+        $this->assertEquals( 0, $tool->load() );
+
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertEquals( '', stream_get_contents( $stdout ) );
+        $this->assertEquals( "Loading document user-http_xlogon.net_kore\n", stream_get_contents( $stderr ) );
+
+        $user = new phpillowUserDocument();
+        $user->fetchById( 'user-http_xlogon.net_kore' );
+        $this->assertEquals( 'http://xlogon.net/kore', $user->login );
+    }
+
+    public function testLoadMultipleDocuments()
+    {
+        $tool = new phpillowTool( 'http://localhost:5984/test', array(
+            'verbose' => false,
+            'input'   => dirname( __FILE__ ) . '/data/testDumpMultipleDocuments.dump',
+        ) );
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
+        $this->assertEquals( 0, $tool->load() );
+
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertEquals( '', stream_get_contents( $stdout ) );
+        $this->assertEquals( "Loading document user-http_xlogon.net_kore\nLoading document user-kore\n", stream_get_contents( $stderr ) );
+
+        $user = new phpillowUserDocument();
+        $user->fetchById( 'user-http_xlogon.net_kore' );
+        $this->assertEquals( 'http://xlogon.net/kore', $user->login );
+
+        $user = new phpillowUserDocument();
+        $user->fetchById( 'user-kore' );
+        $this->assertEquals( 'kore', $user->login );
+    }
+
+    public function testLoadDocumentWithAttachment()
+    {
+        $tool = new phpillowTool( 'http://localhost:5984/test', array(
+            'verbose' => false,
+            'input'   => dirname( __FILE__ ) . '/data/testDumpDocumentWithAttachment.dump',
+        ) );
+        $tool->setOutputStreams(
+            $stdout = fopen( 'string://', 'w' ),
+            $stderr = fopen( 'string://', 'w' )
+        );
+        $this->assertEquals( 0, $tool->load() );
+
+        fseek( $stdout, 0 );
+        fseek( $stderr, 0 );
+
+        $this->assertEquals( '', stream_get_contents( $stdout ) );
+        $this->assertEquals( "Loading document user-kore\n", stream_get_contents( $stderr ) );
+
+        $user = new phpillowUserDocument();
+        $user->fetchById( 'user-kore' );
+        $this->assertEquals( 'kore', $user->login );
+
+        $this->assertEquals(
+            base64_encode( $user->getFile( 'image_png.png' )->data ),
+            base64_encode( file_get_contents( dirname( __FILE__ ) . '/../phpillow/data/image_png.png' ) )
+        );
     }
 }
 

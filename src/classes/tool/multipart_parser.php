@@ -132,15 +132,16 @@ class phpillowToolMultipartParser
         if ( strpos( $document['Content-Type'], 'multipart/mixed' ) === 0 )
         {
             // Rebuild full document
-            $body = '';
+            $body = fopen( 'string://', 'w' );
             foreach ( $document as $key => $value )
             {
-                $body .= "$key: $value\r\n";
+                fwrite( $body, "$key: $value\r\n" );
             }
-            $body .= $string;
+            fwrite( $body, $string );
+            fseek( $body, 0 );
 
             $document['body'] = array();
-            $parser = new phpillowToolMultipartParser( fopen( 'string://' . $body, 'r' ) );
+            $parser = new phpillowToolMultipartParser( $body );
             while ( ( $part = $parser->getDocument() ) !== false )
             {
                 $document['body'][] = $part;
@@ -174,7 +175,7 @@ class phpillowToolMultipartParser
         }
 
         $document = '';
-        while ( ( $line = fgets( $this->stream ) ) &&
+        while ( ( ( $line = fgets( $this->stream ) ) !== false ) &&
                 ( trim( $line ) !== '--' . $this->options['boundary'] ) &&
                 ( trim( $line ) !== '--' . $this->options['boundary'] . '--' ) )
         {
@@ -186,7 +187,7 @@ class phpillowToolMultipartParser
             return false;
         }
 
-        return $this->parseDocument( trim( $document ) );
+        return $this->parseDocument( ltrim( $document ) );
     }
 }
 
