@@ -55,4 +55,20 @@ class phpillowStringStreamTests extends PHPUnit_Framework_TestCase
         $stream = fopen( 'string://' . $string, 'r' );
         $this->assertEquals( $line, fgets( $stream ) );
     }
+
+    public function testWriteStream()
+    {
+        $stream = fopen( 'string://', 'w' );
+        fwrite( $stream, $string = 'Hello world!' );
+        fseek( $stream, 0 );
+        $this->assertEquals( $string, stream_get_contents( $stream ) );
+    }
+
+    public function testAppendStream()
+    {
+        $stream = fopen( 'string://' . ( $string = 'Hello' ), 'a' );
+        fwrite( $stream, $string .= ' world!' );
+        fseek( $stream, 0 );
+        $this->assertEquals( $string, stream_get_contents( $stream ) );
+    }
 }
