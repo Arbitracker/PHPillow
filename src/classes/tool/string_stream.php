@@ -43,8 +43,15 @@ class phpillowToolStringStream
      * 
      * @var string
      */
-	public $string;
+	protected $string;
 	
+    /**
+     * Cached length of the string
+     * 
+     * @var int
+     */
+    protected $length;
+
     /**
      * Open stream
      * 
@@ -58,6 +65,7 @@ class phpillowToolStringStream
     {
         $this->string   = substr( $path, strpos( $path, '//' ) + 2 );
         $this->position = 0;
+        $this->length   = strlen( $this->string );
 
         return true;
     }
@@ -86,8 +94,9 @@ class phpillowToolStringStream
         $left            = substr( $this->string, 0, $this->position );
         $right           = substr( $this->string, $this->position + strlen( $data ) );
         $this->string    = $left . $data . $right;
-        $this->position += strlen( $data );
-        return strlen( $data );
+        $this->position += $written = strlen( $data );
+        $this->length    = strlen( $this->string );
+        return $written;
     }
 
     /**
@@ -107,7 +116,7 @@ class phpillowToolStringStream
      */
     public function stream_eof()
     {
-        return $this->position >= strlen( $this->string );
+        return $this->position >= $this->length;
     }
 
     /**
@@ -121,7 +130,7 @@ class phpillowToolStringStream
     {
         switch ( $whence ) {
             case SEEK_SET:
-                if ( ( $offset < strlen( $this->string ) ) &&
+                if ( ( $offset < $this->length ) &&
                      ( $offset >= 0 ) )
                 {
                      $this->position = $offset;
@@ -146,9 +155,9 @@ class phpillowToolStringStream
                 break;
 
             case SEEK_END:
-                if ( ( strlen( $this->string ) + $offset ) >= 0 )
+                if ( ( $this->length + $offset ) >= 0 )
                 {
-                     $this->position = strlen( $this->string ) + $offset;
+                     $this->position = $this->length + $offset;
                      return true;
                 }
                 else
