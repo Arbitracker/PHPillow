@@ -189,7 +189,16 @@ class phpillowCustomConnection extends phpillowConnection
         // leave handling to the user for now.
         if ( $line === false )
         {
-            throw new phpillowConnectionException( 'Connection abborted unexpectedly.', array() );
+            // Reestablish which seems to have been aborted
+            //
+            // The recursion in this method might be problematic if the
+            // connection establishing mechanism does not correctly throw an
+            // exception on failure.
+            //
+            // An aborted connection seems to happen here on long running
+            // requests, which cause a connection timeout at server side.
+            $this->connection = null;
+            return $this->request( $method, $path, $data, $raw );
         }
 
         do {
