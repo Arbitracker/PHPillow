@@ -323,9 +323,9 @@ class phpillowTool
             }
             catch ( phpillowException $e )
             {
+                fwrite( $this->stderr, $document['Content-ID'] . ': ' . $e->getMessage() . "\n" );
                 if ( !isset( $this->options['ignore-errors'] ) )
                 {
-                    fwrite( $this->stderr, $e->getMessage() . "\n" );
                     return 1;
                 }
             }
