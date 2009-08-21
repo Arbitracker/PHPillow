@@ -28,6 +28,8 @@
  * Response class used, when CouchDB only returned an array, like for database
  * lists.
  *
+ * @property-read $data Array with response contents
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL

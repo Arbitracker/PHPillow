@@ -27,6 +27,10 @@
  *
  * Does not contain JSON structures, but just raw data
  *
+ * @property-read $contentType Mime type of returned data, as stored in
+ *      CouchDB.
+ * @property-read $data Raw file data
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL

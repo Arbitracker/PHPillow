@@ -25,6 +25,15 @@
 /**
  * Result set response
  *
+ * Exposes all properties of the response as class properties, which can be
+ * accessed like public properties:
+ *
+ * <code>
+ *  // In case the result contains a rows property.
+ *  $result = new phpillowResultSetResponse( $data );
+ *  var_dump( $result->rows );
+ * </code>
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
