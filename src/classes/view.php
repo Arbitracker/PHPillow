@@ -207,6 +207,7 @@ abstract class phpillowView extends phpillowDocument
                     $queryString .= $key . '=' . urlencode( (string) $value );
                     break;
 
+                case 'reduce':
                 case 'group':
                 case 'update':
                 case 'descending':
