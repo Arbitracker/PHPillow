@@ -68,6 +68,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
                     'stub'         => true,
                     'content_type' => 'application/octet-stream',
                     'length'       => 4484,
+                    'revpos'       => 1,
                 ),
             ),
             $doc->_attachments
@@ -154,11 +155,13 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
                     'stub'         => true,
                     'content_type' => 'application/octet-stream',
                     'length'       => 4484,
+                    'revpos'       => 1,
                 ),
                 'image_jpg.jpg' => array(
                     'stub'         => true,
                     'content_type' => 'application/octet-stream',
                     'length'       => 3146,
+                    'revpos'       => 1,
                 ),
             ),
             $doc->_attachments
@@ -179,6 +182,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
                     'stub'         => true,
                     'content_type' => 'image/png',
                     'length'       => 4484,
+                    'revpos'       => 1,
                 ),
             ),
             $doc->_attachments
