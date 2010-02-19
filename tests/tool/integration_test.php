@@ -64,19 +64,19 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
                             '(\s+)',
                             " ",
                             preg_replace(
-                                '(\d+(?:-\d+)*)',
+                                '(\d+(?:-[0-9a-f]+)*)',
                                 '1',
                                 preg_replace(
                                     '(==[a-f0-9]{32}==)',
                                     '=={boundary}==',
-                                    trim( file_get_contents( $fileName ) )
+                                    $expected = trim( file_get_contents( $fileName ) )
                                 )
                             )
                         )
                     )
                 ) . '$)',
                 $s = preg_replace(
-                    '(\d+(?:-\d+)*)',
+                    '(\d+(?:-[0-9a-f]+)*)',
                     '1',
                     preg_replace( '(\s+)', " ", trim( $dump ) )
                 )
