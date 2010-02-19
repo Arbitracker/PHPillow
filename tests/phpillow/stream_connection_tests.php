@@ -22,6 +22,21 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 	}
 
     /**
+     * Check that curl-wrapers are enabled, test cases fail otherwise.
+     * 
+     * @return void
+     */
+    public function setUp()
+    {
+        ob_start();
+        phpinfo();
+        if ( strpos( ob_get_clean(), 'curlwrappers' ) === false )
+        {
+            $this->markTestSkipped( 'Enable --with-curlwrappers to run this test.' );
+        }
+    }
+
+    /**
      * Reset database connection after each test run
      * 
      * @return void
@@ -44,9 +59,11 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
         }
         catch ( phpillowConnectionException $e )
         {
-            $this->assertSame(
-                'Could not connect to server at 127.0.0.1:12345: fopen(http://127.0.0.1:12345/test): failed to open stream: operation failed',
-                $e->getMessage()
+            $this->assertTrue(
+                // Message depends on whether the internal stream wrapper or 
+                // the curlwrappers are used
+                $e->getMessage() === 'Could not connect to server at 127.0.0.1:12345: fopen(http://127.0.0.1:12345/test): failed to open stream: operation failed' ||
+                $e->getMessage() === 'Could not connect to server at 127.0.0.1:12345: fopen(http://127.0.0.1:12345/test): failed to open stream: Connection refused'
             );
         }
     }
