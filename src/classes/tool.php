@@ -218,18 +218,57 @@ class phpillowTool
         );
 
         $writer = new phpillowToolMultipartWriter( $this->stdout );
-        $docs = $db->get( $this->connectionInfo['path'] . '/_all_docs' );
-        
-        foreach ( $docs->rows as $doc )
-        {
-            $this->out( "Dumping document " . $doc['id'] . "\n" );
-            $writer->writeDocument(
-                $db->get( $this->connectionInfo['path'] . '/' . urlencode( $doc['id'] ) . '?attachments=true' )
+
+        // Fetch and dump documents in chunks of 1000 documents, since the 
+        // memory consumption might be too high otherwise
+        // @TODO: Make chunk-size configurable.
+        $offset = null;
+        $limit  = 1000;
+        do {
+            $docs = $db->get( $this->connectionInfo['path'] . '/_all_docs?limit=' . $limit .
+                ( $offset !== null ? '&startkey="' . $offset . '"' : '' )
             );
-        }
+            
+            foreach ( $docs->rows as $nr => $doc )
+            {
+                if ( ( $nr === 0 ) &&
+                     ( $offset !== null ) )
+                {
+                    // The document which equals the startkey and already has 
+                    // been dumped.
+                    continue;
+                }
+
+                $offset = $doc['id'];
+
+                $this->out( "Dumping document " . $doc['id'] . "\n" );
+                $doc = $db->get( $this->connectionInfo['path'] . '/' . urlencode( $doc['id'] ) );
+
+                // Skip deleted documents
+                // @TODO: Make this configurable
+                if ( isset( $doc->deleted ) &&
+                     ( $doc->deleted === true ) )
+                {
+                    continue;
+                }
+
+                // Fetch attachments explicitely. Including the attachments in 
+                // the doc sometimes causes errors on CouchDB 0.10
+                $doc = $doc->getFullDocument();
+                if ( isset( $doc['_attachments'] ) )
+                {
+                    foreach ( $doc['_attachments'] as $name => $attachment )
+                    {
+                        $data = $db->get( $this->connectionInfo['path'] . '/' . urlencode( $doc['_id'] ) . '/' . $name, null, true );
+                        $doc['_attachments'][$name]['data'] = $data->data;
+                    }
+                }
+
+                $writer->writeDocument( $doc );
+            }
+        } while ( count( $docs->rows ) > 1 );
 
         unset( $writer );
-
         return 0;
     }
 
@@ -261,7 +300,7 @@ class phpillowTool
             {
                 $source['_attachments'][$attachment['Content-ID']] = array(
                     'content_type' => $attachment['Content-Type'],
-                    'data'         => base64_encode( $attachment['body'] ),
+                    'data'         => $attachment['body'],
                 );
             }
 

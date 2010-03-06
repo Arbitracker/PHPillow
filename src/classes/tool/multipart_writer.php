@@ -143,7 +143,7 @@ class phpillowToolMultipartWriter
         foreach ( $attachments as $name => $attachment )
         {
             fwrite( $this->stream, "--" . $boundary . "\r\n" );
-            $body = base64_decode( $attachment['data'] );
+            $body = base64_encode( $attachment['data'] );
 
             fwrite( $this->stream, "Content-ID: " . $name . "\r\n" );
             fwrite( $this->stream, "Content-Length: " . strlen( $body ) . "\r\n" );
@@ -162,13 +162,11 @@ class phpillowToolMultipartWriter
      * Write a single document to the stream. Can create multipart messages, if
      * the document contains attachments.
      * 
-     * @param phpillowResponse $document
+     * @param array $document
      * @return void
      */
-    public function writeDocument( phpillowResponse $document )
+    public function writeDocument( array $document )
     {
-        $document = $document->getFullDocument();
-
         fwrite( $this->stream, "--" . $this->boundary . "\r\n" );
         if ( isset( $document['_attachments'] ) )
         {
