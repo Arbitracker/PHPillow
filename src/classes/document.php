@@ -34,7 +34,7 @@ abstract class phpillowDocument
     /**
      * Object storing all the document properties as public attributes. This
      * way it is easy to serialize using json_encode.
-     * 
+     *
      * @var StdClass
      */
     protected $storage;
@@ -47,7 +47,7 @@ abstract class phpillowDocument
      *      email => new phpillowMailValidator( ... ),
      *      ...
      *  )
-     * 
+     *
      * @var array
      */
     protected $properties = array();
@@ -55,7 +55,7 @@ abstract class phpillowDocument
     /**
      * List of required properties. For each required property, which is not
      * set, a validation exception will be thrown on save.
-     * 
+     *
      * @var array
      */
     protected $requiredProperties = array();
@@ -63,7 +63,7 @@ abstract class phpillowDocument
     /**
      * Document type, may be a string matching the regular expression:
      *  (^[a-zA-Z0-9_]+$)
-     * 
+     *
      * @var string
      */
     protected static $type = '_default';
@@ -77,14 +77,14 @@ abstract class phpillowDocument
 
     /**
      * Flag, indicating if current document has already been modified
-     * 
+     *
      * @var bool
      */
     protected $modified = false;
 
     /**
      * Flag, indicating if current document is a new one.
-     * 
+     *
      * @var bool
      */
     protected $newDocument = true;
@@ -105,7 +105,7 @@ abstract class phpillowDocument
 
     /**
      * List of new attachements to the document.
-     * 
+     *
      * @var array
      */
     protected $newAttachments = array();
@@ -119,9 +119,9 @@ abstract class phpillowDocument
 
     /**
      * Construct new document
-     * 
+     *
      * Construct new document
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -143,10 +143,10 @@ abstract class phpillowDocument
 
     /**
      * Get document property
-     * 
+     *
      * Get property from document
      *
-     * @param string $property 
+     * @param string $property
      * @return mixed
      */
     public function __get( $property )
@@ -174,9 +174,9 @@ abstract class phpillowDocument
      * Set a property value, which will be validated using the assigned
      * validator. Setting a property will mark the document as modified, so
      * that you know when to store the object.
-     * 
-     * @param string $property 
-     * @param mixed $value 
+     *
+     * @param string $property
+     * @param mixed $value
      * @return void
      */
     public function __set( $property, $value )
@@ -200,10 +200,10 @@ abstract class phpillowDocument
 
     /**
      * Check if document property is set
-     * 
+     *
      * Check if document property is set
      *
-     * @param string $property 
+     * @param string $property
      * @return boolean
      */
     public function __isset( $property )
@@ -224,8 +224,8 @@ abstract class phpillowDocument
      *
      * Set values of the document from the response object, if they are
      * available in there.
-     * 
-     * @param phpillowResponse $response 
+     *
+     * @param phpillowResponse $response
      * @return void
      */
     protected function fromResponse( phpillowResponse $response )
@@ -238,7 +238,7 @@ abstract class phpillowDocument
         // when the object is modified and stored again.
         $revision = new StdClass();
         $revision->_date = time();
-        foreach ( $this->properties as $property => $v ) 
+        foreach ( $this->properties as $property => $v )
         {
             if ( isset( $response->$property ) )
             {
@@ -285,9 +285,9 @@ abstract class phpillowDocument
      *
      * If null is provided as an ID, we keep this value and do not cstruct
      * something else, to let the server autogenerate some ID.
-     * 
-     * @param string $type 
-     * @param mixed $id 
+     *
+     * @param string $type
+     * @param mixed $id
      * @return mixed
      */
     protected function getDocumentId( $type, $id )
@@ -298,10 +298,10 @@ abstract class phpillowDocument
     /**
      * Get document by ID
      *
-     * Get document by ID and return a document objetc instance for the fetch
+     * Get document by ID and return a document object instance for the fetch
      * document.
-     * 
-     * @param string $id 
+     *
+     * @param string $id
      * @return phpillowDocument
      */
     public function fetchById( $id )
@@ -311,7 +311,7 @@ abstract class phpillowDocument
         // be hard to debug.
         if ( empty( $id ) )
         {
-            throw new phpillowResponseNotFoundErrorException( array( 
+            throw new phpillowResponseNotFoundErrorException( array(
                 'error'  => 'not_found',
                 'reason' => 'No document ID specified.',
             ) );
@@ -319,7 +319,7 @@ abstract class phpillowDocument
 
         // Fetch object from database
         $db = phpillowConnection::getInstance();
-        $response = $db->get( 
+        $response = $db->get(
             phpillowConnection::getDatabase() . urlencode( $id )
         );
 
@@ -364,7 +364,7 @@ abstract class phpillowDocument
      * for PHP versions lower than 5.3. When only using PHP 5.3 and higher you
      * might just implement a method which does "return static:$type" in a base
      * class.
-     * 
+     *
      * @return string
      */
     abstract protected function getType();
@@ -378,7 +378,7 @@ abstract class phpillowDocument
      *
      * You can return null instead of an ID string, to trigger the ID
      * autogeneration.
-     * 
+     *
      * @return mixed
      */
     abstract protected function generateId();
@@ -389,7 +389,7 @@ abstract class phpillowDocument
      * Checks if all required properties has been set. Returns an array with
      * the properties, whcih are required but not set, or true if all
      * requirements are fulfilled.
-     * 
+     *
      * @return mixed
      */
     public function checkRequirements()
@@ -424,7 +424,7 @@ abstract class phpillowDocument
      * intact and return true on success.
      *
      * On successful creation the (generated) ID will be returned.
-     * 
+     *
      * @return string
      */
     public function save()
@@ -493,9 +493,9 @@ abstract class phpillowDocument
      * tarnsliteration abilities are used, and after that all, but common ID
      * characters, are replaced by the given replace string, which defaults to
      * _.
-     * 
-     * @param string $string 
-     * @param string $replace 
+     *
+     * @param string $string
+     * @param string $replace
      * @return string
      */
     protected function stringToId( $string, $replace = '_' )
@@ -525,8 +525,8 @@ abstract class phpillowDocument
      * it will be used, but not verified, that it matches the actual file
      * contents. If left empty the mime type defaults to
      * 'application/octet-stream'.
-     * 
-     * @param string $fileName 
+     *
+     * @param string $fileName
      * @param string $name
      * @param string $mimeType
      * @return void
@@ -546,8 +546,8 @@ abstract class phpillowDocument
      * Get file contents
      *
      * Get the contents of an attached file as a phpillowDataResponse.
-     * 
-     * @param string $fileName 
+     *
+     * @param string $fileName
      * @return phpillowDataResponse
      */
     public function getFile( $fileName )
@@ -559,7 +559,7 @@ abstract class phpillowDocument
 
         $db = phpillowConnection::getInstance();
         $response = $db->get(
-            phpillowConnection::getDatabase() . urlencode( $this->_id ) . '/' . $fileName, 
+            phpillowConnection::getDatabase() . urlencode( $this->_id ) . '/' . $fileName,
             null, true
         );
 

@@ -34,7 +34,7 @@ abstract class phpillowView extends phpillowDocument
     /**
      * List of required properties. For each required property, which is not
      * set, a validation exception will be thrown on save.
-     * 
+     *
      * @var array
      */
     protected $requiredProperties = array(
@@ -58,16 +58,16 @@ abstract class phpillowView extends phpillowDocument
      *
      * Each view reduce function MUST have a view definition with the same
      * name, otherwise there is nothing to reduce.
-     * 
+     *
      * @var array
      */
     protected $viewReduces = array();
 
     /**
      * Construct new document
-     * 
+     *
      * Construct new document
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -85,9 +85,9 @@ abstract class phpillowView extends phpillowDocument
 
     /**
      * Get name of view
-     * 
+     *
      * Get name of view
-     * 
+     *
      * @return string
      */
     protected function getViewName()
@@ -102,9 +102,9 @@ abstract class phpillowView extends phpillowDocument
      *
      * Composes the document ID out of the document type and the generated ID
      * for the current document.
-     * 
-     * @param string $type 
-     * @param string $id 
+     *
+     * @param string $type
+     * @param string $id
      * @return string
      */
     protected function getDocumentId( $type, $id )
@@ -119,7 +119,7 @@ abstract class phpillowView extends phpillowDocument
      * for PHP versions lower then 5.2. When only using PHP 5.3 and higher you
      * might just implement a method which does "return static:$type" in a base
      * class.
-     * 
+     *
      * @return void
      */
     protected function getType()
@@ -133,7 +133,7 @@ abstract class phpillowView extends phpillowDocument
      * The ID normally should be calculated on some meaningful / unique
      * property for the current ttype of documents. The returned string should
      * not be too long and should not contain multibyte characters.
-     * 
+     *
      * @return string
      */
     protected function generateId()
@@ -151,8 +151,8 @@ abstract class phpillowView extends phpillowDocument
      * This convinient method only works with PHP in version 5.3 or greater.
      * Otherwise just call the query method directly on an instantiated view.
      *
-     * @param string $method 
-     * @param array $parameters 
+     * @param string $method
+     * @param array $parameters
      * @return phpillowResultArray
      */
     public static function __callStatic( $method, $parameters )
@@ -173,8 +173,8 @@ abstract class phpillowView extends phpillowDocument
      * Validates and transformed paased options to limit the view data, to fit
      * the specifications in the HTTP view API, documented at:
      * http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options
-     * 
-     * @param array $options 
+     *
+     * @param array $options
      * @return string
      */
     protected function buildViewQuery( array $options )
@@ -249,15 +249,15 @@ abstract class phpillowView extends phpillowDocument
      * the view query options as additional paramters to limit the returns
      * values, specified at:
      * http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options
-     * 
-     * @param string $view 
-     * @param array $options 
+     *
+     * @param string $view
+     * @param array $options
      * @return phpillowResultArray
      */
     public function query( $view, array $options = array() )
     {
         // Build query string, just as a normal HTTP GET query string
-        $url = phpillowConnection::getDatabase() . 
+        $url = phpillowConnection::getDatabase() .
             '_design/' . $this->getViewName() . '/_view/' . $view;
         $url .= $this->buildViewQuery( $options );
 
@@ -288,7 +288,7 @@ abstract class phpillowView extends phpillowDocument
      * Check if the views stored in the database equal the view definitions
      * specified by the vew classes. If the implmentation differs update to the
      * view specifications in the class.
-     * 
+     *
      * @return void
      */
     public function verifyView()
@@ -303,7 +303,7 @@ abstract class phpillowView extends phpillowDocument
             // If the view does not exist yet, recreate it from current view
             $view = $this;
         }
-        
+
         // Force setting of view definitions
         $views = array();
         foreach ( $this->viewDefinitions as $name => $function )
