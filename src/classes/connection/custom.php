@@ -287,7 +287,7 @@ class phpillowCustomConnection extends phpillowConnection
             case 303:
             case 307:
                 $path = parse_url( $headers['location'], PHP_URL_PATH );
-                return $this->request( $method, $path, $data, $raw );
+                return $this->request( 'GET', $path, $data, $raw );
         }
 
         // Create repsonse object from couch db response
