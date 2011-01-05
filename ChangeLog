@@ -1,3 +1,17 @@
+Changelog 0.6-beta, 05.01.11, revision 161
+------------------------------------------------------------------------------
+
+- Implemented #7: Delete document method is required.
+  # Thanks to Flyingmana for the patch
+- Implemented #12: fetchById does not check the type
+  # Thanks to PHPGangsta for the patch
+- Implemented #13: Using include_docs parameter is not possible
+- Implemented: Support for reduce parameter
+- Fixed #9: Incorrect base64 encoding in import/export-tool
+- Added: Bootstrap file setting up PHPillow autoload mechanism
+- Added: Working simple example for storing and updating documents in a DB
+- Documented: Behaviour of response classes
+
 Changelog 0.5-alpha, 09.08.09, revision 136
 ------------------------------------------------------------------------------
 
