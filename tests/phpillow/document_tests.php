@@ -272,4 +272,25 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
             $doc->revisions[2]['name']
         );
     }
+
+    public function testDeleteDocument()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $id = $doc->save();
+
+        $doc = phpillowManager::fetchDocument( 'user', $id );
+        $response = $doc->delete();
+
+        $this->assertTrue( $response->ok );
+
+        try
+        {
+            phpillowManager::fetchDocument( 'user', $id );
+            $this->fail( 'Expected not found exception.' );
+        }
+        catch ( phpillowResponseNotFoundErrorException $e )
+        { /* Expected */ }
+    }
 }
+

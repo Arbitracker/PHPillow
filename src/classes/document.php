@@ -487,6 +487,23 @@ abstract class phpillowDocument
     }
 
     /**
+     * Deletes the current document
+     *
+     * Tries to delete the current document from the database. Might throw a 
+     * conflict exception in case the document has been modified since the last 
+     * fetch.
+     * 
+     * @return void
+     */
+    public function delete()
+    {
+        $db = phpillowConnection::getInstance();
+        return $db->delete(
+            phpillowConnection::getDatabase() . urlencode( $this->_id ) . '?rev=' . $this->_rev
+        ); 
+    }
+
+    /**
      * Get ID string from arbritrary string
      *
      * To calculate an ID string from an phpillowrary string, first iconvs
