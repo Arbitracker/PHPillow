@@ -292,5 +292,36 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         catch ( phpillowResponseNotFoundErrorException $e )
         { /* Expected */ }
     }
+
+    public function testDocumentFetchByIdWithTypeMismatch()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->save();
+
+        try
+        {
+            $group = new phpillowGroupDocument();
+            $group->fetchById($doc->_id);
+            $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
+        }
+        catch (phpillowResponseNotFoundErrorException $e)
+        { /* Expected exception */ }
+    }
+
+    public function testDocumentFetchByIdWithCorrectType()
+    {
+        $doc = phpillowUserDocument::createNew();
+        $doc->login = 'kore';
+        $doc->save();
+
+        $user = new phpillowUserDocument();
+        $user->fetchById($doc->_id);
+
+        $this->assertSame(
+            'kore',
+            $user->login
+        );
+    }
 }
 

@@ -323,10 +323,32 @@ abstract class phpillowDocument
             phpillowConnection::getDatabase() . urlencode( $id )
         );
 
+        // Check if type of response matches type of class
+        $this->checkTypeOfResponse( $response );
+
         // Create document contents from fetched object
         $this->fromResponse( $response );
 
         return $this;
+    }
+
+    /**
+     * Verifies that the fetched document is of the given type
+     * 
+     * @param phpillowResponse $response 
+     * @return void
+     */
+    public function checkTypeOfResponse( phpillowResponse $response )
+    {
+        if ( $response->type != $this->getType() )
+        {
+            throw new phpillowResponseNotFoundErrorException(
+                array(
+                     'error'  => 'mismatch',
+                     'reason' => 'Type does not match: ' . $response->type . ' != ' . $this->getType(),
+                )
+            );
+        }
     }
 
     /**
