@@ -23,7 +23,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
 
     /**
      * Reset database connection after each test run
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -32,7 +32,7 @@ class phpillowConnectionTests extends PHPUnit_Framework_TestCase
         phpillowTestEnvironmentSetup::resetTmpDir();
     }
 
-    public function testGetNonExitantConnection()
+    public function testGetNonExistentConnection()
     {
         // To be dependant from test which has been run earlier
         phpillowConnectionTestHelper::reset();

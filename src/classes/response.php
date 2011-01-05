@@ -37,24 +37,24 @@ class phpillowResponseFactory
      * Parses a server response depending on the response body and the HTTP
      * status code.
      *
-     * The method will eith return a plain phpillowResponse object, when the
+     * The method will either return a plain phpillowResponse object, when the
      * server returned a single document. If the server returned a set of
      * documents you will receive a phpillowResultSetResponse object, with a row
      * property to iterate over all documents returned by the server.
      *
      * For put and delete requests the server will just return a status,
-     * wheather the request was successfull, which is represented by a
+     * whether the request was successful, which is represented by a
      * phpillowStatusResponse object.
      *
-     * For all other cases most probably some error occured, which is
+     * For all other cases most probably some error occurred, which is
      * transformed into a phpillowResponseErrorException, which will be thrown
      * by the parse method.
      *
      * If the third parameter raw is set to true, the body will not expected to
-     * be some JSON structure, but just preserverd as a raw string.
-     * 
+     * be some JSON structure, but just preserved as a raw string.
+     *
      * @param array $headers
-     * @param string $body 
+     * @param string $body
      * @param bool $raw
      * @return phpillowResponse
      */
@@ -70,7 +70,7 @@ class phpillowResponseFactory
                 // The HTTP status code 200 - OK indicates, that we got a document
                 // or a set of documents as return value.
                 //
-                // To check wheather we received a set of documents or a single
+                // To check whether we received a set of documents or a single
                 // document we can check for the document properties _id or
                 // _rev, which are always available for documents and are only
                 // available for documents.
@@ -115,7 +115,7 @@ class phpillowResponseFactory
             default:
                 // All other unhandled HTTP codes are for now handled as an error.
                 // This may not be true, as lots of other status code may be used
-                // for valid repsonses.
+                // for valid responses.
                 throw new phpillowResponseErrorException( $headers['status'], $response );
         }
     }

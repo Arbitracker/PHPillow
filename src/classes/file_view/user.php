@@ -33,9 +33,9 @@ class phpillowUserFileView extends phpillowFileView
 {
     /**
      * Construct view
-     * 
+     *
      * Construct view
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -64,7 +64,7 @@ class phpillowUserFileView extends phpillowFileView
      * the called class information for PHP 5.2 and lower.
      *
      * @param mixed $docType
-     * @returns phpillowDocument
+     * @return phpillowUserFileView
      */
     public static function createNew( $docType = null )
     {
@@ -73,9 +73,9 @@ class phpillowUserFileView extends phpillowFileView
 
     /**
      * Get name of view
-     * 
+     *
      * Get name of view
-     * 
+     *
      * @return string
      */
     protected function getViewName()

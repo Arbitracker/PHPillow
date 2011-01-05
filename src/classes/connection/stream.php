@@ -59,7 +59,7 @@ class phpillowStreamConnection extends phpillowConnection
      * Perform a request to the server and return the result converted into a
      * phpillowResponse object. If you do not expect a JSON structure, which
      * could be converted in such a response object, set the forth parameter to
-     * true, and you get a response object retuerned, containing the raw body.
+     * true, and you get a response object returned, containing the raw body.
      *
      * @param string $method
      * @param string $path
@@ -112,10 +112,10 @@ class phpillowStreamConnection extends phpillowConnection
         {
             $body .= fgets( $httpFilePointer );
         }
-        
+
         $metaData   = stream_get_meta_data( $httpFilePointer );
         // @TODO: This seems to have changed in last CVS versions of PHP 5.3,
-        // should be removeable, once there is a next release of PHP 5.3
+        // should be removable, once there is a next release of PHP 5.3
         $rawHeaders = isset( $metaData['wrapper_data']['headers'] ) ? $metaData['wrapper_data']['headers'] : $metaData['wrapper_data'];
         $headers    = array();
 
@@ -146,7 +146,7 @@ class phpillowStreamConnection extends phpillowConnection
             );
         }
 
-        // Create repsonse object from couch db response
+        // Create response object from couch db response
         return phpillowResponseFactory::parse( $headers, $body, $raw );
     }
 }

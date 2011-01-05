@@ -77,7 +77,7 @@ class phpillowFileViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testVerifyNotExistantView()
+    public function testVerifyNotExistentView()
     {
         $view = phpillowUserFileView::createNew();
         $view->verifyView();
@@ -93,7 +93,7 @@ class phpillowFileViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testVerifyExistantView()
+    public function testVerifyExistentView()
     {
         $view = phpillowUserFileView::createNew();
         $view->save();
@@ -122,7 +122,7 @@ class phpillowFileViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testQueryNotExistantView()
+    public function testQueryNotExistentView()
     {
         $view = phpillowUserFileView::createNew();
         $results = $view->query( 'all' );
@@ -133,7 +133,7 @@ class phpillowFileViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testQueryExistantView()
+    public function testQueryExistentView()
     {
         $view = phpillowUserFileView::createNew();
         $view->save();
@@ -146,7 +146,7 @@ class phpillowFileViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testQueryExistantViewByKey()
+    public function testQueryExistentViewByKey()
     {
         $view = phpillowUserFileView::createNew();
         $view->save();

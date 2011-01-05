@@ -37,21 +37,21 @@ class phpillowTool
 {
     /**
      * Data source name for the CouchDB connection
-     * 
+     *
      * @var string
      */
     protected $dsn;
 
     /**
      * CLI tool options
-     * 
+     *
      * @var array
      */
     protected $options;
 
     /**
      * Parsed connection information
-     * 
+     *
      * @var array
      */
     protected $connectionInfo = array(
@@ -64,14 +64,14 @@ class phpillowTool
 
     /**
      * Standard output stream
-     * 
+     *
      * @var resource
      */
     protected $stdout = STDOUT;
 
     /**
      * Standard error stream
-     * 
+     *
      * @var resource
      */
     protected $stderr = STDERR;
@@ -81,9 +81,9 @@ class phpillowTool
      *
      * Construct tool from database DSN (Data-Source-Name, the URL defining the
      * databases location) and an optional set of options.
-     * 
-     * @param mixed $dsn 
-     * @param array $options 
+     *
+     * @param mixed $dsn
+     * @param array $options
      * @return void
      */
     public function __construct( $dsn, array $options = array() )
@@ -98,12 +98,12 @@ class phpillowTool
     }
 
     /**
-     * Set ouput streams
+     * Set output streams
      *
      * Set the output streams to be used by the tool.
-     * 
-     * @param resource $stdout 
-     * @param resource $stderr 
+     *
+     * @param resource $stdout
+     * @param resource $stderr
      * @return void
      */
     public function setOutputStreams( $stdout = STDOUT, $stderr = STDERR )
@@ -116,8 +116,8 @@ class phpillowTool
      * Echo a message
      *
      * Echo a progress message to STDERR, if the verbose flag is set.
-     * 
-     * @param string $message 
+     *
+     * @param string $message
      * @return void
      */
     protected function out( $message )
@@ -133,7 +133,7 @@ class phpillowTool
      * Print version
      *
      * Print version of the tool, if the version flag has been set.
-     * 
+     *
      * @return bool
      */
     protected function printVersion()
@@ -156,9 +156,9 @@ class phpillowTool
     /**
      * Parse the provided connection information
      *
-     * Returns false,if the conenction information could not be parser
+     * Returns false,if the connection information could not be parser
      * properly.
-     * 
+     *
      * @return bool
      */
     protected function parseConnectionInformation()
@@ -219,7 +219,7 @@ class phpillowTool
 
         $writer = new phpillowToolMultipartWriter( $this->stdout );
 
-        // Fetch and dump documents in chunks of 1000 documents, since the 
+        // Fetch and dump documents in chunks of 1000 documents, since the
         // memory consumption might be too high otherwise
         // @TODO: Make chunk-size configurable.
         $offset = null;
@@ -228,13 +228,13 @@ class phpillowTool
             $docs = $db->get( $this->connectionInfo['path'] . '/_all_docs?limit=' . $limit .
                 ( $offset !== null ? '&startkey="' . $offset . '"' : '' )
             );
-            
+
             foreach ( $docs->rows as $nr => $doc )
             {
                 if ( ( $nr === 0 ) &&
                      ( $offset !== null ) )
                 {
-                    // The document which equals the startkey and already has 
+                    // The document which equals the startkey and already has
                     // been dumped.
                     continue;
                 }
@@ -252,7 +252,7 @@ class phpillowTool
                     continue;
                 }
 
-                // Fetch attachments explicitely. Including the attachments in 
+                // Fetch attachments explicitly. Including the attachments in
                 // the doc sometimes causes errors on CouchDB 0.10
                 $doc = $doc->getFullDocument();
                 if ( isset( $doc['_attachments'] ) )
@@ -276,8 +276,8 @@ class phpillowTool
      * Clean up document definition
      *
      * Returns the cleaned up document body as a result.
-     * 
-     * @param array $document 
+     *
+     * @param array $document
      * @return string
      */
     protected function getDocumentBody( array $document )
@@ -375,7 +375,7 @@ class phpillowTool
 
     /**
      * Prime caches of all views
-     * 
+     *
      * Returns a proper status code indicating successful execution of the
      * command.
      *

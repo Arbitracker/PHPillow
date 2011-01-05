@@ -77,7 +77,7 @@ class phpillowViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testVerifyNotExistantView()
+    public function testVerifyNotExistentView()
     {
         $view = phpillowUserView::createNew();
         $view->verifyView();
@@ -93,7 +93,7 @@ class phpillowViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testVerifyExistantView()
+    public function testVerifyExistentView()
     {
         $view = phpillowUserView::createNew();
         $view->save();
@@ -122,7 +122,7 @@ class phpillowViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testQueryNotExistantView()
+    public function testQueryNotExistentView()
     {
         $view = phpillowUserView::createNew();
         $results = $view->query( 'all' );
@@ -133,7 +133,7 @@ class phpillowViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testQueryExistantView()
+    public function testQueryExistentView()
     {
         $view = phpillowUserView::createNew();
         $view->save();
@@ -146,7 +146,7 @@ class phpillowViewTests extends phpillowDataTestCase
         );
     }
 
-    public function testQueryExistantViewByKey()
+    public function testQueryExistentViewByKey()
     {
         $view = phpillowUserView::createNew();
         $view->save();
@@ -229,7 +229,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?key=%5B%22foo%22%2C23%5D',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'key' => array( 'foo', 23 ),
             ) )
         );
@@ -241,7 +241,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?startkey=%5B%22foo%22%2C23%5D',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'startkey' => array( 'foo', 23 ),
             ) )
         );
@@ -253,7 +253,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?endkey=%5B%22foo%22%2C23%5D',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'endkey' => array( 'foo', 23 ),
             ) )
         );
@@ -265,7 +265,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?startkey_docid=foo',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'startkey_docid' => 'foo'
             ) )
         );
@@ -277,7 +277,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?update=true',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'update' => true
             ) )
         );
@@ -289,7 +289,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?descending=false',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'descending' => null
             ) )
         );
@@ -301,7 +301,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?skip=23',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'skip' => 23
             ) )
         );
@@ -313,7 +313,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?limit=42',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'limit' => 42.5
             ) )
         );
@@ -325,7 +325,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         $this->assertSame(
             '?key=%5B%22foo%22%2C23%5D&startkey=%5B%22foo%22%2C23%5D&endkey=%5B%22foo%22%2C23%5D&startkey_docid=foo&update=true&descending=false&skip=23&limit=42',
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'key' => array( 'foo', 23 ),
                 'startkey' => array( 'foo', 23 ),
                 'endkey' => array( 'foo', 23 ),
@@ -344,7 +344,7 @@ class phpillowViewTests extends phpillowDataTestCase
 
         try
         {
-            $view->buildViewQuery( array( 
+            $view->buildViewQuery( array(
                 'unknown_query_param' => array( 'foo', 23 ),
             ) );
             $this->fail( 'Expected phpillowNoSuchPropertyException.' );

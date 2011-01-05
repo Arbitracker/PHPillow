@@ -69,7 +69,7 @@ abstract class phpillowDocument
     protected static $type = '_default';
 
     /**
-     * Indicates wheather to keep old revisions of this document or not.
+     * Indicates whether to keep old revisions of this document or not.
      *
      * @var bool
      */
@@ -104,7 +104,7 @@ abstract class phpillowDocument
     );
 
     /**
-     * List of new attachements to the document.
+     * List of new attachments to the document.
      *
      * @var array
      */
@@ -188,12 +188,12 @@ abstract class phpillowDocument
         }
 
         // Check if the passed value meets the property validation, and perform
-        // nessecary transformation, like typecasts, or similar.
+        // necessary transformation, like typecasts, or similar.
         //
         // If the value could not be fixed, this may throw an exception.
         $value = $this->properties[$property]->validate( $value );
 
-        // Stotore value in storage object and mark document modified
+        // Store value in storage object and mark document modified
         $this->storage->$property = $value;
         $this->modified = true;
     }
@@ -233,7 +233,7 @@ abstract class phpillowDocument
         // Set all document property values from response, if available in the
         // response.
         //
-        // Also fill a revision object with the set attributtes, so that the
+        // Also fill a revision object with the set attributes, so that the
         // current revision is also available in history, and it is stored,
         // when the object is modified and stored again.
         $revision = new StdClass();
@@ -251,7 +251,7 @@ abstract class phpillowDocument
         $this->storage->_rev = $response->_rev;
         $this->storage->_id  = $response->_id;
 
-        // Set attachements array, if the response object contains attachements.
+        // Set attachments array, if the response object contains attachments.
         if ( isset( $response->_attachments ) )
         {
             $this->storage->_attachments = $response->_attachments;
@@ -283,7 +283,7 @@ abstract class phpillowDocument
      * Composes the document ID out of the document type and the generated ID
      * for the current document.
      *
-     * If null is provided as an ID, we keep this value and do not cstruct
+     * If null is provided as an ID, we keep this value and do not construct
      * something else, to let the server autogenerate some ID.
      *
      * @param string $type
@@ -340,7 +340,7 @@ abstract class phpillowDocument
      * the called class information for PHP 5.2 and lower.
      *
      * @param mixed $docType
-     * @returns phpillowDocument
+     * @return phpillowDocument
      */
     public static function createNew( $docType = null )
     {
@@ -373,7 +373,7 @@ abstract class phpillowDocument
      * Get ID from document
      *
      * The ID normally should be calculated on some meaningful / unique
-     * property for the current ttype of documents. The returned string should
+     * property for the current type of documents. The returned string should
      * not be too long and should not contain multibyte characters.
      *
      * You can return null instead of an ID string, to trigger the ID
@@ -387,7 +387,7 @@ abstract class phpillowDocument
      * Check if all requirements are met
      *
      * Checks if all required properties has been set. Returns an array with
-     * the properties, whcih are required but not set, or true if all
+     * the properties, which are required but not set, or true if all
      * requirements are fulfilled.
      *
      * @return mixed
@@ -418,7 +418,7 @@ abstract class phpillowDocument
     /**
      * Save the document
      *
-     * If thew document has not been modfied the method will immediatly exit
+     * If thew document has not been modified the method will immediately exit
      * and return false. If the document has been been modified, the modified
      * document will be stored in the database, keeping all the old revision
      * intact and return true on success.
@@ -455,7 +455,7 @@ abstract class phpillowDocument
             $this->storage->_id = $this->getDocumentId( $type, $this->generateId() );
         }
 
-        // Do not send an attachment array, if there aren't any attachements
+        // Do not send an attachment array, if there aren't any attachments
         if ( !isset( $this->storage->_attachments ) ||
              !count( $this->storage->_attachments ) )
         {
@@ -504,10 +504,10 @@ abstract class phpillowDocument
     }
 
     /**
-     * Get ID string from arbritrary string
+     * Get ID string from arbitrary string
      *
      * To calculate an ID string from an phpillowrary string, first iconvs
-     * tarnsliteration abilities are used, and after that all, but common ID
+     * transliteration abilities are used, and after that all, but common ID
      * characters, are replaced by the given replace string, which defaults to
      * _.
      *
@@ -521,7 +521,7 @@ abstract class phpillowDocument
         // supported everywhere
         $string = iconv( 'UTF-8', 'ASCII//TRANSLIT', $string );
 
-        // And then still replace any obscure characers by _ to ensure nothing
+        // And then still replace any obscure characters by _ to ensure nothing
         // "bad" happens with this string.
         $string = preg_replace( '([^A-Za-z0-9.-]+)', $replace, $string );
 

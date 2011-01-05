@@ -42,20 +42,20 @@ class phpillowResponse
 {
     /**
      * Array containing all response properties
-     * 
+     *
      * @var array
      */
     protected $properties;
 
     /**
      * Construct response object from JSON result
-     * 
-     * @param array $body 
+     *
+     * @param array $body
      * @return void
      */
     public function __construct( array $body )
     {
-        // Set all properties as virtual readonly repsonse object properties.
+        // Set all properties as virtual readonly response object properties.
         foreach ( $body as $property => $value )
         {
             $this->properties[$property] = $value;
@@ -64,7 +64,7 @@ class phpillowResponse
 
     /**
      * Get full document
-     * 
+     *
      * @return array
      */
     public function getFullDocument()
@@ -77,8 +77,8 @@ class phpillowResponse
      *
      * Receive response object property, if available. If the property is not
      * available, the method will throw an exception.
-     * 
-     * @param string $property 
+     *
+     * @param string $property
      * @return mixed
      */
     public function __get( $property )
@@ -94,10 +94,10 @@ class phpillowResponse
 
     /**
      * Check if property exists.
-     * 
+     *
      * Check if property exists.
-     * 
-     * @param string $property 
+     *
+     * @param string $property
      * @return bool
      */
     public function __isset( $property )
@@ -107,9 +107,9 @@ class phpillowResponse
 
     /**
      * Silently ignore each write access on response object properties.
-     * 
-     * @param string $property 
-     * @param mixed $value 
+     *
+     * @param string $property
+     * @param mixed $value
      * @return bool
      */
     public function __set( $property, $value )

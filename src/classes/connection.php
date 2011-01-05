@@ -25,7 +25,7 @@
 /**
  * Basic couch DB connection handling class
  *
- * Default connection ahndler using PHPs stream wrappers.
+ * Default connection handler using PHPs stream wrappers.
  *
  * @package Core
  * @version $Revision$
@@ -35,7 +35,7 @@ abstract class phpillowConnection
 {
     /**
      * CouchDB connection options
-     * 
+     *
      * @var array
      */
     protected $options = array(
@@ -113,9 +113,9 @@ abstract class phpillowConnection
      *
      * Set the value for an connection option. Throws an
      * phpillowOptionException for unknown options.
-     * 
-     * @param string $option 
-     * @param mixed $value 
+     *
+     * @param string $option
+     * @param mixed $value
      * @return void
      */
     public function setOption( $option, $value )
@@ -169,7 +169,7 @@ abstract class phpillowConnection
             );
         }
 
-        // // Deafult to custom connection, if root class has been called. This
+        // // Default to custom connection, if root class has been called. This
         // // currently is the safer default.
         // if ( !$called )
         // {
@@ -187,8 +187,8 @@ abstract class phpillowConnection
      *
      * Set the name of database to use. You do not need to provide this as a
      * path, but only its name.
-     * 
-     * @param string $database 
+     *
+     * @param string $database
      * @return void
      */
     public static function setDatabase( $database )
@@ -198,9 +198,9 @@ abstract class phpillowConnection
 
     /**
      * Return name of the currently used database
-     * 
+     *
      * Return name of the currently used database
-     * 
+     *
      * @return string
      */
     public static function getDatabase()
@@ -222,7 +222,7 @@ abstract class phpillowConnection
      */
     public static function getInstance()
     {
-        // Check if connection has been properly confugured, and bail out
+        // Check if connection has been properly configured, and bail out
         // otherwise.
         if ( self::$instance === null )
         {
@@ -232,7 +232,7 @@ abstract class phpillowConnection
             );
         }
 
-        // If a connection has been configured properly, jsut return it
+        // If a connection has been configured properly, just return it
         return self::$instance;
     }
 
@@ -296,7 +296,7 @@ abstract class phpillowConnection
      * Perform a request to the server and return the result converted into a
      * phpillowResponse object. If you do not expect a JSON structure, which
      * could be converted in such a response object, set the fourth parameter to
-     * true, and you get a response object retuerned, containing the raw body.
+     * true, and you get a response object returned, containing the raw body.
      *
      * @param string $method
      * @param string $path

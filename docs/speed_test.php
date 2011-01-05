@@ -8,12 +8,12 @@ foreach ( $autoload as $file )
 }
 
 // Configure parameters for speed testing
-$puts = 100;
-$gets = 500;
-$views = 200;
+$puts = 1000;
+$gets = 5000;
+$views = 2000;
 
 // Set up backend connection
-phpillowConnection::createInstance();
+phpillowConnection::createInstance('10.0.118.171', 5984, 'admin', 'm4!1.d3');
 phpillowConnection::setDatabase( 'test' );
 $db = phpillowConnection::getInstance();
 

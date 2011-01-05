@@ -33,14 +33,14 @@ class phpillowDocumentArrayValidator extends phpillowDocumentValidator
 {
     /**
      * Validate input as string
-     * 
-     * @param mixed $input 
+     *
+     * @param mixed $input
      * @return string
      */
     public function validate( $input )
     {
         // We expect an array of documents, and if this isn't an array, we can
-        // bail out immediatly.
+        // bail out immediately.
         if ( !is_array( $input ) )
         {
             throw new phpillowValidationException( 'Invalid document type provided.', array() );
@@ -53,7 +53,7 @@ class phpillowDocumentArrayValidator extends phpillowDocumentValidator
             $input[$key] = parent::validate( $value );
         }
 
-        // If no exception has been thrown during the process, retun the valid
+        // If no exception has been thrown during the process, return the valid
         // array
         return $input;
     }

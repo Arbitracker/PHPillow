@@ -23,7 +23,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
     /**
      * Reset database connection after each test run
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -81,7 +81,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
         catch ( phpillowResponseErrorException $e )
         {
             $this->assertSame(
-                array( 
+                array(
                     'error'  => 'file_exists',
                     'reason' => 'The database could not be created, the file already exists.',
                 ),
@@ -194,14 +194,14 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $response = $db->get( '/test/not_existant' );
+            $response = $db->get( '/test/not_existent' );
             $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
         }
         catch ( phpillowResponseNotFoundErrorException $e )
         { /* Expected exception */ }
     }
 
-    public function testGetDocumentFromNotExistantDatabase()
+    public function testGetDocumentFromNotExistentDatabase()
     {
         $this->markTestSkipped( 'It is currently not possible to detect from the CouchDB response, see: https://issues.apache.org/jira/browse/COUCHDB-41' );
 
@@ -218,7 +218,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $response = $db->get( '/test/not_existant' );
+            $response = $db->get( '/test/not_existent' );
             $this->fail( 'Expected phpillowDatabaseNotFoundErrorException.' );
         }
         catch ( phpillowDatabaseNotFoundErrorException $e )
@@ -232,7 +232,7 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $response = $db->delete( '/test/not_existant' );
+            $response = $db->delete( '/test/not_existent' );
             $this->fail( 'Expected phpillowResponseErrorException.' );
         }
         catch ( phpillowResponseErrorException $e )

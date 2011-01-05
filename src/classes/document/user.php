@@ -34,7 +34,7 @@ class phpillowUserDocument extends phpillowDocument
     /**
      * Document type, may be a string matching the regular expression:
      *  (^[a-zA-Z0-9_]+$)
-     * 
+     *
      * @var string
      */
     protected static $type = 'user';
@@ -42,7 +42,7 @@ class phpillowUserDocument extends phpillowDocument
     /**
      * List of required properties. For each required property, which is not
      * set, a validation exception will be thrown on save.
-     * 
+     *
      * @var array
      */
     protected $requiredProperties = array(
@@ -51,9 +51,9 @@ class phpillowUserDocument extends phpillowDocument
 
     /**
      * Construct new book document
-     * 
+     *
      * Construct new book document and set its property validators.
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -74,12 +74,12 @@ class phpillowUserDocument extends phpillowDocument
      * Get ID from document
      *
      * The ID normally should be calculated on some meaningful / unique
-     * property for the current ttype of documents. The returned string should
+     * property for the current type of documents. The returned string should
      * not be too long and should not contain multibyte characters.
      *
      * You can return null instead of an ID string, to trigger the ID
      * autogeneration.
-     * 
+     *
      * @return mixed
      */
     protected function generateId()
@@ -94,7 +94,7 @@ class phpillowUserDocument extends phpillowDocument
      * for PHP versions lower then 5.2. When only using PHP 5.3 and higher you
      * might just implement a method which does "return static:$type" in a base
      * class.
-     * 
+     *
      * @return void
      */
     protected function getType()
@@ -113,7 +113,7 @@ class phpillowUserDocument extends phpillowDocument
      * the called class information for PHP 5.2 and lower.
      *
      * @param mixed $docType
-     * @returns phpillowDocument
+     * @return phpillowDocument
      */
     public static function createNew( $docType = null )
     {

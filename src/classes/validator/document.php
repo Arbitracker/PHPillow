@@ -32,8 +32,8 @@
 class phpillowDocumentValidator extends phpillowValidator
 {
     /**
-     * Requeired class for the aggregated single document.
-     * 
+     * Required class for the aggregated single document.
+     *
      * @var string
      */
     protected $documentClass = false;
@@ -43,8 +43,8 @@ class phpillowDocumentValidator extends phpillowValidator
      *
      * Validator constructor to specify the required class for the aggregated
      * document.
-     * 
-     * @param mixed $class 
+     *
+     * @param mixed $class
      * @return void
      */
     public function __construct( $class = false )
@@ -54,8 +54,8 @@ class phpillowDocumentValidator extends phpillowValidator
 
     /**
      * Validate input as string
-     * 
-     * @param mixed $input 
+     *
+     * @param mixed $input
      * @return string
      */
     public function validate( $input )
@@ -67,7 +67,7 @@ class phpillowDocumentValidator extends phpillowValidator
         {
             throw new phpillowValidationException( 'Invalid document type provided.', array() );
         }
-        
+
         // If a specific document class is required, check this type is passed,
         // otherwise throw an exception.
         if ( ( $this->documentClass !== false ) &&

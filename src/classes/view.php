@@ -93,7 +93,7 @@ abstract class phpillowView extends phpillowDocument
     protected function getViewName()
     {
         throw new phpillowRuntimeException(
-            'This method should be considerd abstract, but PHP does not allow this.'
+            'This method should be considered abstract, but PHP does not allow this.'
         );
     }
 
@@ -148,7 +148,7 @@ abstract class phpillowView extends phpillowDocument
      * call query method on the view object, reusing the called method name to
      * query the view.
      *
-     * This convinient method only works with PHP in version 5.3 or greater.
+     * This convenient method only works with PHP in version 5.3 or greater.
      * Otherwise just call the query method directly on an instantiated view.
      *
      * @param string $method
@@ -170,7 +170,7 @@ abstract class phpillowView extends phpillowDocument
     /**
      * Build view query string from options
      *
-     * Validates and transformed paased options to limit the view data, to fit
+     * Validates and transformed passed options to limit the view data, to fit
      * the specifications in the HTTP view API, documented at:
      * http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options
      *
@@ -201,7 +201,7 @@ abstract class phpillowView extends phpillowDocument
                     break;
 
                 case 'startkey_docid':
-                    // The docidstartkey is handled differntly then the other
+                    // The docidstartkey is handled differently then the other
                     // keys and is just passed as a string, because it always
                     // is and can only be a string.
                     $queryString .= $key . '=' . urlencode( (string) $value );
@@ -247,7 +247,7 @@ abstract class phpillowView extends phpillowDocument
      * Query a view
      *
      * Query the specified view to get a set of results. You may optionally use
-     * the view query options as additional paramters to limit the returns
+     * the view query options as additional parameters to limit the returns
      * values, specified at:
      * http://wiki.apache.org/couchdb/HTTP_view_API#Querying_Options
      *
@@ -287,7 +287,7 @@ abstract class phpillowView extends phpillowDocument
      * Verify stored views
      *
      * Check if the views stored in the database equal the view definitions
-     * specified by the vew classes. If the implmentation differs update to the
+     * specified by the vew classes. If the implementation differs update to the
      * view specifications in the class.
      *
      * @return void

@@ -8,21 +8,21 @@
  *
  * <code>
  *  #!/bin/sh
- *  
+ *
  *  REPOS="$1"
  *  TXN="$2"
- *  
+ *
  *  # Make sure that the log message contains some text.
  *  MESSAGE=`svnlook log -t "$TXN" "$REPOS"`
- *  
+ *
  *  ERROR=`/usr/local/svn/bin/validate_commit_message.php "$MESSAGE"`
- *  
+ *
  *  if [ "$?" = "1" ]; then
  *          echo "" 1>&2
  *          echo "$ERROR" 1>&2
  *          exit 1
  *  fi
- *  
+ *
  *  # All checks passed, so allow the commit.
  *  exit 0
  * </code>
@@ -78,76 +78,76 @@
  *  All messages should wrap at 79 characters per line. This means, if you are
  *  writing multiple lines after a message starting with a "- " each following
  *  line should be indented by exactly two spaces.
- *  
+ *
  *  Including descriptive text in your commit messages is generally important to
  *  offer a good overview on the commit when the issue tracker is not available
  *  (commit mails, history).
- *  
+ *
  *  All messages may include references to existing issues to add status updates
  *  to the issue, which should look like::
- *  
+ *
  *  	- Refs #<number>: <text>
- *  
+ *
  *  Where <number> references the ticket and the <text> describes what you did.
- *  
+ *
  *  Comments
  *  --------
- *  
+ *
  *  You may always append arbitrary comments in your commit messages, where each
  *  line should start with a number sign (#). Text in these lines won't be
  *  checked.
- *  
+ *
  *  Bug fix
  *  -------
- *  
+ *
  *  A bug fix commit message should follow the following scheme::
- *  
+ *
  *  	- Fixed #<number>: <text>
- *  
+ *
  *  Where <number> references the closed bug and <text> is a description of the
  *  bug and the fix. Keep in mind that the texts will be used for the changelog,
  *  so please check the spelling before committing.
- *  
+ *
  *  The bug number is not optional, which means that there should be an open bug
  *  in the issue tracker for *each* bug you fix.
- *  
+ *
  *  For compatibility with other issue tracker you may also use "Closed" instead
  *  of "Fixed" in your message, but "Fixed" is highly preferred.
- *  
+ *
  *  New features
  *  ------------
- *  
+ *
  *  If you implemented a new feature, your commit message should look like::
- *  
+ *
  *  	- Implemented[ #<number>]: <text>
- *  
+ *
  *  Where <text> is a short description of the feature you implemented, and
  *  <number> may optionally reference a feature request in the bug tracker. Keep
  *  in mind that the texts will be used for the changelog, so please check the
  *  spelling before committing.
- *  
+ *
  *  Documentation
  *  -------------
- *  
+ *
  *  If you extended your documentation, your commit message should look like::
- *  
+ *
  *  	- Documented[ #<number>]: <text>
- *  
+ *
  *  Where <number> optionally specifies a documentation request, and the text
  *  describes what you documented.
- *  
+ *
  *  Additional tests
  *  ----------------
- *  
+ *
  *  If you added tests for some feature, your commit message should look like::
- *  
+ *
  *  	- Tested: <text>
- *  
+ *
  *  Where <text> describes the feature(s) you are testing.
- *  
+ *
  *  Other commits
  *  -------------
- *  
+ *
  *  If your commit does not match any of the above rules you should only include a
  *  comment in your commit message or extend this document with your commit
  *  message of desire.
@@ -164,7 +164,7 @@ class arbitCommitMessageParser
 {
     /**
      * Construct parser
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -176,10 +176,10 @@ class arbitCommitMessageParser
      * Parse a commit message
      *
      * Parses a commit messages defined by the grammar documented in the class
-     * header. If a parse error occures an exception will be thrown containing
+     * header. If a parse error occurs an exception will be thrown containing
      * the error message.
      *
-     * On a successfull parsing process a struct containing a list with all
+     * On a successful parsing process a struct containing a list with all
      * relevant data will be returned, which looks like:
      *
      * <code>
@@ -192,8 +192,8 @@ class arbitCommitMessageParser
      *      ...
      *  )
      * </code>
-     * 
-     * @param string $string 
+     *
+     * @param string $string
      * @return array
      */
     public function parse( $string )
@@ -222,8 +222,8 @@ class arbitCommitMessageParser
      *
      * Removes all valid comments from a commit messages, as they are not of
      * interest for the content extraction.
-     * 
-     * @param string $string 
+     *
+     * @param string $string
      * @return string
      */
     protected function removeComments( $string )
@@ -240,8 +240,8 @@ class arbitCommitMessageParser
      *
      * Even not defined in the grammar we do not care about additional newlines
      * or empty lines anywhere.
-     * 
-     * @param string $string 
+     *
+     * @param string $string
      * @return string
      */
     protected function normalizeWhitespaces( $string )
@@ -249,14 +249,14 @@ class arbitCommitMessageParser
         return preg_replace(
             '((?:\r\n|\r|\n)(?:[ \t](?:\r\n|\r|\n))*)',
             "\n",
-            trim( $string ) 
+            trim( $string )
         );
     }
 
     /**
      * Parse all statements
      *
-     * Parse the statemets like defined in the grammar in the class level
+     * Parse the statements like defined in the grammar in the class level
      * docblock. As a result an array is returned with the following structure:
      *
      * <code>
@@ -272,8 +272,8 @@ class arbitCommitMessageParser
      *
      * If the commit message could not be parsed a arbitCommitParserException
      * will be thrown.
-     * 
-     * @param string $string 
+     *
+     * @param string $string
      * @return array
      */
     protected function parseStatements( $string )
@@ -315,7 +315,7 @@ class arbitCommitMessageParser
                     );
                 }
 
-                // Check if bug number has been set for statements requireing a
+                // Check if bug number has been set for statements requiring a
                 // bug number
                 if ( in_array( $match['type'], array(
                         'Refs',
@@ -407,8 +407,8 @@ try
 }
 catch ( arbitCommitParserException $e )
 {
-    printf( 
-        "Errnous commit message:\n- %s\n\nCheck the commit message guidelines in doc/coding_guidelines.txt.\n",
+    printf(
+        "Erroneous commit message:\n- %s\n\nCheck the commit message guidelines in doc/coding_guidelines.txt.\n",
         $e->getMessage()
     );
     exit( 1 );

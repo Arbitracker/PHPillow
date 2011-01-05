@@ -23,8 +23,8 @@
  */
 
 /**
- * This is the bootstrap file, which sets up an autoload mechanism using 
- * spl-Autoload-register, which makes all PHPillow classes available in your 
+ * This is the bootstrap file, which sets up an autoload mechanism using
+ * spl-Autoload-register, which makes all PHPillow classes available in your
  * scripts.
  *
  * To use PHPillow just include this file, like:
@@ -52,4 +52,3 @@ function phpillow_autoload( $class )
 }
 
 spl_autoload_register( 'phpillow_autoload' );
-

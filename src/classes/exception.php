@@ -24,7 +24,7 @@
 
 /**
  * Basic phpillow exception
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/lgpl-3.0.txt LGPL
@@ -33,14 +33,14 @@ abstract class phpillowException extends Exception
 {
     /**
      * Exception message with optional placeholders
-     * 
+     *
      * @var mixed
      */
     protected $rawMessage;
 
     /**
      * Array with placeholder replacers.
-     * 
+     *
      * @var array
      */
     protected $properties;
@@ -53,9 +53,9 @@ abstract class phpillowException extends Exception
      * replace the placeholders when the exception is echo'd.
      *
      * This is done to make it possible to echo translated error messages.
-     * 
-     * @param string $message 
-     * @param array $properties 
+     *
+     * @param string $message
+     * @param array $properties
      * @return void
      */
     public function __construct( $message, array $properties )
@@ -72,9 +72,9 @@ abstract class phpillowException extends Exception
      * Replace all placeholders in exception message. The exception to do so
      * has been "borrowed" from ezcTranslations, as this will used for the
      * translation, so that we are using the exact same replacement strategy.
-     * 
-     * @param string $message 
-     * @param array $properties 
+     *
+     * @param string $message
+     * @param array $properties
      * @return string
      */
     protected function buildMessage( $message, array $properties )
@@ -84,9 +84,9 @@ abstract class phpillowException extends Exception
 
     /**
      * Get message
-     * 
+     *
      * Get raw exception message without replaced placeholders
-     * 
+     *
      * @return string
      */
     public function getText()
@@ -96,10 +96,10 @@ abstract class phpillowException extends Exception
 
     /**
      * Get properties
-     * 
+     *
      * Get text properties containing the values, which should replace the
-     * placeholders in the message. 
-     * 
+     * placeholders in the message.
+     *
      * @return array
      */
     public function getTextValues()
@@ -110,7 +110,7 @@ abstract class phpillowException extends Exception
 
 /**
  * Runtime exception for really unexpected failures.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -119,13 +119,13 @@ class phpillowRuntimeException extends phpillowException
 {
     /**
      * Construct runtime exception from exception message.
-     * 
-     * @param string $message 
+     *
+     * @param string $message
      * @return void
      */
     public function __construct( $message )
     {
-        parent::__construct( 
+        parent::__construct(
             'Runtime exception: %message',
             array(
                 'message' => $message,
@@ -137,7 +137,7 @@ class phpillowRuntimeException extends phpillowException
 /**
  * Exception thrown, when connection could not be established or
  * configured.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -148,7 +148,7 @@ class phpillowConnectionException extends phpillowException
 
 /**
  * Exception thrown, when trying to set an unknown option
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -157,13 +157,13 @@ class phpillowOptionException extends phpillowException
 {
     /**
      * Create exception from option name
-     * 
+     *
      * @param string $option
      * @return void
      */
     public function __construct( $option )
     {
-        parent::__construct( 
+        parent::__construct(
             "Unknown option '%option'.",
             array(
                 'option' => $option,
@@ -174,7 +174,7 @@ class phpillowOptionException extends phpillowException
 
 /**
  * Exception thrown, when no database has been configured.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -183,12 +183,12 @@ class phpillowNoDatabaseException extends phpillowException
 {
     /**
      * Create exception
-     * 
+     *
      * @return void
      */
     public function __construct()
     {
-        parent::__construct( 
+        parent::__construct(
             "No database has been configured.",
             array(
             )
@@ -199,7 +199,7 @@ class phpillowNoDatabaseException extends phpillowException
 /**
  * Exception thrown, when a request could not be build out of the given
  * parameters
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -211,7 +211,7 @@ class phpillowInvalidRequestException extends phpillowException
 /**
  * Exception thrown, when a property requested from an response object is
  * not available.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -220,13 +220,13 @@ class phpillowNoSuchPropertyException extends phpillowException
 {
     /**
      * Create exception from property name
-     * 
-     * @param string $property 
+     *
+     * @param string $property
      * @return void
      */
     public function __construct( $property )
     {
-        parent::__construct( 
+        parent::__construct(
             "Property '%property' is not available.",
             array(
                 'property' => $property,
@@ -241,7 +241,7 @@ class phpillowNoSuchPropertyException extends phpillowException
  *
  * The exception contains an identifier for the error type, if the error should
  * be presented to the user.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -252,7 +252,7 @@ class phpillowValidationException extends phpillowException
 
 /**
  * Exception thrown if the server could not properly response a request.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -261,16 +261,16 @@ class phpillowResponseErrorException extends phpillowException
 {
     /**
      * Actual parsed server response
-     * 
+     *
      * @var StdClass
      */
     protected $response;
 
     /**
      * Construct exception out of given response
-     * 
-     * @param int $status 
-     * @param array $response 
+     *
+     * @param int $status
+     * @param array $response
      * @return phpillowResponseErrorException
      */
     public function __construct( $status, $response )
@@ -289,10 +289,10 @@ class phpillowResponseErrorException extends phpillowException
 
     /**
      * Return response
-     * 
+     *
      * Return response to check the actual response which cause the error,
      * or receive details about the server error.
-     * 
+     *
      * @return StdClass
      */
     public function getResponse()
@@ -303,7 +303,7 @@ class phpillowResponseErrorException extends phpillowException
 
 /**
  * Exception thrown if the server could not find a requested document.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -312,8 +312,8 @@ class phpillowResponseNotFoundErrorException extends phpillowResponseErrorExcept
 {
     /**
      * Construct parent from response
-     * 
-     * @param StdClass $response
+     *
+     * @param array $response
      * @return void
      */
     public function __construct( $response )
@@ -325,7 +325,7 @@ class phpillowResponseNotFoundErrorException extends phpillowResponseErrorExcept
 /**
  * Exception thrown if the server detected a conflict while processing a
  * request.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -334,8 +334,8 @@ class phpillowResponseConflictErrorException extends phpillowResponseErrorExcept
 {
     /**
      * Construct parent from response
-     * 
-     * @param StdClass $response
+     *
+     * @param array $response
      * @return void
      */
     public function __construct( $response )
@@ -346,7 +346,7 @@ class phpillowResponseConflictErrorException extends phpillowResponseErrorExcept
 
 /**
  * Exception thrown if the parsing of a multipart/mixed document failed.
- * 
+ *
  * @package Core
  * @version $Revision$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
@@ -355,7 +355,7 @@ class phpillowMultipartParserException extends phpillowException
 {
     /**
      * Construct parent from message
-     * 
+     *
      * @param string $message
      * @return void
      */

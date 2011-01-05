@@ -58,9 +58,9 @@ abstract class phpillowFileView extends phpillowView
 
     /**
      * Construct new document
-     * 
+     *
      * Construct new document
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -74,9 +74,9 @@ abstract class phpillowFileView extends phpillowView
      * Verify stored views
      *
      * Check if the views stored in the database equal the view definitions
-     * specified by the vew classes. If the implmentation differs update to the
+     * specified by the vew classes. If the implementation differs update to the
      * view specifications in the class.
-     * 
+     *
      * @return void
      */
     public function verifyView()
@@ -91,7 +91,7 @@ abstract class phpillowFileView extends phpillowView
             // If the view does not exist yet, recreate it from current view
             $view = $this;
         }
-        
+
         // Force setting of view definitions
         $views = array();
         foreach ( $this->viewFunctions as $name => $functions )

@@ -24,29 +24,29 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         phpillowTestEnvironmentSetup::resetDatabase(
-            array( 
+            array(
                 'database' => 'test',
             )
         );
         phpillowManager::setDocumentClass( 'user', 'phpillowUserDocument' );
     }
 
-    public function testInitalAttachementList()
+    public function testInitialAttachmentList()
     {
         $doc = phpillowUserDocument::createNew();
-        
+
         $this->assertEquals(
             array(),
             $doc->_attachments
         );
     }
 
-    public function testUnmodifiedAttachementList()
+    public function testUnmodifiedAttachmentList()
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $this->assertEquals(
             array(),
@@ -60,7 +60,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $this->assertEquals(
             array(
@@ -75,13 +75,13 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetAttachementFromBackend()
+    public function testGetAttachmentFromBackend()
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
         $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $response = $doc->getFile( 'image_png.png' );
 
@@ -96,13 +96,13 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetAttachementFromBackendReadAfter()
+    public function testGetAttachmentFromBackendReadAfter()
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
         $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $response = $doc->getFile( 'image_png.png' );
 
@@ -121,7 +121,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_jpg.jpg', 'image_png.png' );
         $doc->save();
@@ -140,14 +140,14 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetAttachementMultipleFiles()
+    public function testGetAttachmentMultipleFiles()
     {
         $doc = phpillowUserDocument::createNew();
         $doc->login = 'kore';
         $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png' );
         $doc->attachFile( dirname( __FILE__ ) . '/data/image_jpg.jpg' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $this->assertEquals(
             array(
@@ -174,7 +174,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->attachFile( dirname( __FILE__ ) . '/data/image_png.png', 'image_png.png', 'image/png' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $this->assertEquals(
             array(
@@ -195,7 +195,7 @@ class phpillowDocumentAttachmentTests extends PHPUnit_Framework_TestCase
         $doc->login = 'kore';
         $doc->attachFile( $file = dirname( __FILE__ ) . '/data/image_png.png', 'image_png.png', 'image/png' );
         $doc->save();
-        
+
         $doc = phpillowManager::fetchDocument( 'user', 'user-kore' );
         $response = $doc->getFile( 'image_png.png' );
 

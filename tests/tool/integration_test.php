@@ -29,7 +29,7 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
         }
 
         phpillowTestEnvironmentSetup::resetDatabase(
-            array( 
+            array(
                 'database' => 'test',
             )
         );
@@ -37,9 +37,9 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
 
     /**
      * Compare a dump against a recorded dump
-     * 
-     * @param string $name 
-     * @param string $dump 
+     *
+     * @param string $name
+     * @param string $dump
      * @return void
      */
     protected function compareDump( $name, $dump )
@@ -51,7 +51,7 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
                 'tmp/' . basename( $fileName ),
                 $dump
             );
-            $this->markTestSkipped( "No comaprision file available." );
+            $this->markTestSkipped( "No comparison file available." );
             return;
         }
 
@@ -59,7 +59,7 @@ class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
                 $r = '(^' . str_replace(
                     '\\{boundary\\}',
                     '[a-f0-9]{1,32}',
-                    preg_quote( 
+                    preg_quote(
                         preg_replace(
                             '(\s+)',
                             " ",

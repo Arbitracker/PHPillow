@@ -27,7 +27,7 @@ class phpillowToolTestSuite extends PHPUnit_Framework_TestSuite
 {
     /**
      * Basic constructor for test suite
-     * 
+     *
      * @return void
      */
     public function __construct()
@@ -43,8 +43,8 @@ class phpillowToolTestSuite extends PHPUnit_Framework_TestSuite
 
     /**
      * Return test suite
-     * 
-     * @return prpTestSuite
+     *
+     * @return phpillowToolTestSuite
      */
     public static function suite()
     {

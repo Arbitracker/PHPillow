@@ -27,7 +27,7 @@
  *
  * This class uses a custom HTTP client, which may have more bugs then the
  * default PHP HTTP clients, but supports keep alive connections without any
- * extension dependecies.
+ * extension dependencies.
  *
  * @package Core
  * @version $Revision$
@@ -38,7 +38,7 @@ class phpillowCustomConnection extends phpillowConnection
     /**
      * Connection pointer for connections, once keep alive is working on the
      * CouchDb side.
-     * 
+     *
      * @var resource
      */
     protected $connection;
@@ -68,7 +68,7 @@ class phpillowCustomConnection extends phpillowConnection
      *
      * Checks if the connection already has been established, or tries to
      * establish the connection, if not done yet.
-     * 
+     *
      * @return void
      */
     protected function checkConnection()
@@ -95,8 +95,8 @@ class phpillowCustomConnection extends phpillowConnection
     /**
      * Build a HTTP 1.1 request
      *
-     * Build the HTTP 1.1 request headers from the gicven input.
-     * 
+     * Build the HTTP 1.1 request headers from the given input.
+     *
      * @param string $method
      * @param string $path
      * @param string $data
@@ -116,7 +116,7 @@ class phpillowCustomConnection extends phpillowConnection
         }
 
         // Set keep-alive header, which helps to keep to connection
-        // initilization costs low, especially when the database server is not
+        // initialization costs low, especially when the database server is not
         // available in the locale net.
         $request .= "Connection: " . ( $this->options['keep-alive'] ? 'Keep-Alive' : 'Close' ) . "\r\n";
 
@@ -143,7 +143,7 @@ class phpillowCustomConnection extends phpillowConnection
      * Perform a request to the server and return the result converted into a
      * phpillowResponse object. If you do not expect a JSON structure, which
      * could be converted in such a response object, set the forth parameter to
-     * true, and you get a response object retuerned, containing the raw body.
+     * true, and you get a response object returned, containing the raw body.
      *
      * @param string $method
      * @param string $path
@@ -181,11 +181,11 @@ class phpillowCustomConnection extends phpillowConnection
             'connection' => ( $this->options['keep-alive'] ? 'Keep-Alive' : 'Close' ),
         );
 
-        // Remove leading newlines, should not accur at all, actually.
+        // Remove leading newlines, should not occur at all, actually.
         while ( ( ( $line = fgets( $this->connection ) ) !== false ) &&
                 ( ( $lineContent = rtrim( $line ) ) === '' ) );
 
-        // Thow exception, if connection has been aborted by the server, and
+        // Throw exception, if connection has been aborted by the server, and
         // leave handling to the user for now.
         if ( $line === false )
         {
@@ -290,7 +290,7 @@ class phpillowCustomConnection extends phpillowConnection
                 return $this->request( 'GET', $path, $data, $raw );
         }
 
-        // Create repsonse object from couch db response
+        // Create response object from couch db response
         return phpillowResponseFactory::parse( $headers, $body, $raw );
     }
 }

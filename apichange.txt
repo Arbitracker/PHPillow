@@ -2,7 +2,7 @@
 API changes
 ===========
 
-This document documents backwards compability breaking API changes.
+This document documents backwards compatibility breaking API changes.
 
 0.2-alpha to 0.3-alpha
 ======================
@@ -11,7 +11,7 @@ PHPillow has been converted to also run with PHP 5.2, instead of just PHP 5.3
 and higher. This process involved some API changes, which are listed below.
 
 - fetchById() cannot be called statically any more.
- 
+
   For static calls with the same functionality you should use the manager
   class, like::
 
@@ -20,7 +20,7 @@ and higher. This process involved some API changes, which are listed below.
   This works basically the same. If you want to call the fetchById method
   without using the manager you may just do::
 
-    $document = new myPhillowDocument();
+    $document = new myPhpillowDocument();
     $document->fetchById( 'id' );
 
 - The static property $type cannot be used anymore to define the document

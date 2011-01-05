@@ -83,7 +83,7 @@ class phpillowGroupView extends phpillowView
      *
      * Each view reduce function MUST have a view definition with the same
      * name, otherwise there is nothing to reduce.
-     * 
+     *
      * @var array
      */
     protected $viewReduces = array(
@@ -112,7 +112,7 @@ class phpillowGroupView extends phpillowView
      * the called class information for PHP 5.2 and lower.
      *
      * @param mixed $docType
-     * @returns phpillowDocument
+     * @return phpillowDocument
      */
     public static function createNew( $docType = null )
     {
@@ -121,9 +121,9 @@ class phpillowGroupView extends phpillowView
 
     /**
      * Get name of view
-     * 
+     *
      * Get name of view
-     * 
+     *
      * @return string
      */
     protected function getViewName()

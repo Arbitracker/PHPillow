@@ -22,8 +22,8 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 	}
 
     /**
-     * Check that curl-wrapers are enabled, test cases fail otherwise.
-     * 
+     * Check that curl-wrappers are enabled, test cases fail otherwise.
+     *
      * @return void
      */
     public function setUp()
@@ -38,7 +38,7 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 
     /**
      * Reset database connection after each test run
-     * 
+     *
      * @return void
      */
     public function tearDown()
@@ -60,7 +60,7 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
         catch ( phpillowConnectionException $e )
         {
             $this->assertTrue(
-                // Message depends on whether the internal stream wrapper or 
+                // Message depends on whether the internal stream wrapper or
                 // the curlwrappers are used
                 $e->getMessage() === 'Could not connect to server at 127.0.0.1:12345: fopen(http://127.0.0.1:12345/test): failed to open stream: operation failed' ||
                 $e->getMessage() === 'Could not connect to server at 127.0.0.1:12345: fopen(http://127.0.0.1:12345/test): failed to open stream: Connection refused'
@@ -98,7 +98,7 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
         catch ( phpillowResponseErrorException $e )
         {
             $this->assertSame(
-                array( 
+                array(
                     'error'  => 'file_exists',
                     'reason' => 'The database could not be created, the file already exists.',
                 ),
@@ -211,14 +211,14 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $response = $db->get( '/test/not_existant' );
+            $response = $db->get( '/test/not_existent' );
             $this->fail( 'Expected phpillowResponseNotFoundErrorException.' );
         }
         catch ( phpillowResponseNotFoundErrorException $e )
         { /* Expected exception */ }
     }
 
-    public function testGetDocumentFromNotExistantDatabase()
+    public function testGetDocumentFromNotExistentDatabase()
     {
         $this->markTestSkipped( 'It is currently not possible to detect from the CouchDB response, see: https://issues.apache.org/jira/browse/COUCHDB-41' );
 
@@ -235,7 +235,7 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $response = $db->get( '/test/not_existant' );
+            $response = $db->get( '/test/not_existent' );
             $this->fail( 'Expected phpillowDatabaseNotFoundErrorException.' );
         }
         catch ( phpillowDatabaseNotFoundErrorException $e )
@@ -249,7 +249,7 @@ class phpillowStreamConnectionTests extends PHPUnit_Framework_TestCase
 
         try
         {
-            $response = $db->delete( '/test/not_existant' );
+            $response = $db->delete( '/test/not_existent' );
             $this->fail( 'Expected phpillowResponseErrorException.' );
         }
         catch ( phpillowResponseErrorException $e )

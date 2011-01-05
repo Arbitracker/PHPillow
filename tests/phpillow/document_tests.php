@@ -24,7 +24,7 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         phpillowTestEnvironmentSetup::resetDatabase(
-            array( 
+            array(
                 'database' => 'test',
             )
         );
@@ -49,11 +49,11 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue(
-            in_array( 
+            in_array(
                 $string = $document->stringToId( 'öäü' ),
-                array( 
+                array(
                     '_',
-                    'oau', 
+                    'oau',
                     'oeaeue'
                 )
             ),
@@ -61,20 +61,20 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue(
-            in_array( 
+            in_array(
                 $string = $document->stringToId( 'Žluťoučký kůň' ),
-                array( 
-                    '_lu_ou_k_k_', 
-                    'zlutoucky_kun', 
+                array(
+                    '_lu_ou_k_k_',
+                    'zlutoucky_kun',
                 )
             ),
             "2 String '$string' not in valid expectations."
         );
 
         $this->assertTrue(
-            in_array( 
+            in_array(
                 $string = $document->stringToId( '!"§$%&/(=)Ä\'Ö*``\'"' ),
-                array( 
+                array(
                     '_',
                     '_a_o_',
                     '_ae_oe_'
@@ -84,11 +84,11 @@ class phpillowDocumentTests extends PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue(
-            in_array( 
+            in_array(
                 $string = $document->stringToId( '!"§$%&/(=)Ä\'Ö*``\'"', '-' ),
-                array( 
+                array(
                     '-',
-                    '-a-o-', 
+                    '-a-o-',
                     '-ae-oe-'
                 )
             ),

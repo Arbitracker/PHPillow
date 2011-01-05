@@ -33,18 +33,18 @@ class phpillowEmailValidator extends phpillowValidator
 {
     /**
      * Validate input as an email address
-     * 
-     * @param mixed $input 
+     *
+     * @param mixed $input
      * @return string
      */
     public function validate( $input )
     {
         // Check if the input is a valid email address using a bit simplified
-        // version of the mail addres specification in RFC 2822.
+        // version of the mail address specification in RFC 2822.
         if ( !preg_match( '(^[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$)i', $input ) )
         {
-            throw new phpillowValidationException( 
-                'Invalid mail address provided: %email', 
+            throw new phpillowValidationException(
+                'Invalid mail address provided: %email',
                 array(
                     'email' => $input,
                 )

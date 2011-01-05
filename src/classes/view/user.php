@@ -76,7 +76,7 @@ class phpillowUserView extends phpillowView
      * the called class information for PHP 5.2 and lower.
      *
      * @param mixed $docType
-     * @returns phpillowDocument
+     * @return phpillowUserView
      */
     public static function createNew( $docType = null )
     {
@@ -85,9 +85,9 @@ class phpillowUserView extends phpillowView
 
     /**
      * Get name of view
-     * 
+     *
      * Get name of view
-     * 
+     *
      * @return string
      */
     protected function getViewName()

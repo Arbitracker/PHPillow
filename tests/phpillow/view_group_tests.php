@@ -30,7 +30,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
     public function testFetchGroupByName()
     {
         $view = new phpillowGroupView();
-        $results = $view->query( 'group', array( 
+        $results = $view->query( 'group', array(
             'key' => 'Maintainer'
         ) );
 
@@ -53,7 +53,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
     public function testFetchUsersPermissions1()
     {
         $view = new phpillowGroupView();
-        $results = $view->query( 'user_permissions', array( 
+        $results = $view->query( 'user_permissions', array(
             'key' => 'kore'
         ) );
 
@@ -69,7 +69,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
             $permissions = array_merge( $permissions, $row['value'] );
         }
 
-        // Unique and sort for reproducability
+        // Unique and sort for reproducibility
         $permissions = array_unique( $permissions );
         sort( $permissions );
 
@@ -82,7 +82,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
     public function testFetchUsersPermissions2()
     {
         $view = new phpillowGroupView();
-        $results = $view->query( 'user_permissions', array( 
+        $results = $view->query( 'user_permissions', array(
             'key' => 'norro'
         ) );
 
@@ -98,7 +98,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
             $permissions = array_merge( $permissions, $row['value'] );
         }
 
-        // Unique and sort for reproducability
+        // Unique and sort for reproducibility
         $permissions = array_unique( $permissions );
         sort( $permissions );
 
@@ -111,7 +111,7 @@ class phpillowGroupViewTests extends phpillowDataTestCase
     public function testFetchUsersPermissionsReduce()
     {
         $view = new phpillowGroupView();
-        $results = $view->query( 'user_permissions_reduced', array( 
+        $results = $view->query( 'user_permissions_reduced', array(
             'key' => 'kore'
         ) );
         $permissions = $results->rows[0]['value'];

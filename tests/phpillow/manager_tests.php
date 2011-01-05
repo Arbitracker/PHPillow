@@ -94,7 +94,7 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
         $db = phpillowConnection::getInstance();
         $db->put( '/test' );
 
-        // Add coument to fetch
+        // Add document to fetch
         $author = phpillowManager::createDocument( 'user' );
         $author->login = 'kore';
         $author->save();
@@ -122,7 +122,7 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
         $db = phpillowConnection::getInstance();
         $db->put( '/test' );
 
-        // Add coument to fetch
+        // Add document to fetch
         $author = phpillowManager::createDocument( 'user' );
         $author->login = 'kore';
         $author->save();
@@ -154,7 +154,7 @@ class phpillowManagerTests extends PHPUnit_Framework_TestCase
         $db = phpillowConnection::getInstance();
         $db->put( '/test' );
 
-        // Add coument to fetch
+        // Add document to fetch
         $author = phpillowManager::createDocument( 'user' );
         $author->login = 'kore';
         $author->save();

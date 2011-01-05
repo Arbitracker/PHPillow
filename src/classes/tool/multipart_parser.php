@@ -33,22 +33,22 @@ class phpillowToolMultipartParser
 {
     /**
      * Stream to read from
-     * 
+     *
      * @var resource
      */
     protected $stream;
 
     /**
      * Document properties
-     * 
+     *
      * @var array
      */
     protected $options;
 
     /**
      * Construct parser from input stream
-     * 
-     * @param resource $stream 
+     *
+     * @param resource $stream
      * @return void
      */
     public function __construct( $stream )
@@ -64,7 +64,7 @@ class phpillowToolMultipartParser
      * Ensure given stream is a "multipart/mixed" mixed document, and read the
      * important document properties, like the boundary string, for further
      * processing.
-     * 
+     *
      * @return void
      */
     protected function checkStream()
@@ -98,7 +98,7 @@ class phpillowToolMultipartParser
             break;
         }
 
-        // Search for forst starting boundary
+        // Search for first starting boundary
         while ( !feof( $this->stream ) )
         {
             if ( trim( fgets( $this->stream ) ) === '--' . $this->options['boundary'] )
@@ -114,8 +114,8 @@ class phpillowToolMultipartParser
      * Parse a single document, and return an array with all headers and the
      * document body. If the parsed document is of the type "multipart/mixed",
      * an array with all parts is returned as the type.
-     * 
-     * @param string $string 
+     *
+     * @param string $string
      * @return array
      */
     protected function parseDocument( $string )
@@ -164,7 +164,7 @@ class phpillowToolMultipartParser
      *
      * Returns false, if the stream has ended or no document definition could
      * be found.
-     * 
+     *
      * @return mixed
      */
     public function getDocument()

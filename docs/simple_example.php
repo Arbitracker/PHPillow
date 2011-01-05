@@ -6,11 +6,11 @@ include dirname( __FILE__ ) . '/../src/bootstrap.php';
 // Set up database connection with default parameters
 phpillowConnection::createInstance();
 
-// Set database, which will be used and get connection ahndler
+// Set database, which will be used and get connection handler
 $db = phpillowConnection::getInstance();
 phpillowConnection::setDatabase( 'test' );
 
-// Delete maybe existing database, ignroing the error, if it does not exist 
+// Delete maybe existing database, ignoring the error, if it does not exist
 // yet.
 try {
     $db->delete( '/test' );
@@ -33,7 +33,7 @@ $doc->fetchById( $docId );
 $doc->email = 'kore@php.net';
 $doc->save();
 
-// Fetch the document againa and dump the revisions
+// Fetch the document again and dump the revisions
 $doc = new phpillowUserDocument();
 $doc->fetchById( $docId );
 

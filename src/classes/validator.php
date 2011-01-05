@@ -23,7 +23,7 @@
  */
 
 /**
- * Abstract base class for document property validations 
+ * Abstract base class for document property validations
  *
  * @package Core
  * @version $Revision$
@@ -33,9 +33,9 @@ abstract class phpillowValidator
 {
     /**
      * Validate input depending on the current validator and the configured
-     * parameters in the constrctor
-     * 
-     * @param mixed $input 
+     * parameters in the constructor
+     *
+     * @param mixed $input
      * @return mixed
      */
     abstract public function validate( $input );

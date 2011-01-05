@@ -33,14 +33,14 @@ class phpillowFloatValidator extends phpillowValidator
 {
     /**
      * Minimum value for passed float value
-     * 
+     *
      * @var int
      */
     protected $min;
 
     /**
      * Maximum value for passed float value
-     * 
+     *
      * @var int
      */
     protected $max;
@@ -48,12 +48,12 @@ class phpillowFloatValidator extends phpillowValidator
     /**
      * Validator constructor
      *
-     * Validator constructor to optionally specifiy the minimum and maximum
+     * Validator constructor to optionally specify the minimum and maximum
      * value for the allowed float values. For no validation you may pass
      * false to the respective parameter.
-     * 
-     * @param mixed $min 
-     * @param mixed $max 
+     *
+     * @param mixed $min
+     * @param mixed $max
      * @return void
      */
     public function __construct( $min = false, $max = false )
@@ -64,8 +64,8 @@ class phpillowFloatValidator extends phpillowValidator
 
     /**
      * Validate input as float
-     * 
-     * @param mixed $input 
+     *
+     * @param mixed $input
      * @return float
      */
     public function validate( $input )

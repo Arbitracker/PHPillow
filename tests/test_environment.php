@@ -34,16 +34,16 @@ if ( function_exists( 'xdebug_enable' ) )
 class phpillowTestEnvironmentSetup
 {
     /**
-     * Reset database depending on provided options 
-     * 
-     * @param array $options 
+     * Reset database depending on provided options
+     *
+     * @param array $options
      * @return void
      */
     public static function resetDatabase( array $options = array() )
     {
         phpillowConnectionTestHelper::reset();
 
-        // Initilize wanted connection handler
+        // Initialize wanted connection handler
         $handler = isset( $options['handler'] ) ? $options['handler'] : 'phpillowConnection';
         call_user_func(array($handler, 'createInstance'));
         $db = phpillowConnection::getInstance();
@@ -70,7 +70,7 @@ class phpillowTestEnvironmentSetup
 
     /**
      * Remove all temporary files from test directory
-     * 
+     *
      * @return void
      */
     public static function resetTmpDir()
