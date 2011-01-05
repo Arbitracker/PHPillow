@@ -12,15 +12,6 @@ if ( !defined( 'PHPILLOW_TEST_ENV_SET_UP' ) )
     require dirname( __FILE__ ) . '/test_environment.php';
 }
 
-/*
- * Set file whitelist for phpunit
- */
-$files = include ( $base = dirname(  __FILE__ ) . '/../src/' ) . 'classes/autoload.php';
-foreach ( $files as $class => $file )
-{
-    PHPUnit_Util_Filter::addFileToWhitelist( $base . $file );
-}
-
 /**
  * Suites
  */

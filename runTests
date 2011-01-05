@@ -7,17 +7,32 @@ $modules = array(
 	'tool'     => array( 'phpillowToolTestSuite', 'tests/tool_suite.php' ),
 );
 
-// Check if the test should only be run for a specified module.
+$module = false;
 if ( isset( $modules[end( $argv )] ) )
 {
     $module = array_pop( $argv );
+}
+
+$argv = array_merge(
+    array( 'phpunit' ),
+    array_slice( $argv, 1 )
+//    array( '--configuration', 'tests/phpunit.xml' )
+);
+
+// Check if the test should only be run for a specified module.
+if ( $module )
+{
     $_SERVER['argv'] = array_merge( $argv, $modules[$module] );
 }
-elseif ( count( $argv ) < 2 )
+else
 {
     $_SERVER['argv'] = array_merge( $argv, array( 'phpillowTestSuite', 'tests/suite.php' ) );
 }
 
-require dirname(__FILE__) . '/tests/runner/command.php';
+echo "Executing: ", array_reduce( array_map( function( $arg ) { return escapeshellarg( $arg ); }, $_SERVER['argv'] ), function( $a, $b ) { return $a . ' ' . $b; } ), "\n";
+
+require_once 'PHPUnit/Autoload.php';
+
+require __DIR__ . '/tests/runner/command.php';
 arbitTextUiCommand::main();
 
