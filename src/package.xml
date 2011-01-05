@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>PHPillow</name>
+ <channel>pear.arbitracker.org</channel>
+ <summary>PHPillow is an object orientated wrapper for CouchDB.</summary>
+ <description>PHPillow is an object orientated wrapper for CouchDB.</description>
+ <lead>
+  <name>Kore Nordmann</name>
+  <user>kore</user>
+  <email>kore@arbitracker.org</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-01-05</date>
+ <time>15:14:46</time>
+ <version>
+  <release>0.6.0</release>
+  <api>0.6.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.gnu.org/licenses/lgpl.html">LGPL</license>
+ <notes>
+- Implemented #7: Delete document method is required.
+  # Thanks to Flyingmana for the patch
+- Implemented #12: fetchById does not check the type
+  # Thanks to PHPGangsta for the patch
+- Implemented #13: Using include_docs parameter is not possible
+- Implemented: Support for reduce parameter
+- Fixed #9: Incorrect base64 encoding in import/export-tool
+- Added: Bootstrap file setting up PHPillow autoload mechanism
+- Added: Working simple example for storing and updating documents in a DB
+- Documented: Behaviour of response classes
+ </notes>
+ <contents>
+  <dir baseinstalldir="PHPillow" name="/">
+   <file baseinstalldir="PHPillow" md5sum="204c0271827631e260c007661e366db4" name="classes/autoload.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="828bfbeb2100ba37c2126369ae221fb0" name="classes/classes.png" role="data" />
+   <file baseinstalldir="PHPillow" md5sum="4c5273641c9d6806c360513ddf2c8be0" name="classes/connection.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="df2c3a08f60bf452a36d903eb8f459aa" name="classes/document.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="93ab4c3c67ab12fb8337dc7e710ed492" name="classes/exception.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="1b6f27d32a1b9157744e0e889d5666ae" name="classes/file_view.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="3d6765436fa358218f5e01b6aed414f1" name="classes/manager.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="8c5d090848f2aa5d95ea2d3c5c265f5a" name="classes/response.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="7ec60c6fb5c4aca695d2c69b897039e3" name="classes/tool.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="6d236df572f4b35f167810b5d101548a" name="classes/validator.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="9799a73d1d2a49f2ec0c6451ce4f520c" name="classes/view.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="b565a73eec9a5cbdeda1330032604eb1" name="classes/connection/custom.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="a69321edc86a4fdd33a02460d8636a43" name="classes/connection/stream.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="9996948bac40d3a8f81eb13e709e8795" name="classes/document/group.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="19bbdf919475880fa5f96e9868841dba" name="classes/document/user.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="8d8817519a806d323128b6fda8c8e285" name="classes/file_view/user.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="02d36ff7b978f12ebd5ab8d0d3c4d0cb" name="classes/file_view/map/user_all.js" role="data" />
+   <file baseinstalldir="PHPillow" md5sum="bfb94c52927db338db063829cea4484a" name="classes/file_view/map/user_user.js" role="data" />
+   <file baseinstalldir="PHPillow" md5sum="0c6ecd1421edd3849c32d719785db9f9" name="classes/file_view/reduce/sum.js" role="data" />
+   <file baseinstalldir="PHPillow" md5sum="86380bb65820f8d712f65c9b27973e06" name="classes/response/array.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="389618f07acb8d0cf9af12eff5df706c" name="classes/response/base.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="a1a98e7805d0dedf6f5de189fccddbe1" name="classes/response/data.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="edf0a99d024e8f50ebe3c577f4fe47bd" name="classes/response/result.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="82bf5de0bc9ea1ef2a0fc9819c6d29fa" name="classes/response/status.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="d3206d74ea816dd16b5a183fb26a4f90" name="classes/tool/multipart_parser.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="5380aedb151b9eacab571169c937351a" name="classes/tool/multipart_writer.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="7d0c2c0419b643180d68c6260cc36502" name="classes/tool/string_stream.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="512f222330682b9dee53f8c51f999fdd" name="classes/validator/array.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="610ba49f5b86f1b83155fd6c54309890" name="classes/validator/date.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="b868d57ee9d948cc27a108360df0e535" name="classes/validator/document.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="be933ae802eba4ae2e7e3c8b6bc879a7" name="classes/validator/document_array.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="5720be472be5fb99476a66dab5a4ab13" name="classes/validator/email.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="6682b61ba26c329196a2a9db4cf3cf29" name="classes/validator/float.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="b2b314b5f51dc3374a347a1773c36fae" name="classes/validator/image_file_location.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="282666d71a634a5a8bdcaa70ad29698e" name="classes/validator/indexable_date.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="5a20d78ea5ed2db901bc25709fafc371" name="classes/validator/integer.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="d97a45c4e3cb4f2080c2457917cefc3d" name="classes/validator/no.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="4845c0245d6ae668108b1f393c5cc7f9" name="classes/validator/regexp.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="976de31a9527aec4e50495c65c62d0c3" name="classes/validator/string.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="387f38f02523a6ff1594ab065a080edc" name="classes/validator/text.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="f7f1762240df7ee64fa97fb5f3808a3b" name="classes/view/group.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="53d7c6b27474a4538f82c485959971f8" name="classes/view/user.php" role="php" />
+   <file baseinstalldir="" md5sum="e0873307726ffb9f89c210cea0798a90" name="scripts/couchdb-dump" role="script" />
+   <file baseinstalldir="" md5sum="8727d5a5bbb95464f6433a6aa794968d" name="scripts/couchdb-load" role="script" />
+   <file baseinstalldir="PHPillow" md5sum="5c4b67f109b8cf2ed8a2d3c2bdac7cb3" name="bootstrap.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="c6eb10b9d7ed660b7e14b72bc76f4824" name="TODO" role="data" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease>
+  <filelist>
+   <install as="couchdb-dump" name="scripts/couchdb-dump" />
+   <install as="couchdb-load" name="scripts/couchdb-load" />
+  </filelist>
+ </phprelease>
+ <changelog>
+  <release>
+   <version>
+    <release>0.6</release>
+    <api>0.6</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-01-05</date>
+   <license uri="http://www.gnu.org/licenses/lgpl.html">LGPL</license>
+   <notes>
+- Implemented #7: Delete document method is required.
+  # Thanks to Flyingmana for the patch
+- Implemented #12: fetchById does not check the type
+  # Thanks to PHPGangsta for the patch
+- Implemented #13: Using include_docs parameter is not possible
+- Implemented: Support for reduce parameter
+- Fixed #9: Incorrect base64 encoding in import/export-tool
+- Added: Bootstrap file setting up PHPillow autoload mechanism
+- Added: Working simple example for storing and updating documents in a DB
+- Documented: Behaviour of response classes
+   </notes>
+  </release>
+ </changelog>
+</package>
