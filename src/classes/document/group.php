@@ -69,6 +69,7 @@ class phpillowGroupDocument extends phpillowDocument
             'name'          => new phpillowRegexpValidator( '(^[\x21-\x7e]+$)i' ),
             'description'   => new phpillowTextValidator(),
             'users'         => new phpillowArrayValidator(),
+            'userDocs'      => new phpillowDocumentArrayValidator( 'phpillowUserDocument' ),
             'permissions'   => new phpillowArrayValidator(),
         );
 
