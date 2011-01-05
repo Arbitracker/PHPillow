@@ -211,6 +211,7 @@ abstract class phpillowView extends phpillowDocument
                 case 'group':
                 case 'update':
                 case 'descending':
+                case 'include_docs':
                     // These two values may only contain boolean values, passed
                     // as "true" or "false". We just perform a typical PHP
                     // boolean typecast to transform the values.
