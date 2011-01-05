@@ -82,11 +82,11 @@ class phpillowResponseFactory
                 {
                     return new phpillowArrayResponse( $response );
                 }
-                elseif ( isset( $response->_id ) )
+                elseif ( isset( $response['_id'] ) )
                 {
                     return new phpillowResponse( $response );
                 }
-                elseif ( isset( $response->rows ) )
+                elseif ( isset( $response['rows'] ) )
                 {
                     return new phpillowResultSetResponse( $response );
                 }
