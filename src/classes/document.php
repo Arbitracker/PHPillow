@@ -109,6 +109,24 @@ abstract class phpillowDocument
      * @var array
      */
     protected $newAttachments = array();
+    
+    /**
+     * The phpillowConnection to be used by this document
+     *
+     * Set to null if you want to use phpillowConnection::getInstance()
+     *
+     * @var phpillowConnection
+     */
+    protected $connection = null;
+    
+    /**
+     * The database to be used by this document
+     *
+     * Set to null if you want to use phpillowConnection::getDatabase()
+     *
+     * @var string
+     */
+    protected $database = null;
 
     /**
      * Set this before calling static functions.
@@ -318,9 +336,9 @@ abstract class phpillowDocument
         }
 
         // Fetch object from database
-        $db = phpillowConnection::getInstance();
+        $db = $this->getConnection();
         $response = $db->get(
-            phpillowConnection::getDatabase() . urlencode( $id )
+            $this->getDatabase() . urlencode( $id )
         );
 
         // Check if type of response matches type of class
@@ -486,13 +504,13 @@ abstract class phpillowDocument
 
         // If the document ID is null, the server should autogenerate some ID,
         // but for this we need to use a different request method.
-        $db = phpillowConnection::getInstance();
+        $db = $this->getConnection();
         if ( $this->storage->_id === null )
         {
             // Store document in database
             unset( $this->storage->_id );
             $response = $db->post(
-                phpillowConnection::getDatabase(),
+                $this->getDatabase(),
                 json_encode( $this->storage )
             );
         }
@@ -500,7 +518,7 @@ abstract class phpillowDocument
         {
             // Store document in database
             $response = $db->put(
-                phpillowConnection::getDatabase() . urlencode( $this->_id ),
+                $this->getDatabase() . urlencode( $this->_id ),
                 json_encode( $this->storage )
             );
         }
@@ -519,9 +537,9 @@ abstract class phpillowDocument
      */
     public function delete()
     {
-        $db = phpillowConnection::getInstance();
+        $db = $this->getConnection();
         return $db->delete(
-            phpillowConnection::getDatabase() . urlencode( $this->_id ) . '?rev=' . $this->_rev
+            $this->getDatabase() . urlencode( $this->_id ) . '?rev=' . $this->_rev
         ); 
     }
 
@@ -596,13 +614,69 @@ abstract class phpillowDocument
             throw new phpillowNoSuchPropertyException( $fileName );
         }
 
-        $db = phpillowConnection::getInstance();
+        $db = $this->getConnection();
         $response = $db->get(
-            phpillowConnection::getDatabase() . urlencode( $this->_id ) . '/' . $fileName,
+            $this->getDatabase() . urlencode( $this->_id ) . '/' . $fileName,
             null, true
         );
 
         return $response;
+    }
+    
+    /**
+     * Return used connection
+     *
+     * This should always used within a document instead of
+     * phpillowConnection::getInstance()
+     *
+     * @return phpillowConnection
+     */
+    public function getConnection()
+    {
+       if ( $this->connection === null ) {
+           return phpillowConnection::getInstance();
+       }
+       
+       return $this->connection;
+    }
+    
+    /**
+     * Reconfigure the connection to be used by this document
+     *
+     * @param phpillowConnection $connection 
+     * @return void
+     */
+    public function setConnection( phpillowConnection $connection )
+    {
+        $this->connection = $connection;
+    }
+        
+    /**
+     * Return used database
+     *
+     * This should always used within a document instead of
+     * phpillowConnection::getDatabase()
+     *
+     * @return phpillowConnection
+     */
+    public function getDatabase()
+    {
+       if ( $this->database === null ) {
+           return phpillowConnection::getDatabase();
+       }
+       
+       return $this->database;
+    }
+    
+    /**
+     * Reconfigure the database to be used by this document
+     *
+     * @param string $database 
+     * @return void
+     */
+    public function setDatabase( $database )
+    {
+        $this->database = $database;
     }
 }
 
