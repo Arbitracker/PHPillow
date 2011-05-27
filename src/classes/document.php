@@ -676,7 +676,7 @@ abstract class phpillowDocument
      */
     public function setDatabase( $database )
     {
-        $this->database = $database;
+        $this->database = '/' . $database . '/';
     }
 }
 
