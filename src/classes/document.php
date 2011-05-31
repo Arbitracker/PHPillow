@@ -523,6 +523,12 @@ abstract class phpillowDocument
             );
         }
 
+        // Restore the __attachments array if it has been removed before
+        if ( !isset( $this->storage->_attachments ) ) 
+        {
+            $this->storage->_attachments = array();
+        }
+
         return $this->storage->_id = $response->id;
     }
 
