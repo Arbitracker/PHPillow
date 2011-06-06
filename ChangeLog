@@ -1,3 +1,11 @@
+Changelog 0.7, 06.06.11, revision 173
+------------------------------------------------------------------------------
+
+- Implemented: Make it possible to set active connection per document
+- Implemented: Boolean validator
+- Implemented: Object validator
+- Implemented: Object array validator
+
 Changelog 0.6-beta, 05.01.11, revision 161
 ------------------------------------------------------------------------------
 

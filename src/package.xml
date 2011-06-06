@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-0.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -13,28 +13,22 @@
   <email>kore@arbitracker.org</email>
   <active>yes</active>
  </lead>
- <date>2011-01-05</date>
+ <date>2011-06-06</date>
  <time>15:14:46</time>
  <version>
-  <release>0.6.0</release>
-  <api>0.6.0</api>
+  <release>0.7.0</release>
+  <api>0.7.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.gnu.org/licenses/lgpl.html">LGPL</license>
  <notes>
-- Implemented #7: Delete document method is required.
-  # Thanks to Flyingmana for the patch
-- Implemented #12: fetchById does not check the type
-  # Thanks to PHPGangsta for the patch
-- Implemented #13: Using include_docs parameter is not possible
-- Implemented: Support for reduce parameter
-- Fixed #9: Incorrect base64 encoding in import/export-tool
-- Added: Bootstrap file setting up PHPillow autoload mechanism
-- Added: Working simple example for storing and updating documents in a DB
-- Documented: Behaviour of response classes
+- Implemented: Make it possible to set active connection per document
+- Implemented: Boolean validator
+- Implemented: Object validator
+- Implemented: Object array validator
  </notes>
  <contents>
   <dir baseinstalldir="PHPillow" name="/">
@@ -78,12 +72,14 @@
    <file baseinstalldir="PHPillow" md5sum="4845c0245d6ae668108b1f393c5cc7f9" name="classes/validator/regexp.php" role="php" />
    <file baseinstalldir="PHPillow" md5sum="976de31a9527aec4e50495c65c62d0c3" name="classes/validator/string.php" role="php" />
    <file baseinstalldir="PHPillow" md5sum="387f38f02523a6ff1594ab065a080edc" name="classes/validator/text.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="387f38f02523a6ff1594ab065a080edc" name="classes/validator/boolean.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="387f38f02523a6ff1594ab065a080edc" name="classes/validator/object.php" role="php" />
+   <file baseinstalldir="PHPillow" md5sum="387f38f02523a6ff1594ab065a080edc" name="classes/validator/object_array.php" role="php" />
    <file baseinstalldir="PHPillow" md5sum="f7f1762240df7ee64fa97fb5f3808a3b" name="classes/view/group.php" role="php" />
    <file baseinstalldir="PHPillow" md5sum="53d7c6b27474a4538f82c485959971f8" name="classes/view/user.php" role="php" />
    <file baseinstalldir="" md5sum="e0873307726ffb9f89c210cea0798a90" name="scripts/couchdb-dump" role="script" />
    <file baseinstalldir="" md5sum="8727d5a5bbb95464f6433a6aa794968d" name="scripts/couchdb-load" role="script" />
    <file baseinstalldir="PHPillow" md5sum="5c4b67f109b8cf2ed8a2d3c2bdac7cb3" name="bootstrap.php" role="php" />
-   <file baseinstalldir="PHPillow" md5sum="c6eb10b9d7ed660b7e14b72bc76f4824" name="TODO" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -103,6 +99,24 @@
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>0.7</release>
+    <api>0.7</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-06-06</date>
+   <license uri="http://www.gnu.org/licenses/lgpl.html">LGPL</license>
+   <notes>
+- Implemented: Make it possible to set active connection per document
+- Implemented: Boolean validator
+- Implemented: Object validator
+- Implemented: Object array validator
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.6</release>
