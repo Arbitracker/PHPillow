@@ -597,9 +597,37 @@ abstract class phpillowDocument
     public function attachFile( $fileName, $name = false, $mimeType = false )
     {
         $name = ( $name === false ? basename( $fileName ) : $name );
+
+        $this->attachMemoryFile( 
+            file_get_contents( $fileName ),
+            $name,
+            $mimeType
+        );
+    }
+
+    /**
+     * Attach file from memory to document
+     *
+     * The data passed to the method will be attached to the document and
+     * stored in the database. 
+     *
+     * You need to specify a name to be used for storing the attachment data.
+     *
+     * You may optionally specify a custom mime type as third parameter. If set
+     * it will be used, but not verified, that it matches the actual file
+     * contents. If left empty the mime type defaults to
+     * 'application/octet-stream'.
+     *
+     * @param string $data
+     * @param string $name
+     * @param string $mimeType
+     * @return void
+     */
+    public function attachMemoryFile( $data, $name, $mimeType = false ) 
+    {
         $this->storage->_attachments[$name] = array(
             'type'         => 'base64',
-            'data'         => base64_encode( file_get_contents( $fileName ) ),
+            'data'         => base64_encode( $data ),
             'content_type' => $mimeType === false ? 'application/octet-stream' : $mimeType,
         );
         $this->modified = true;
