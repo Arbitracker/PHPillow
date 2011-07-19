@@ -258,12 +258,12 @@ abstract class phpillowView extends phpillowDocument
     public function query( $view, array $options = array() )
     {
         // Build query string, just as a normal HTTP GET query string
-        $url = phpillowConnection::getDatabase() .
+        $url = $this->getDatabase() .
             '_design/' . $this->getViewName() . '/_view/' . $view;
         $url .= $this->buildViewQuery( $options );
 
         // Get database connection, because we directly execute a query here.
-        $db = phpillowConnection::getInstance();
+        $db = $this->getConnection();
 
         try
         {
