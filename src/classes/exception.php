@@ -251,6 +251,30 @@ class phpillowValidationException extends phpillowException
 }
 
 /**
+ * Exception thrown, when a document property could not be validated by the
+ * or-validator.
+ *
+ * The exception contains an identifier for the error type, if the error should
+ * be presented to the user.
+ *
+ * This exception contains the exceptions of the validators that were used 
+ *
+ * @package Core
+ * @version $Revision$
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt GPL
+ */
+class phpillowOrValidationException extends phpillowValidationException
+{
+    /**
+     * Contains the exceptions of the validators that were used
+     *
+     * @var array(string => exception)
+     */
+    public $validatorExceptions;
+}
+
+
+/**
  * Exception thrown if the server could not properly response a request.
  *
  * @package Core
