@@ -639,7 +639,7 @@ abstract class phpillowDocument
      * Get the contents of an attached file as a phpillowDataResponse.
      *
      * @param string $fileName
-     * @return phpillowDataResponse
+     * @return phpillowLazyFile
      */
     public function getFile( $fileName )
     {
@@ -648,15 +648,16 @@ abstract class phpillowDocument
             throw new phpillowNoSuchPropertyException( $fileName );
         }
 
-        $db = $this->getConnection();
-        $response = $db->get(
-            $this->getDatabase() . urlencode( $this->_id ) . '/' . $fileName,
-            null, true
-        );
+        $attachment = $this->storage->_attachments[$fileName];
 
-        return $response;
+        return new phpillowLazyFile(
+            $this->getConnection(),
+            $this->getDatabase() . urlencode( $this->_id ) . '/' . $fileName,
+            $attachment['content_type'],
+            $attachment['length']
+        );
     }
-    
+
     /**
      * Return used connection
      *
