@@ -98,7 +98,7 @@ class phpillowLazyFile
     public function __get( $key )
     {
         // Check if such an property exists at all
-        if ( !isset( $this->properties[$key] ) )
+        if ( !array_key_exists( $key, $this->properties ) )
         {
             throw new phpillowNoSuchPropertyException( $key );
         }
