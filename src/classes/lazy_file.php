@@ -42,7 +42,7 @@
  * @property-read $contentType The mimetype of the stored attachment
  * @property-read $size Size in bytes of the stored attachment
  */
-class phpillowLazyFile
+class phpillowLazyFile extends phpillowDataResponse
 {
     /**
      * Storage for read-only properties
