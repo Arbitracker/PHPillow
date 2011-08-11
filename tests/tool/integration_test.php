@@ -8,6 +8,8 @@
 
 /**
  * Tests for the basic model
+ *
+ * @group integration
  */
 class phpillowToolIntegrationTests extends PHPUnit_Framework_TestCase
 {
