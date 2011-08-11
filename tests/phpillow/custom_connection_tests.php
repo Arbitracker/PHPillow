@@ -44,8 +44,8 @@ class phpillowCustomConnectionTests extends PHPUnit_Framework_TestCase
         }
         catch ( phpillowConnectionException $e )
         {
-            $this->assertSame(
-                'Could not connect to server at 127.0.0.1:12345: \'111: Connection refused\'',
+            $this->assertRegExp(
+                '(^Could not connect to server at 127.0.0.1:12345: \'(61|111): Connection refused\'$)',
                 $e->getMessage()
             );
         }
