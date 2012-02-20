@@ -143,7 +143,7 @@ class phpillowToolMultipartWriter
         foreach ( $attachments as $name => $attachment )
         {
             fwrite( $this->stream, "--" . $boundary . "\r\n" );
-            $body = base64_encode( $attachment['data'] );
+            $body = $attachment['data'];
 
             fwrite( $this->stream, "Content-ID: " . $name . "\r\n" );
             fwrite( $this->stream, "Content-Length: " . strlen( $body ) . "\r\n" );
