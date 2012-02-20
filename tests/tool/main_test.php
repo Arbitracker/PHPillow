@@ -61,38 +61,6 @@ class phpillowToolTests extends PHPUnit_Framework_TestCase
         $this->assertEquals( '', stream_get_contents( $stderr ) );
     }
 
-    public function testDumpParseBrokenDsn()
-    {
-        $tool = new phpillowTool( ':/' );
-        $tool->setOutputStreams(
-            $stdout = fopen( 'string://', 'w' ),
-            $stderr = fopen( 'string://', 'w' )
-        );
-        $this->assertEquals( 1, $tool->dump() );
-
-        fseek( $stdout, 0 );
-        fseek( $stderr, 0 );
-
-        $this->assertEquals( '', stream_get_contents( $stdout ) );
-        $this->assertEquals( "Could not parse provided DSN: :/\n", stream_get_contents( $stderr ) );
-    }
-
-    public function testLoadParseBrokenDsn()
-    {
-        $tool = new phpillowTool( ':/' );
-        $tool->setOutputStreams(
-            $stdout = fopen( 'string://', 'w' ),
-            $stderr = fopen( 'string://', 'w' )
-        );
-        $this->assertEquals( 1, $tool->load() );
-
-        fseek( $stdout, 0 );
-        fseek( $stderr, 0 );
-
-        $this->assertEquals( '', stream_get_contents( $stdout ) );
-        $this->assertEquals( "Could not parse provided DSN: :/\n", stream_get_contents( $stderr ) );
-    }
-
     public static function getDsnConfigurations()
     {
         return array(
