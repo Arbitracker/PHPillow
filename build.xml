@@ -2,4 +2,24 @@
 <project name="PHPillow" default="verify" basedir="./">
     <property file="${basedir}/build.properties" />
     <import file="setup/src/main/xml/base.xml" />
+
+    <!--
+        Custom deployment target
+
+        Uploads the pear package and calls pirum to register it in the PEAR
+        channel.
+    -->
+    <target name="-deploy:deploy" if="release">
+        <property name="pear.deploy.package.name" value="/PHPillow-${project.version}.tgz" />
+
+        <exec executable="scp">
+            <arg value="${commons:distdir}/${pear.deploy.package.name}"/>
+            <arg value="${pear.deploy.user}@${pear.deploy.host}:${pear.deploy.path}"/>
+        </exec>
+
+        <exec executable="ssh">
+            <arg value="${pear.deploy.user}@${pear.deploy.host}"/>
+            <arg value="pirum add ${pear.deploy.path} ${pear.deploy.path}/${pear.deploy.package.name}"/>
+        </exec>
+    </target>
 </project>
