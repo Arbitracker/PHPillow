@@ -300,7 +300,7 @@ class phpillowTool
             {
                 $source['_attachments'][$attachment['Content-ID']] = array(
                     'content_type' => $attachment['Content-Type'],
-                    'data'         => $attachment['body'],
+                    'data'         => base64_encode( $attachment['body'] ),
                 );
             }
 
