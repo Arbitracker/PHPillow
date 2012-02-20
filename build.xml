@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="PHPillow" default="verify" basedir="./">
+    <property file="${basedir}/build.properties" />
+    <import file="setup/src/main/xml/base.xml" />
+</project>
