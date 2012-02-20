@@ -1,3 +1,13 @@
+Changelog 0.8, 20.02.12, revision 191
+------------------------------------------------------------------------------
+
+- Implemented: UUID validator
+- Implemented: Storage of attachments from memory instead of file
+- Implemented: Support for injecting connection/database into views.
+- Implemented: OR and NULL validators
+- Implemented: Lazy file attachment retrieval
+- Switched to Ant Build Commons for builing
+
 Changelog 0.7, 06.06.11, revision 173
 ------------------------------------------------------------------------------
 
