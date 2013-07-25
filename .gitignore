@@ -1,2 +1,5 @@
 /vendor
 /build
+/.abc
+/.pear
+/composer.phar
