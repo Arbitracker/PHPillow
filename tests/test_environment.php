@@ -10,7 +10,7 @@ define( 'PHPILLOW_TEST_ENV_SET_UP', true );
  */
 date_default_timezone_set( 'UTC' );
 
-require __DIR__ . '/../src/bootstrap.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 require dirname( __FILE__ ) . '/helper/general.php';
 
