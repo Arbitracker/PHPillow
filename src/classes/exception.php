@@ -79,7 +79,13 @@ abstract class phpillowException extends Exception
      */
     protected function buildMessage( $message, array $properties )
     {
-        return preg_replace( '(%(([A-Za-z][a-z_]*[a-z])|[1-9]))e', '$properties["\\1"]', $message );
+        return preg_replace_callback(
+            '(%(([A-Za-z][a-z_]*[a-z])|[1-9]))',
+            function ($m) use ($properties) {
+                return $properties[$m[1]];
+            },
+            $message
+        );
     }
 
     /**
