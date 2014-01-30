@@ -81,8 +81,9 @@ abstract class phpillowException extends Exception
     {
         return preg_replace_callback(
             '(%(([A-Za-z][a-z_]*[a-z])|[1-9]))',
-            function ($m) use ($properties) {
-                return $properties[$m[1]];
+            function ( $match ) use ( $properties )
+            {
+                return $properties[$match[1]];
             },
             $message
         );
