@@ -1,6 +1,5 @@
 {
     "name":        "arbit/phpillow",
-    "version":     "0.8",
     "description": "PHPillow is an object orientated wrapper for CouchDB.",
     "license": "LGPL-3.0+",
     "require":      {
